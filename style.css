@@ -38,6 +38,10 @@ button:focus {
     outline: none;
 }
 
+th {
+    cursor: pointer;
+}
+
 button:before {
     content="";
     display: block;
