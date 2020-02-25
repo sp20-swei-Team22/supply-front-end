@@ -19,22 +19,34 @@
             descriptionHeader.appendChild(newText);
         }
 
-        function addVehicle() {
+        function addVehicle(button) {
             // Post request
-            alert('I will add a vehicle to the database!')
+            alert('I will add a vehicle to the database!');
+
+            console.log(button);
         }
 
-        function removeVehicle() {
+        function removeVehicle(button) {
             // Post request
-            alert('I will remove a vehicle from the database!')
+            alert('I will remove a vehicle from the database!');
+
+            console.log(button);
         }
 
-        function updateVehicle() {
+        function updateVehicle(button) {
             // Patch request
-            alert('I will update a vehicle in the database!')
+            alert('I will update a vehicle in the database!');
 
+            // Extract fleet number out of the button ID
+            let buttonId = button.id;
+            let start = 5;
+            let length = button.id.length;
+            let sub = button.id.substring(start, buttonId.length);
+            let index = /[a-z]/i.exec(sub).index;
+            let fleetNumToUpdate = sub.substring(0, index);
+
+            /*
             // Experimenting with table access
-            let fleetNumToUpdate = 0;
             let table = document.getElementById(`fleet${fleetNumToUpdate}Table`);
             console.log(table);
             let tableRows = table.rows;
@@ -49,6 +61,16 @@
                     console.log('done')
                 }
             }
+            */
+            
+            let colName = 'Status';
+            let firstLetter = colName.charAt(0).toLowerCase()
+            let restOfWord = colName.substring(1, colName.length);
+            colName = firstLetter.concat(restOfWord).replace(/ /g, '');
+            // For testing purpose this will a row
+            let vehicleID = 3;
+            let updateMe = document.getElementById(`fleet${fleetNumToUpdate}${colName}Row${vehicleID}`);
+            updateMe.innerHTML = "False";
         }
     </script>
     <script src="../js/sorttable.js"></script>
@@ -78,18 +100,13 @@
                 let numFleets = 2;
                 let numVehicles = 4;
                 let numCols = 6;
-                let l = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
+                let names = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
                 let attr = ['30%', '20%', '20%', '10%', '10%', '10%'];
                 
                 // The outer most loop is indicitive of the number of tables we are making
                 for (var tableNum = 0; tableNum < numFleets; tableNum++) {
                     let fleetNum = tableNum;
-
-                    // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, we can no
-                    let divRow = document.createElement('DIV');
-                    divRow.setAttribute('id', `fleet${fleetNum}Row`)
-                    divRow.setAttribute('class', 'row justify-content-start')
-
+                    
                     let table = document.createElement('TABLE');
                     table.setAttribute('id', `fleet${fleetNum}Table`);
                     // This attribute will both style, and allow our table to be sortable
@@ -98,55 +115,66 @@
                     
                     // Our table head will contain all of our column titles as well as set their widths for the rest of the procceing entries
                     let header = table.createTHead();
-                    // bc technically a header isn't implicitly it's own row, we have to manually insert one first
+                    // And because technically a header isn't implicitly it's own row, we have to manually insert one first
                     header.insertRow(0);
                     for (var col = 0; col < numCols; col++) {
                         let th = document.createElement('TH');
                         th.setAttribute('width', `${attr[col]}`);
                         let tr = table.tHead.children[0];
-                        th.innerHTML = l[col];
+                        th.innerHTML = names[col];
                         tr.appendChild(th);
                     }
-
+                    
                     // Because we are utilising thead and not just tr's and td's, we will be defining a body in which our actual
                     // entries will be rendered
                     let tbody = document.createElement('TBODY');
                     table.appendChild(tbody);
                     for (var row = 0; row < numVehicles; row++) {
                         let newRow = tbody.insertRow(row);
-                        for (j = 0; j < numCols; j++) {
-                            let newCell = newRow.insertCell(j);
+                        for (col = 0; col < numCols; col++) {
+                            let newCell = newRow.insertCell(col);
+                            // This is where the SQL data will go
                             let newText = document.createTextNode(Math.random());
-                            // We will also be assigning a unique ID for this particular cell. Basically identifying it's coloumn and row in its ID
+                            // We will also be assigning a unique ID for this particular cell. 
+                            // Basically identifying it's coloumn and row in its ID
                             // Hopefully, this wil made table access just a little bit easier
-                            let cellId = l[j];
-                            let firstLetter = cellId.charAt(0).toLowerCase()
-                            let restOfWord = cellId.substring(1, cellId.length);
-                            cellId = firstLetter.concat(restOfWord).replace(/ /g, '');
-                            newCell.setAttribute('id', `${cellId}Row${row}`);
-                            newCell.appendChild(newText);   
+                            let colName = names[col];
+                            let firstLetter = colName.charAt(0).toLowerCase()
+                            let restOfWord = colName.substring(1, colName.length);
+                            colName = firstLetter.concat(restOfWord).replace(/ /g, '');
+                            newCell.setAttribute('id', `fleet${fleetNum}${colName}Row${row}`);
+                            newCell.appendChild(newText);
                         }
                     }
-
+                    
                     let br = document.createElement('BR');
-
+                    
+                    // Simple header for each table
                     let tableTitle = document.createElement('H2');
                     tableTitle.innerHTML = `Fleet #${fleetNum} Vehicle List`;
-                    let buttonRow = document.createElement('DIV');
-                    buttonRow.setAttribute('class', 'row');
-
+                    
                     // Now lets add those buttons that will allow our fleet manager to 'interact' with our database and
                     // actually manage his vehicles
+                    let buttonRow = document.createElement('DIV');
+                    buttonRow.setAttribute('class', 'row');
                     let verbs = ['Add', 'Remove', 'Update']
-                    for (var buttons = 0; buttons < 3; buttons++) {
+                    for (var buttons = 0; buttons < verbs.length; buttons++) {
                         let button = document.createElement('BUTTON');
                         let verb = verbs[buttons];
                         button.innerHTML = `${verb} Vehicle`;
-                        button.setAttribute('onclick', `${verb.toLowerCase()}Vehicle()`)
+                        button.setAttribute('id', `fleet${fleetNum}${verb}Button`);
+                        verb = verb.toLowerCase();
+                        button.setAttribute('onclick', `${verb}Vehicle(this)`);
                         buttonRow.appendChild(button);
                     }
+
+                    // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can
+                    let divRow = document.createElement('DIV');
+                    divRow.setAttribute('id', `fleet${fleetNum}Row`);
+                    divRow.setAttribute('class', 'row justify-content-start');
                     divRow.appendChild(table);
 
+                    // Now we put everything together
                     tableDiv.appendChild(tableTitle);
                     tableDiv.appendChild(buttonRow);
                     tableDiv.appendChild(divRow);
