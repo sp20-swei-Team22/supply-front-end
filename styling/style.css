@@ -43,7 +43,7 @@ th {
 }
 
 button:before {
-    content="";
+    content: "";
     display: block;
     position: absolute;
     background: none;
@@ -57,7 +57,7 @@ button:before {
 }
 
 button:after {
-    content="";
+    content: "";
     display: block;
     position: absolute;
     background: none;
@@ -102,13 +102,13 @@ img {
 
 /* Sets the margin to $spacer * 1.5- used to make app backgrounds circular */
 
-.m-4 {
+/* .m-4 {
     margin: $spacer !important;
-}
+} */
 
 
 /* Sets the padding to $spacer * 3- also used to make app backgrounds circular */
 
-.p-5 {
+/* .p-5 {
     padding: $spacer !important;
-}
+} */
