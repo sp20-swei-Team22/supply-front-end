@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script>
-        function welcome(e) {
+        function welcome() {
             let user = sessionStorage.getItem('username');
             let welcomeHeader = document.getElementById('welcomeH1');
             let newText = document.createTextNode(`Welcome ${user}!`);
@@ -28,8 +28,8 @@
     <link rel="stylesheet" href="../styling/table.css" media="screen">
 </head>
 
-<body onload="welcome(this)">
-    <div class="container-fluid bg-info" style="text-align: center; height: 200px">
+<body onload="welcome()">
+    <div class="cHeader container-fluid bg-info">
         <h1 id="welcomeH1" style="text-align: center;"></h1>
         <br>
         <h4 id="welcomeDesc"></h4>
