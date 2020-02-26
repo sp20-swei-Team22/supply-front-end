@@ -24,6 +24,7 @@ File Structure:
     # Not much to say here, just holds images that we'll be using
 
 /js
+
     # As its name may imply, this is the logic that will generate all the neccessary tables DOMs for displaying all 
     # of a fleet managers fleet and the encapsulated vehicles
     /buildtables.js
@@ -39,10 +40,12 @@ File Structure:
     # (credit: "https://www.kryogenix.org/code/browser/sorttable/sorttable.js")
 
 /login
+
     # Not much to say here, just our login page
     /login.html
 
 /styling
+
     # Our dashboard.html specific CSS due to clever usage of certain tags that where otherwised
     # conformed to the UI guide.
     /dashboard.css
