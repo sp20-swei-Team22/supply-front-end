@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script>
+        function welcome() {
+            let user = sessionStorage.getItem('username');
+            let welcomeHeader = document.getElementById('welcomeH1');
+            let newText = document.createTextNode(`Welcome ${user}!`);
+            welcomeHeader.appendChild(newText);
+
+            let numFleets = 1;
+            let multFleets = numFleets > 1;
+            let descriptionHeader = document.getElementById('welcomeDesc');
+            newText = document.createTextNode(`Here ${multFleets ? 'are the' : 'is a'} table ${multFleets ? 's' : ''} of your fleet ${multFleets ? 's' : ''} and its vehicles`);
+            descriptionHeader.appendChild(newText);
+        }
+    </script>
+    <script src="../js/fmactions.js"></script>
+    <script src="../js/sorttable.js"></script>
+
+
+    <title>WeGo Fleet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../styling/style.css" media="screen">
+    <link rel="stylesheet" href="../styling/table.css" media="screen">
+    <link rel="stylesheet" href="../styling/dashboard.css" media="screen">
+</head>
+
+<body onload="welcome()">
+    <div class="cHeader container-fluid bg-info">
+        <h1 id="welcomeH1" style="text-align: center;"></h1>
+        <br>
+        <h4 id="welcomeDesc"></h4>
+        <br><br>
+    </div>
+
+    <div class="row justify-content-start" style="padding-left: 5%; padding-right: 5%;">
+        <div id="tableBlock" class="col">
+            <script src="../js/buildtables.js"></script>
+        </div>
+        <div class="col-3">
+            <button class="collapsible">Bulliten</button>
+            <div class="content">
+                <p>nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+        </div>
+    </div>
+    <script src='../js/collapsible.js'></script>
+</body>
+
+</html>

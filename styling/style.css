@@ -1,0 +1,116 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #E1DFDB;
+    font-size: 16px;
+    font-family: Rubik;
+    overflow: auto;
+}
+
+body {
+    min-height: 100%;
+}
+
+.cHeader {
+    text-align: center;
+}
+
+form {
+    text-align: left;
+    display: table;
+}
+
+input {
+  border: none;
+  border-radius: 4px;
+  background-color: #D5D3CF;
+
+}
+
+button {
+    background: none;
+    color: #2A2728;
+    width: 240px;
+    height: 80px;
+    border: 1px solid #2A2728;
+    font-size: 18px;
+    font-family: Rubik;
+    border-radius: 4px;
+    transition: 0.6s;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:before {
+    content: "";
+    display: block;
+    position: absolute;
+    background: none;
+    width: 60px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0.5s;
+    filter: blue(30px);
+    transform: translateX(-130px) skewY(-15deg);
+}
+
+button:after{
+    content: "";
+    display: block;
+    position: absolute;
+    background: none;
+    width: 30px;
+    height: 100%;
+    left: 30px;
+    top: 0;
+    opacity: 0;
+    filter: blur(30px);
+    transform: translateX(-100px) skewY(-15deg);
+}
+
+button:hover {
+    background: #17A2B8;
+}
+
+button:hover:before {
+    transform: translateX(300px) skewY(-15deg);
+    opacity: 0.6;
+    transition: 0.7s;
+}
+
+button:hover:after {
+    transform: translateX(300px) skewY(-15deg);
+    opacity: 1;
+    transition: 0.7s;
+}
+
+.imgHeader {
+    text-align: center;
+    padding: 50%;
+}
+
+img {
+    height: 100px;
+}
+
+.rounded-circle {
+    background-color: #17A2B8;
+}
+
+/* Sets the margin to $spacer * 1.5- used to make app backgrounds circular */
+/* .m-4 {
+    margin: $spacer !important;
+} */
+
+/* Sets the padding to $spacer * 3- also used to make app backgrounds circular */
+/* .p-5 {
+    padding: $spacer !important;
+} */
