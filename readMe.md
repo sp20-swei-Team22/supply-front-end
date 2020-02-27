@@ -1,5 +1,5 @@
-#Supply Frontend
-###Functionality and Connections: 
+# Supply Frontend
+### Functionality and Connections: 
 User will open start at our login.html, after credential validation, they are redirected to our dashboard.html. 
 Onload, our dashboard will make a GET request to our fleetHandler(not implemented as of this current update) to fetch 
 fleet data and vehicles of said fleet(s) and load them into our table(s). 
@@ -12,7 +12,7 @@ potentially urgent messages and quickfixes that may need their attention
     2. Pass, (redirected to dashboard.html)
 5.  Dashboard (onload will make GET request for fleet manager's fleet info to populate tables and bulletin)
 
-#File Structure:
+# File Structure:
 ```
 /dashboard
     This will be the immediate page that the fleet manager will encounter after login. 
