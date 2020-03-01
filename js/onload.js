@@ -14,7 +14,6 @@ newText = document.createTextNode(`Here ${multFleets ? 'are the' : 'is a'} table
 descriptionHeader.appendChild(newText);
 // These will all be things that will be parsed after a database table get but for initial testing, hardcode will do
 
-// let buildTables = () => {
 // The entire purpose of this script will be to generate table(s) of fleets composed of all vehilces in the vehicles in said fleet
 let tableDiv = document.getElementById('tableBlock');
 // let attr = ['25%', '15%', '20%', '10%', '15%', '20%'];
@@ -61,7 +60,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
             colName = firstLetter.concat(restOfWord).replace(/ /g, '');
             newCell.setAttribute('id', `${idHeader}${colName}Row${row}`);
             if (col == 0) {
-                newCell.setAttribute('onclick', 'getDispatch(this)');
+                newCell.setAttribute('onclick', 'getDispatch(this); openForm()');
             }
             newCell.appendChild(newText);
         }
@@ -110,9 +109,3 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     tableDiv.appendChild(divRow);
     tableDiv.appendChild(br2);
 }
-
-// }
-
-// $(document).ready(function() {
-//     buildTables()
-// });
