@@ -2,8 +2,8 @@
 let tableDiv = document.getElementById('tableBlock');
 
 // These will all be things that will be parsed after a database table get but for initial testing, hardcode will do
-let numFleets = 2;
-let numVehicles = 4;
+let numFleets = 3;
+let numVehicles = 2;
 let colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
 let numCols = colNames.length;
 // let attr = ['25%', '15%', '20%', '10%', '15%', '20%'];
@@ -39,7 +39,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
         for (col = 0; col < numCols; col++) {
             let newCell = newRow.insertCell(col);
             // This is where the SQL data will go
-            let newText = document.createTextNode((Math.random()));
+            let newText = document.createTextNode(`${col % 2 == 0 ? 'bob': 'alice'}`);
             // We will also be assigning a unique ID for this particular cell. 
             // Basically identifying it's coloumn and row in its ID
             // Hopefully, this wil made table access just a little bit easier
@@ -77,12 +77,15 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
         buttonRow.appendChild(button);
     }
 
-    // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can
+    const actionRow = document.createElement('DIV');
+    actionRow.setAttribute('id', `fleet${fleetNum}ActionRow`)
+        // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can
     let divRow = document.createElement('DIV');
     divRow.setAttribute('id', `fleet${fleetNum}Row`);
     divRow.setAttribute('class', 'justify-content-start content');
 
     divRow.appendChild(buttonRow);
+    divRow.appendChild(actionRow);
     divRow.appendChild(table);
     // divRow.appendChild(br);
 

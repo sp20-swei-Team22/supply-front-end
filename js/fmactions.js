@@ -14,14 +14,14 @@ function addVehicle(button) {
     alert('I will add a vehicle to the database!');
 
     let br = document.createElement('BR');
-    let fleetNumToUpdate = getFleetNumFromButtonId(button);
+    const fleetNumToUpdate = getFleetNumFromButtonId(button);
+    const idHeader = `fleet${fleetNumToUpdate}`;
     let findExistingAddNewBtn = document.getElementById(`fleet${fleetNumToUpdate}AddNewBtn`);
 
-    let parent = document.getElementById(`fleet${fleetNumToUpdate}Row`);
 
     let myTable;
-    let names = ['Make','Model', 'Liscence Plate'];
-    let numCols = names.length
+    const names = ['Make', 'Model', 'Liscence Plate'];
+    const numCols = names.length
 
     // Only generate a new table if there isn't one already
     if (findExistingAddNewBtn == null) {
@@ -33,7 +33,7 @@ function addVehicle(button) {
         // wants to input multiple vehicles
         let addNewButton = document.createElement('BUTTON');
         addNewButton.innerHTML = 'Add another';
-        addNewButton.setAttribute('id', `fleet${fleetNumToUpdate}AddNewBtn`);
+        addNewButton.setAttribute('id', `${idHeader}AddNewBtn`);
         addNewButton.setAttribute('class', 'smol');
         addNewButton.setAttribute('onclick', 'addVehicle(this)');
 
@@ -42,32 +42,35 @@ function addVehicle(button) {
         // if some of the other inputs in its row contain content 
         let submitNewButton = document.createElement('BUTTON');
         submitNewButton.innerHTML = 'Submit'
-        submitNewButton.setAttribute('id', `fleet${fleetNumToUpdate}SubmitNewBtn`)
+        submitNewButton.setAttribute('id', `${idHeader}SubmitNewBtn`)
         submitNewButton.setAttribute('class', 'smol');
-        
+
         addNewRow.appendChild(addNewButton);
         addNewRow.appendChild(submitNewButton);
 
-        parent.insertBefore(addNewRow, parent.lastElementChild);
-        parent.insertBefore(br, parent.lastElementChild);
+        // parent.insertBefore(br, parent.lastElementChild);
 
         // Creating a new form so we can just capture all the children inputs
         // instead of having to index for each input
         var addVehicleForm = document.createElement('FORM');
-        addVehicleForm.setAttribute('id', `fleet${fleetNumToUpdate}AddNewForm`);
-        addVehicleForm.setAttribute('name', `fleet${fleetNumToUpdate}AddNewForm`);
-        parent.insertBefore(addVehicleForm, parent.children[1]);
+        addVehicleForm.setAttribute('id', `${idHeader}AddNewForm`);
+        addVehicleForm.setAttribute('name', `${idHeader}AddNewForm`);
+        const actionDiv = document.getElementById(`${idHeader}ActionRow`);
+
+        // Makes it easier if we also want a fleet manager to use multiple action buttons at a time
+        actionDiv.appendChild(addVehicleForm);
+        actionDiv.appendChild(addNewRow);
 
         // Table mostly for formatting and container filling. 
         // Abusing tables build in rows and column nature. Ofc
         // this is possible with the bootstrap gridlayout,
         // but tables aldo provide headers and I think it came out alright
         var addVehicleTable = document.createElement('TABLE');
-        addVehicleTable.setAttribute('id', `fleet${fleetNumToUpdate}AddNewTable`);
+        addVehicleTable.setAttribute('id', `${idHeader}AddNewTable`);
         addVehicleTable.setAttribute('min-width', '100%');
         let header = addVehicleTable.createTHead();
         header.insertRow(0);
-        
+
         // Populate headers with relavent to fleet manager IN THE PARTICULAR INSTANCE
         // that he is just adding new vehicles. Other things like fleet ID are 
         // implicit based on the input and form they are entering the data into
@@ -88,7 +91,7 @@ function addVehicle(button) {
     }
 
     // Fetch table, perhaps redundant on first click, but it's one line...
-    myTable = document.getElementById(`fleet${fleetNumToUpdate}AddNewTable`);
+    myTable = document.getElementById(`${idHeader}AddNewTable`);
     var rowCount = myTable.rows.length
     tbody = myTable.tBodies[0]
     var newRow = tbody.insertRow();
@@ -114,14 +117,23 @@ function updateVehicle(button) {
     // Patch request
     alert('I will update a vehicle in the database!');
 
-    let fleetNumToUpdate = getFleetNumFromButtonId(button);
+    const fleetNumToUpdate = getFleetNumFromButtonId(button);
+    const idHeader = `fleet${fleetNumToUpdate}`;
+
+    console.log(fleetNumToUpdate)
+    console.log(idHeader)
+
 
     let colName = 'Status';
     let firstLetter = colName.charAt(0).toLowerCase()
     let restOfWord = colName.substring(1, colName.length);
     colName = firstLetter.concat(restOfWord).replace(/ /g, '');
     // For testing purpose this will a row
-    let vehicleID = 3;
-    let updateMe = document.getElementById(`fleet${fleetNumToUpdate}${colName}Row${vehicleID}`);
-    updateMe.innerHTML = "False";
+    const table = document.getElementById(`${idHeader}Table`);
+    console.log(table)
+    for (var vehicleID = 0; vehicleID < table.rows.length; vehicleID++) {
+        let updateMe = document.getElementById(`${idHeader}${colName}Row${vehicleID}`);
+        updateMe.innerHTML = "False";
+    }
+
 }
