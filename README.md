@@ -7,7 +7,9 @@
 A fleet manager will be able to log into their WeGo accounts and have access to all of their fleets, its
 vehicles, and several ways to interact with them, such as:
 * Adding
+
 * Removing
+
 * Updating
 
 vehicles from any of their desired fleets without having to navigate off the landing page. In addition, 
