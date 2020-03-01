@@ -4,8 +4,8 @@ let tableDiv = document.getElementById('tableBlock');
 // These will all be things that will be parsed after a database table get but for initial testing, hardcode will do
 let numFleets = 2;
 let numVehicles = 4;
-let numCols = 6;
 let names = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
+let numCols = names.length;
 // let attr = ['25%', '15%', '20%', '10%', '15%', '20%'];
 
 // The outer most loop is indicitive of the number of tables we are making
@@ -53,15 +53,17 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     }
     
     let br = document.createElement('BR');
+    let br2 = document.createElement('BR');
     
     // Simple header for each table
     let tableTitle = document.createElement('BUTTON');
     tableTitle.innerHTML = `Fleet #${fleetNum} Vehicle List`;
-    tableTitle.setAttribute('class', 'collapsible')
+    tableTitle.setAttribute('class', 'collapsible');
     
     // Now lets add those buttons that will allow our fleet manager to 'interact' with our database and
     // actually manage his vehicles
     let buttonRow = document.createElement('DIV');
+    buttonRow.setAttribute('id', `fleet${fleetNum}ButtonRow`);
     buttonRow.setAttribute('class', 'row');
     let verbs = ['Add', 'Remove', 'Update']
     for (var buttons = 0; buttons < verbs.length; buttons++) {
@@ -82,10 +84,11 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
 
     divRow.appendChild(buttonRow);
     divRow.appendChild(table);
+    // divRow.appendChild(br);
     
     // Now we put everything together
     
     tableDiv.appendChild(tableTitle);
     tableDiv.appendChild(divRow);
-    tableDiv.appendChild(br);
+    tableDiv.appendChild(br2);
 }
