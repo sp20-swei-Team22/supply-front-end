@@ -1,12 +1,13 @@
 # WeGo Services Supply Side Frontend
 [![Generic badge](https://img.shields.io/badge/version-1.0-<COLOR>.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/build-stable.svg)](https://shields.io/) 
 [![Generic badge](https://img.shields.io/badge/code_style-SWETeam22-teal.svg)](https://github.com/komoto415/COSC3339/blob/master/Trying%20Markdown/StyleAndDirectoryGuide.md)
-[![Generic badge](https://img.shields.io/badge/code_style-SWETeam22-teal.svg)](https://shields.io/) 
 
 ## Features
 A fleet manager will be able to log into their WeGo accounts and have access to all of their fleets, its
 vehicles, and several ways to interact with them, such as:
-* Adding
+
+* Adding 
 
 * Removing
 
