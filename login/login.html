@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+	
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script>
+        function sendPostRequest() {
+            if (document.getElementById("user_name").value.length == 0 || document.getElementById("user_password")
+            .value.length == 0) {
+                alert("You need to enter a username and password");
+                return;
+            }
+            var username = document.getElementById("user_name").value
+            const login =
+            {
+                "username" : username,
+                "password" : document.getElementById("user_password").value
+            };
+            sessionStorage.setItem('username', username);
+
+            const options =
+            {
+                method: 'POST',
+                headers:
+                {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'no-cors',
+                body: JSON.stringify(login)
+            }
+            console.log(options);
+            
+            fetch("https://supply.team22.softwareengineeringii.com/loginHandler", options).then(function(response) {
+    
+                if (response.status == 200)
+                {
+                    window.location.href("https://supply.team22.softwareengineeringii.com/supply-front-end/dashboard/dashboard.html");
+                }
+                else {
+                    alert("You don't have an account yet! Go to the regisration page.");
+                }
+            });
+        }
+    </script>
+
+    <title>WeGo Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../styling/style.css" media="screen">
+</head>
+
+<body>
+    <div class="cHeader container-fluid bg-info">
+        <h1>WeGo Services</h1>
+		<br>
+		<h4>Autonomous Delivery & Logistics Services</h4>
+		<br><br>
+	</div>
+
+	<div class="container">
+        <div class="row justify-content-center">
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/note.png">
+            </div>
+
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/disco-ball.png">
+            </div>
+
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/washer.png">
+            </div>
+
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/coffee-machine.png">
+            </div>
+        </div>
+	</div>
+
+	<br>
+	<div class="container" style="text-align: center">
+		<form class="row justify-content-center" onsubmit="sendPostRequest()">
+			<h4 style="text-align: center">Log In</h4>
+			<div class="w-100"></div>
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td>
+			            <input type="text" id="user_name" name="username">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Password: </td>
+                    <td>
+                        <input type="password" id = "user_password" name="password">
+                    </td>
+                </tr>
+            </table>
+		</form>
+        <button id="submitButton" onclick="sendPostRequest()">Submit</button>
+    </div>
+</body>
+
+</html>
