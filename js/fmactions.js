@@ -37,24 +37,24 @@ function addVehicle(button) {
         addNewButton.setAttribute('class', 'smol');
         addNewButton.setAttribute('onclick', 'addVehicle(this)');
 
+        button.disabled = true;
+
         // Once done inputing all needed entries, POST to DB
         // TODO Have an empty input check that will only fire off
         // if some of the other inputs in its row contain content 
         let submitNewButton = document.createElement('BUTTON');
         submitNewButton.innerHTML = 'Submit'
-        submitNewButton.setAttribute('id', `${idHeader}SubmitNewBtn`)
+        submitNewButton.setAttribute('id', `${idHeader}SubmitNewBtn`);
         submitNewButton.setAttribute('class', 'smol');
+        submitNewButton.setAttribute('onclick', 'registerVehicles(this)');
 
         addNewRow.appendChild(addNewButton);
         addNewRow.appendChild(submitNewButton);
-
-        // parent.insertBefore(br, parent.lastElementChild);
 
         // Creating a new form so we can just capture all the children inputs
         // instead of having to index for each input
         var addVehicleForm = document.createElement('FORM');
         addVehicleForm.setAttribute('id', `${idHeader}AddNewForm`);
-        addVehicleForm.setAttribute('name', `${idHeader}AddNewForm`);
         const actionDiv = document.getElementById(`${idHeader}ActionRow`);
 
         // Makes it easier if we also want a fleet manager to use multiple action buttons at a time
@@ -104,13 +104,15 @@ function addVehicle(button) {
 
 }
 
-function removeVehicle(button) {
-    // Post request
-    alert('I will remove a vehicle from the database!');
+function registerVehicles(button) {
+    alert(button.id)
+    const fleetNumToUpdate = getFleetNumFromButtonId(button);
+    const idHeader = `fleet${fleetNumToUpdate}`;
+    // const id = 
+    // var formData = JSON.stringify($('form').serializeArray());
+    var formData = new FormData(document.querySelector('form'))
 
-    let fleetNumToUpdate = getFleetNumFromButtonId(button);
-
-    console.log(button);
+    console.log(formData)
 }
 
 function updateVehicle(button) {
