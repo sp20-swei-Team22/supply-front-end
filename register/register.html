@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script>
+        let sendRegisrationForm = () => {
+            let newEmail = document.getElementById('email').value;
+            let newUsername = document.getElementById('username').value;
+            let newPassword = document.getElementById('password').value;
+            let newPhoneNumber = document.getElementById('phoneNum').value;
+            if (newEmail.length == 0 || newUsername.length == 0 || newPassword.length == 0) {
+                alert("You missed either a password, email, or username input.");
+                return;
+            }
+            const registration = {
+                "email" : newEmail,
+                "password" : newPassword,
+                "username" : newUsername,
+                "phoneNumber" : newPhoneNumber
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                mode: 'no-cors',
+                body: JSON.stringify(registration)
+            }
+            fetch("https://supply.team22.softwareengineeringii.com/registerHandler", options).then(function(response) {
+		console.log(response.status);
+                if (response.status == 200) {
+                    window.location.href("https://supply.team22.softwareengineeringii.com/demand-front-end/dashboard/dashboard.html");
+                }
+                else {
+                    alert("You already have an account! Go to the login page to login.");
+                }
+            }).catch(function(error) {
+		console.error(error)
+	    });
+        }
+    </script>
+
+    <title>WeGo Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../styling/style.css" media="screen">
+</head>
+
+<body>
+ 	<div class="cHeader container-fluid bg-info">
+		<h1>WeGo Services</h1>
+		<br>
+		<h4>Autonomous Delivery & Logistics Services</h4>
+		<br><br>
+	</div>
+
+	<div class="container">
+        <div class="row justify-content-center">
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/note.png">
+            </div>
+
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/disco-ball.png">
+            </div>
+
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/washer.png">
+            </div>
+
+            <div class="imgHeader rounded-circle m-4 p-5">
+                <img src="../images/coffee-machine.png">
+            </div>
+        </div>
+	</div>
+
+    <br>
+    <div class="container"  style="text-align: center">
+        <form class="row justify-content-center">
+            <h4 style="text-align: center">Register</h4>
+            <div class="w-100"></div>
+            <table>
+                <tr>
+                    <td>
+                        <span>E-mail:</span><br>
+                        <input type="email" id="email">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Username:</span><br>
+                        <input type="text" id="username">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Password:</span><br>
+                        <input type="password" id="password">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Phone Number:</span><br>
+                        <input type="text" id="phoneNum">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <button onclick="sendRegisrationForm()">Create Account</button>
+    </div>
+    <br>
+	<br>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+</body>
+
+</html>
