@@ -32,7 +32,7 @@
             fetch("https://supply.team22.softwareengineeringii.com/registerHandler", options).then(function(response) {
 		console.log(response.status);
                 if (response.status == 200) {
-                    window.location.href("https://supply.team22.softwareengineeringii.com/supply-front-end/dashboard/dashboard.html");
+                    window.location.assign("https://supply.team22.softwareengineeringii.com/supply-front-end/dashboard/dashboard.html");
                 }
                 else {
                     alert("You already have an account! Go to the login page to login.");
