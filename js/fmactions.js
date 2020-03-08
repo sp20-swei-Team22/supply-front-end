@@ -21,13 +21,13 @@ function addVehicle(button) {
 
     let myTable;
     const names = ['Make', 'Model', 'Liscence Plate'];
-    const numCols = names.length
+    const numCols = names.length;
 
     // Only generate a new table if there isn't one already
     if (findExistingAddNewBtn == null) {
         // New row for formatting. Yay bootstrap grid layout c:
         let addNewRow = document.createElement('DIV');
-        addNewRow.setAttribute('class', 'row')
+        addNewRow.setAttribute('class', 'row');
 
         // This button will allow more input rows if the fleet manager
         // wants to input multiple vehicles
@@ -36,6 +36,7 @@ function addVehicle(button) {
         addNewButton.setAttribute('id', `${idHeader}AddNewBtn`);
         addNewButton.setAttribute('class', 'smol');
         addNewButton.setAttribute('onclick', 'addVehicle(this)');
+        addNewButton.setAttribute('type', 'button');
 
         button.disabled = true;
 
@@ -43,13 +44,12 @@ function addVehicle(button) {
         // TODO Have an empty input check that will only fire off
         // if some of the other inputs in its row contain content 
         let submitNewButton = document.createElement('BUTTON');
-        submitNewButton.innerHTML = 'Submit'
+        submitNewButton.innerHTML = 'Submit';
         submitNewButton.setAttribute('id', `${idHeader}SubmitNewBtn`);
         submitNewButton.setAttribute('class', 'smol');
+        submitNewButton.setAttribute('type', 'button');
         submitNewButton.setAttribute('onclick', 'registerVehicles(this)');
 
-        addNewRow.appendChild(addNewButton);
-        addNewRow.appendChild(submitNewButton);
 
         // Creating a new form so we can just capture all the children inputs
         // instead of having to index for each input
@@ -87,32 +87,75 @@ function addVehicle(button) {
         // Making the table accessible and scalable
         tBody = document.createElement('TBODY');
         addVehicleTable.appendChild(tBody);
-        addVehicleForm.appendChild(addVehicleTable)
+        addVehicleForm.appendChild(addVehicleTable);
+        addVehicleForm.appendChild(addNewButton);
+        addVehicleForm.appendChild(submitNewButton)
     }
 
     // Fetch table, perhaps redundant on first click, but it's one line...
     myTable = document.getElementById(`${idHeader}AddNewTable`);
-    var rowCount = myTable.rows.length
-    tbody = myTable.tBodies[0]
+    var rowCount = myTable.rows.length;
+    tbody = myTable.tBodies[0];
     var newRow = tbody.insertRow();
     for (var col = 0; col < numCols; col++) {
         let newVehicleInput = document.createElement('INPUT');
         let newCell = newRow.insertCell(col);
-        newCell.setAttribute('id', `input${rowCount}${names[col]}`);
+        newVehicleInput.setAttribute('id', `input${rowCount}${names[col]}`);
+        // newVehicleInput.setAttribute('value', 'aaa')
         newCell.appendChild(newVehicleInput);
     }
 
 }
 
 function registerVehicles(button) {
-    alert(button.id)
+    // alert(button.id);
     const fleetNumToUpdate = getFleetNumFromButtonId(button);
     const idHeader = `fleet${fleetNumToUpdate}`;
-    // const id = 
-    // var formData = JSON.stringify($('form').serializeArray());
-    var formData = new FormData(document.querySelector('form'))
+    const myForm = document.getElementById(`${idHeader}AddNewForm`).elements
+    console.log(myForm);
+    console.log(myForm.length - 2);
+    const numRowsOfEntries = myForm.length - 2;
+    let postBody = {
+        'fleetNum': fleetNumToUpdate
+    }
+    let canPost = true;
+    for (var row = 0; row < numRowsOfEntries; row += 3) {
+        let make = document.getElementById('fleet0AddNewForm').elements[row].value;
+        let model = document.getElementById('fleet0AddNewForm').elements[row + 1].value;
+        let lp = document.getElementById('fleet0AddNewForm').elements[row + 2].value;
+        if (make == "" || model == "" || lp == "") {
+            alert(`One of the entry ${row + 1} are partially filled!`)
+            canPost = false;
+            break;
+        } else {
+            postBody[`newVechicle${row/3}`] = {
+                'Make': document.getElementById('fleet0AddNewForm').elements[row].value,
+                'Model': document.getElementById('fleet0AddNewForm').elements[row + 1].value,
+                'Liscence Plate': document.getElementById('fleet0AddNewForm').elements[row + 2].value
+            }
+        }
+    }
+    if (canPost) {
+        console.log(postBody)
 
-    console.log(formData)
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'no-cors',
+            body: JSON.stringify(postBody)
+        }
+        console.log(options)
+        const url = "https://supply.team22.softwareengineeringii.com/addVehicle";
+        fetch(url, options).then(function(response) {
+            if (response.status == 200) {
+                alert('Vehicles Successfully Added!')
+            } else {
+                alert('Something went wrong!')
+            }
+        });
+    }
 }
 
 function updateVehicle(button) {
@@ -122,17 +165,17 @@ function updateVehicle(button) {
     const fleetNumToUpdate = getFleetNumFromButtonId(button);
     const idHeader = `fleet${fleetNumToUpdate}`;
 
-    console.log(fleetNumToUpdate)
-    console.log(idHeader)
+    console.log(fleetNumToUpdate);
+    console.log(idHeader);
 
 
     let colName = 'Status';
-    let firstLetter = colName.charAt(0).toLowerCase()
+    let firstLetter = colName.charAt(0).toLowerCase();
     let restOfWord = colName.substring(1, colName.length);
     colName = firstLetter.concat(restOfWord).replace(/ /g, '');
     // For testing purpose this will a row
     const table = document.getElementById(`${idHeader}Table`);
-    console.log(table)
+    console.log(table);
     for (var vehicleID = 0; vehicleID < table.rows.length; vehicleID++) {
         let updateMe = document.getElementById(`${idHeader}${colName}Row${vehicleID}`);
         updateMe.innerHTML = "False";
