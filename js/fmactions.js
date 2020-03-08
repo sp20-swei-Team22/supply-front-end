@@ -120,18 +120,18 @@ function registerVehicles(button) {
     }
     let canPost = true;
     for (var row = 0; row < numRowsOfEntries; row += 3) {
-        let make = document.getElementById('fleet0AddNewForm').elements[row].value;
-        let model = document.getElementById('fleet0AddNewForm').elements[row + 1].value;
-        let lp = document.getElementById('fleet0AddNewForm').elements[row + 2].value;
+        let make = document.getElementById(`${idHeader}AddNewForm`).elements[row].value;
+        let model = document.getElementById(`${idHeader}AddNewForm`).elements[row + 1].value;
+        let lp = document.getElementById(`${idHeader}AddNewForm`).elements[row + 2].value;
         if (make == "" || model == "" || lp == "") {
             alert(`One of the entry ${row + 1} are partially filled!`)
             canPost = false;
             break;
         } else {
             postBody[`newVechicle${row/3}`] = {
-                'Make': document.getElementById('fleet0AddNewForm').elements[row].value,
-                'Model': document.getElementById('fleet0AddNewForm').elements[row + 1].value,
-                'Liscence Plate': document.getElementById('fleet0AddNewForm').elements[row + 2].value
+                'Make': make,
+                'Model': model,
+                'Liscence Plate': lp
             }
         }
     }
