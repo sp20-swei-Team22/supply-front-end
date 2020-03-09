@@ -153,6 +153,7 @@ function registerVehicles(button) {
                 alert('Vehicles Successfully Added!')
             } else {
                 alert('Something went wrong!')
+                alert(response.json())
             }
         });
     }
