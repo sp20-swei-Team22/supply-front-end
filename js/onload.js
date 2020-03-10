@@ -50,7 +50,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
         for (col = 0; col < numCols; col++) {
             let newCell = newRow.insertCell(col);
             // This is where the SQL data will go
-            let newText = document.createTextNode(Math.random());
+            let newText = document.createTextNode(col + row);
             // We will also be assigning a unique ID for this particular cell. 
             // Basically identifying it's coloumn and row in its ID
             // Hopefully, this wil made table access just a little bit easier
@@ -104,6 +104,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     let divRow = document.createElement('DIV');
     divRow.setAttribute('id', `${idHeader}Row`);
     divRow.setAttribute('class', 'justify-content-start card card-body');
+    divRow.setAttribute('object-fit', 'contain');
 
     divRow.appendChild(buttonRow);
     divRow.appendChild(actionRow);
