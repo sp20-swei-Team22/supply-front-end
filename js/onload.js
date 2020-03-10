@@ -4,7 +4,7 @@ let newText = document.createTextNode(`Welcome ${user}!`);
 welcomeHeader.appendChild(newText);
 
 let numFleets = 3;
-let numVehicles = 2;
+let numVehicles = 50;
 let colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
 let numCols = colNames.length;
 
@@ -26,7 +26,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     let table = document.createElement('TABLE');
     table.setAttribute('id', `${idHeader}Table`);
     // This attribute will both style, and allow our table to be sortable
-    table.setAttribute('class', 'display table-bordered table-sm');
+    table.setAttribute('class', 'index table-bordered table-sm');
     table.setAttribute('min-width', '100%');
 
     // Our table head will contain all of our column titles as well as set their widths for the rest of the procceing entries
@@ -60,7 +60,9 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
             colName = firstLetter.concat(restOfWord).replace(/ /g, '');
             newCell.setAttribute('id', `${idHeader}${colName}Row${row}`);
             if (col == 0) {
-                newCell.setAttribute('onclick', 'getDispatch(this); openForm()');
+                newCell.setAttribute('onclick', 'getDispatch(this)');
+                newCell.setAttribute('data-toggle', 'modal');
+                newCell.setAttribute('data-target', '#dispatchRecordPopup')
             }
             newCell.appendChild(newText);
         }

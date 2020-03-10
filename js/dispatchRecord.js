@@ -15,15 +15,13 @@ function getDispatch(vehicle) {
 
     const numDispatches = 100;
 
-    const popupDiv = document.getElementById('dispatchRecordPopup');
-    let title = document.createElement('H1');
-    title.innerHTML = `Vehicle ID: ${vehicleID}`;
+    document.getElementById('dispatchRecordPopupLabel').innerHTML = `Vehicle ID: ${vehicleID}`;
 
-    popupDiv.appendChild(title);
+    const modalTable = document.getElementById('modal-table');
 
     let popupTable = document.createElement('TABLE');
     popupTable.setAttribute('id', 'popupTable');
-    popupTable.setAttribute('class', 'display table-popup table-bordered table-sm');
+    popupTable.setAttribute('class', 'popup table-bordered table-sm');
     popupTable.setAttribute('max-width', '80%');
 
     let header = popupTable.createTHead();
@@ -42,7 +40,7 @@ function getDispatch(vehicle) {
         let newRow = tbody.insertRow(row);
         for (col = 0; col < numCols; col++) {
             let newCell = newRow.insertCell(col);
-            let newText = document.createTextNode(Math.random());
+            let newText = document.createTextNode(col == numCols - 1 ? 10 : Math.random());
             let colName = colNames[col];
             let firstLetter = colName.charAt(0).toLowerCase()
             let restOfWord = colName.substring(1, colName.length);
@@ -51,32 +49,24 @@ function getDispatch(vehicle) {
             newCell.appendChild(newText);
         }
     }
+    modalTable.appendChild(popupTable);
 
-    popupDiv.appendChild(popupTable);
+    const modalMap = document.getElementById('modal-map');
+    modalMapHeader = document.createElement('H3');
+    modalMapHeader.innerHTML = 'Current Running Dispatch';
+    modalMap.appendChild(modalMapHeader);
+
     $(document).ready(function() {
-        $('table.display').DataTable();
+        $('table.popup').DataTable({
+            "order": [
+                [5, "desc"],
+                [4, "desc"]
+            ]
+        }, {
+            columnDefs: [{
+                targets: [5],
+                orderData: [4, 5]
+            }]
+        });
     });
-}
-
-function openForm() {
-    document.getElementById('dispatchRecordPopup').style.display = 'block';
-}
-
-function closeForm() {
-    document.getElementById('dispatchRecordPopup').style.display = 'none';
-    document.getElementById('dispatchRecordPopup').innerHTML = '';
-}
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    var modal = document.getElementById('dispatchRecordPopup');
-    if (event.target == modal) {
-        closeForm();
-    }
-}
-document.onkeypress = function(e) {
-    var keyCode = e.keyCode;
-    var modal = document.getElementById('dispatchRecordPopup');
-    if (event.target == modal && keyCode === 27) {
-        closeForm();
-    }
 }

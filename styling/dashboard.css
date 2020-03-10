@@ -14,12 +14,15 @@
 
 .active,
 .collapseButton {
+    font-size: 25px;
+    text-align: left;
+    padding-left: 25px;
     margin-top: 10px;
     min-width: 100%;
     object-fit: contain;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background-color: #777;
+    background-color: #888;
 }
 
 button {
@@ -32,39 +35,33 @@ button {
     max-height: 40px;
 }
 
-#popupTable th {
-    background-color: rgb(124, 124, 124);
-}
 
-#dispatchRecordPopup {
+/* #popupTable th {
+    background-color: rgb(124, 124, 124);
+} */
+
+
+/* #dispatchRecordPopup {
     display: none;
-    /* Hidden by default */
     position: fixed;
-    /* Stay in place */
     z-index: 1;
-    /* Sit on top */
     padding-top: 100px;
     padding-left: 5%;
     padding-right: 5%;
-    /* Location of the box */
     left: 0;
     top: 0;
     width: 100%;
-    /* Full width */
     height: 100%;
-    /* Full height */
     overflow: auto;
-    /* Enable scroll if needed */
     background-clip: border-box;
-    /* Fallback color */
     background-color: rgba(165, 165, 165, 0.4);
-    /* Black w/ opacity */
-}
+} */
 
-#popupTable_wrapper {
+
+/* #popupTable_wrapper {
     padding: 10px 10px 10px 10px;
     background-color: #f1f1f1;
     border-color: black;
     border-width: 2px;
     border-radius: 4px;
-}
+} */
