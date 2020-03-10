@@ -10,7 +10,7 @@ let numCols = colNames.length;
 
 let multFleets = numFleets > 1;
 let descriptionHeader = document.getElementById('welcomeDesc');
-newText = document.createTextNode(`Here ${multFleets ? 'are the' : 'is a'} table ${multFleets ? 's' : ''} of your fleet ${multFleets ? 's' : ''} and its vehicles`);
+newText = document.createTextNode(`Here ${multFleets ? 'are the' : 'is a'} table${multFleets ? 's' : ''} of your fleet${multFleets ? 's' : ''} and its vehicles`);
 descriptionHeader.appendChild(newText);
 // These will all be things that will be parsed after a database table get but for initial testing, hardcode will do
 
@@ -72,7 +72,12 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     // Simple header for each table
     let tableTitle = document.createElement('BUTTON');
     tableTitle.innerHTML = `Fleet #${fleetNum} Vehicle List`;
-    tableTitle.setAttribute('class', 'collapsible');
+    tableTitle.setAttribute('type', 'button');
+    tableTitle.setAttribute('class', 'collapseButton')
+    tableTitle.setAttribute('data-toggle', 'collapse');
+    tableTitle.setAttribute('data-target', `#${idHeader}collapse`);
+    tableTitle.setAttribute('aria-expanded', 'true');
+    tableTitle.setAttribute('aria-controls', `${idHeader}collapse`);
 
     // Now lets add those buttons that will allow our fleet manager to 'interact' with our database and
     // actually manage his vehicles
@@ -92,20 +97,26 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     }
 
     const actionRow = document.createElement('DIV');
-    actionRow.setAttribute('id', `${idHeader}ActionRow`)
-        // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can
+    actionRow.setAttribute('id', `${idHeader}ActionRow`);
+    // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can
     let divRow = document.createElement('DIV');
     divRow.setAttribute('id', `${idHeader}Row`);
-    divRow.setAttribute('class', 'justify-content-start content');
+    divRow.setAttribute('class', 'justify-content-start card card-body');
 
     divRow.appendChild(buttonRow);
     divRow.appendChild(actionRow);
     divRow.appendChild(table);
+
+    const collapseRow = document.createElement('DIV');
+    collapseRow.setAttribute('id', `${idHeader}collapse`);
+    collapseRow.setAttribute('class', 'collapse');
+
+    collapseRow.appendChild(divRow);
     // divRow.appendChild(br);
 
     // Now we put everything together
 
     tableDiv.appendChild(tableTitle);
-    tableDiv.appendChild(divRow);
+    tableDiv.appendChild(collapseRow);
     tableDiv.appendChild(br2);
 }
