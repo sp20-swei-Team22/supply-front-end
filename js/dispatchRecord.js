@@ -5,7 +5,7 @@ function randomDate(start, end) {
 function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
 
-    console.log(vehicleID)
+    // console.log(vehicleID)
 
     // var cellBlockId = vehicle.id;
     // var n = cellBlockId.indexOf('v');
@@ -81,7 +81,16 @@ function getDispatch(vehicle) {
                     }
                     break;
                 case 4:
-                    newText = document.createTextNode(randomDate(new Date(2012, 0, 1), new Date()).toUTCString());
+                    var testDate = randomDate(new Date(2019, 0, 1), new Date());
+                    var someDate = testDate.toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    })
+                    newText = document.createTextNode(someDate);
                     break;
                 case 5:
                     let randomStatusNum = Math.floor(Math.random() * (4 - 1) + 1);
@@ -117,15 +126,21 @@ function getDispatch(vehicle) {
     modalMap.appendChild(modalMapHeader);
 
     $(document).ready(function() {
+        $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss a");
         $('table.popup').DataTable({
-            "order": [
-                [5, "desc"],
-                [4, "desc"]
+            order: [
+                [5, 'desc'],
+                [4, 'asc']
             ]
         }, {
             columnDefs: [{
                 targets: [5],
-                orderData: [4, 5]
+                orderData: [5, 4]
+            }]
+        }, {
+            columnDefs: [{
+                targets: [4],
+                type: 'date-eu'
             }]
         });
     });
