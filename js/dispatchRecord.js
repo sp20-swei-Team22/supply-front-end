@@ -1,3 +1,7 @@
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
 function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
 
@@ -34,7 +38,7 @@ function getDispatch(vehicle) {
         if (col == 4) {
             th.setAttribute('max-width', '10vw')
         }
-         tr.appendChild(th);
+        tr.appendChild(th);
     }
     let tbody = document.createElement('TBODY');
     popupTable.appendChild(tbody);
@@ -43,7 +47,60 @@ function getDispatch(vehicle) {
         let newRow = tbody.insertRow(row);
         for (col = 0; col < numCols; col++) {
             let newCell = newRow.insertCell(col);
-            let newText = document.createTextNode(col != 5 ? col + row : "Queued");
+            var newText;
+            switch (col) {
+                case 0:
+                    let randomOID = Math.floor(Math.random() * 1000000000);
+                    newText = document.createTextNode(randomOID);
+                    break;
+                case 1:
+                    let randomCID = Math.floor(Math.random() * 1000000000);
+                    newText = document.createTextNode(randomCID);
+                    break;
+                case 2:
+                    newText = document.createTextNode("St. Edward's University");
+                    break;
+                case 3:
+                    let randomServiceNum = Math.floor(Math.random() * (5 - 1) + 1);
+                    switch (randomServiceNum) {
+                        case 1:
+                            newText = document.createTextNode("RX");
+                            break;
+                        case 2:
+                            newText = document.createTextNode("Events");
+                            break;
+                        case 3:
+                            newText = document.createTextNode("Dry Cleaning");
+                            break;
+                        case 4:
+                            newText = document.createTextNode("Coffee");
+                            break;
+                        default:
+                            newText = document.createTextNode("Wot");
+                            break;
+                    }
+                    break;
+                case 4:
+                    newText = document.createTextNode(randomDate(new Date(2012, 0, 1), new Date()).toUTCString());
+                    break;
+                case 5:
+                    let randomStatusNum = Math.floor(Math.random() * (4 - 1) + 1);
+                    switch (randomStatusNum) {
+                        case 1:
+                            newText = document.createTextNode("Queued");
+                            break;
+                        case 2:
+                            newText = document.createTextNode("Running");
+                            break;
+                        case 3:
+                            newText = document.createTextNode("Completed");
+                            break;
+                    }
+                    break;
+                default:
+                    newText = document.createTextNode(row + col);
+                    break;
+            }
             let colName = colNames[col];
             let firstLetter = colName.charAt(0).toLowerCase()
             let restOfWord = colName.substring(1, colName.length);
