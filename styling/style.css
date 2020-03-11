@@ -32,7 +32,7 @@ input {
 button {
     background: none;
     color: #2A2728;
-    width: 240px;
+    max-width: 240px;
     height: 80px;
     border: 1px solid #2A2728;
     font-size: 18px;

@@ -33,4 +33,7 @@ button {
 
 .smol {
     max-height: 40px;
+    width: 180px;
+    margin-left: 10px;
+    margin-right: 10px;
 }

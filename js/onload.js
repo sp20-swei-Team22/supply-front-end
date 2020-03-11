@@ -104,6 +104,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     let divRow = document.createElement('DIV');
     divRow.setAttribute('id', `${idHeader}Row`);
     divRow.setAttribute('class', 'justify-content-start card card-body');
+    divRow.setAttribute('style', 'padding-top: 10px');
     divRow.setAttribute('object-fit', 'contain');
 
     divRow.appendChild(buttonRow);
