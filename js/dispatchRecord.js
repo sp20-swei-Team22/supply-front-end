@@ -106,9 +106,6 @@ function getDispatch(vehicle) {
                             break;
                     }
                     break;
-                default:
-                    newText = document.createTextNode(row + col);
-                    break;
             }
             let colName = colNames[col];
             let firstLetter = colName.charAt(0).toLowerCase()
@@ -126,10 +123,11 @@ function getDispatch(vehicle) {
     modalMap.appendChild(modalMapHeader);
 
     $(document).ready(function() {
+        $.fn.dataTable.enum(['Running', 'Queued', 'Completed']);
         $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss a");
         $('table.popup').DataTable({
             order: [
-                [5, 'desc'],
+                [5, 'asc'],
                 [4, 'asc']
             ]
         }, {
