@@ -1,9 +1,13 @@
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
 let user = sessionStorage.getItem('username');
 let welcomeHeader = document.getElementById('welcomeH1');
 let newText = document.createTextNode(`Welcome ${user}!`);
 welcomeHeader.appendChild(newText);
 
-let numFleets = 3;
+let numFleets = 1;
 let numVehicles = 50;
 let colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
 let numCols = colNames.length;
@@ -50,7 +54,71 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
         for (col = 0; col < numCols; col++) {
             let newCell = newRow.insertCell(col);
             // This is where the SQL data will go
-            let newText = document.createTextNode(col + row);
+            let newText;
+            switch (col) {
+                case 0:
+                    let randomVID = Math.floor(Math.random() * 1000000000);
+                    newText = document.createTextNode(randomVID);
+                    break;
+                case 1:
+                    let randomMake = Math.floor(Math.random() * (6 - 1) + 1);
+                    switch (randomMake) {
+                        case 1:
+                            newText = document.createTextNode("Acura");
+                            break;
+                        case 2:
+                            newText = document.createTextNode("Audi");
+                            break;
+                        case 3:
+                            newText = document.createTextNode("Toyota");
+                            break;
+                        case 4:
+                            newText = document.createTextNode("Mercedes");
+                            break;
+                        case 5:
+                            newText = document.createTextNode("Honda");
+                            break;
+                        case 6:
+                            newText = document.createTextNode("Bugatti");
+                            break;
+                    }
+                    break;
+                case 2:
+                    let randomLat = Math.floor(Math.random() * (100000 - 100) + 100) / 100;
+                    let randomLon = Math.floor(Math.random() * (100000 - 100) + 100) / 100;
+                    newText = document.createTextNode(`Lat: ${randomLat}, Lon: ${randomLon}`);
+                    break;
+                case 3:
+                    let randomStatusNum = Math.floor(Math.random() * (4 - 1) + 1);
+                    switch (randomStatusNum) {
+                        case 1:
+                            newText = document.createTextNode("Active");
+                            break;
+                        case 2:
+                            newText = document.createTextNode("Inactive");
+                            break;
+                        case 3:
+                            newText = document.createTextNode("Maintanence");
+                            break;
+                    }
+                    break;
+                case 4:
+                    var testDate = randomDate(new Date(2019, 0, 1), new Date());
+                    var someDate = testDate.toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    })
+                    newText = document.createTextNode(someDate);
+                    break;
+                case 5:
+                    let randomLicensePlate = Math.floor(Math.random() * 1000000000);
+                    newText = document.createTextNode(randomLicensePlate);
+                    break;
+            }
             // We will also be assigning a unique ID for this particular cell. 
             // Basically identifying it's coloumn and row in its ID
             // Hopefully, this wil made table access just a little bit easier
@@ -59,12 +127,13 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
             let restOfWord = colName.substring(1, colName.length);
             colName = firstLetter.concat(restOfWord).replace(/ /g, '');
             newCell.setAttribute('id', `${idHeader}${colName}Row${row}`);
-            if (col == 0) {
+            newCell.appendChild(newText);
+            const isVIDCol = col == 0;
+            if (isVIDCol) {
                 newCell.setAttribute('onclick', 'getDispatch(this)');
                 newCell.setAttribute('data-toggle', 'modal');
                 newCell.setAttribute('data-target', '#dispatchRecordPopup')
             }
-            newCell.appendChild(newText);
         }
     }
 
@@ -78,7 +147,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     tableTitle.setAttribute('class', 'collapseButton')
     tableTitle.setAttribute('data-toggle', 'collapse');
     tableTitle.setAttribute('data-target', `#${idHeader}collapse`);
-    tableTitle.setAttribute('aria-expanded', 'true');
+    tableTitle.setAttribute('aria-expanded', 'false');
     tableTitle.setAttribute('aria-controls', `${idHeader}collapse`);
 
     // Now lets add those buttons that will allow our fleet manager to 'interact' with our database and
@@ -100,6 +169,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
 
     const actionRow = document.createElement('DIV');
     actionRow.setAttribute('id', `${idHeader}ActionRow`);
+    actionRow.setAttribute('class', 'row');
     // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can
     let divRow = document.createElement('DIV');
     divRow.setAttribute('id', `${idHeader}Row`);
