@@ -1,6 +1,7 @@
 // Extract fleet number out of the button ID
 function getFleetNumFromButtonId(button) {
     let buttonId = button.id;
+    // console.log(buttonId);
     let start = 5;
     let length = button.id.length;
     let sub = button.id.substring(start, buttonId.length);
@@ -16,7 +17,8 @@ function addVehicle(button) {
     let br = document.createElement('BR');
     const fleetNumToUpdate = getFleetNumFromButtonId(button);
     const idHeader = `fleet${fleetNumToUpdate}`;
-    let findExistingAddNewBtn = document.getElementById(`fleet${fleetNumToUpdate}AddNewBtn`);
+    const findExistingAddNewBtn = document.getElementById(`${idHeader}AddNewBtn`);
+    const findExistingForm = document.getElementById(`${idHeader}AddNewForm`);
 
 
     let myTable;
@@ -25,9 +27,6 @@ function addVehicle(button) {
 
     // Only generate a new table if there isn't one already
     if (findExistingAddNewBtn == null) {
-        // New row for formatting. Yay bootstrap grid layout c:
-        let addNewRow = document.createElement('DIV');
-        addNewRow.setAttribute('class', 'row');
 
         // This button will allow more input rows if the fleet manager
         // wants to input multiple vehicles
@@ -50,7 +49,6 @@ function addVehicle(button) {
         submitNewButton.setAttribute('type', 'button');
         submitNewButton.setAttribute('onclick', 'registerVehicles(this)');
 
-
         // Creating a new form so we can just capture all the children inputs
         // instead of having to index for each input
         var addVehicleForm = document.createElement('FORM');
@@ -59,7 +57,7 @@ function addVehicle(button) {
 
         // Makes it easier if we also want a fleet manager to use multiple action buttons at a time
         actionDiv.appendChild(addVehicleForm);
-        actionDiv.appendChild(addNewRow);
+
 
         // Table mostly for formatting and container filling. 
         // Abusing tables build in rows and column nature. Ofc
@@ -78,12 +76,10 @@ function addVehicle(button) {
         // that the fleet manager doesn't need to enter themselves
         for (var col = 0; col < numCols; col++) {
             let th = document.createElement('TH');
-            th.setAttribute('width', '33%');
             let tr = addVehicleTable.tHead.children[0];
             th.innerHTML = names[col];
             tr.appendChild(th);
         }
-
         // Making the table accessible and scalable
         tBody = document.createElement('TBODY');
         addVehicleTable.appendChild(tBody);
@@ -93,18 +89,51 @@ function addVehicle(button) {
     }
 
     // Fetch table, perhaps redundant on first click, but it's one line...
+
     myTable = document.getElementById(`${idHeader}AddNewTable`);
     var rowCount = myTable.rows.length;
     tbody = myTable.tBodies[0];
     var newRow = tbody.insertRow();
-    for (var col = 0; col < numCols; col++) {
-        let newVehicleInput = document.createElement('INPUT');
+    newRow.id = `${idHeader}AddNewVehicleEntry${rowCount}`;
+    for (var col = 0; col <= numCols; col++) {
         let newCell = newRow.insertCell(col);
-        newVehicleInput.setAttribute('id', `input${rowCount}${names[col]}`);
-        // newVehicleInput.setAttribute('value', 'aaa')
-        newCell.appendChild(newVehicleInput);
+        if (col < numCols) {
+            let newVehicleInput = document.createElement('INPUT');
+            newVehicleInput.setAttribute('id', `input${rowCount}${names[col]}`);
+            newVehicleInput.setAttribute('style', 'margin-bottom: 10px;; margin-right: 5px;');
+            // newVehicleInput.setAttribute('value', 'aaa')
+            newCell.appendChild(newVehicleInput);
+        } else {
+            let delRow = document.createElement('H1');
+            delRow.innerHTML = "X";
+            newCell.appendChild(delRow)
+            newCell.setAttribute('id', `del${newRow.id}`);
+            newCell.setAttribute('onclick', 'deleteRow(this)');
+        }
     }
 
+}
+
+function deleteRow(deleteMe) {
+    // console.log(deleteMe.id);
+    var id = deleteMe.id;
+    var delMe = id.substring(3, );
+    const idHeader = id.substring(3, 9);
+    var fleetTableID = `${idHeader}AddNewTable`;
+    var fleetTableDom = document.getElementById(fleetTableID);
+    var fleetTableNumRows = fleetTableDom.rows.length;
+    var formID = `${idHeader}AddNewForm`;
+    var formToDelete = document.getElementById(formID);
+
+    var row = document.getElementById(delMe);
+    if (fleetTableNumRows == 2) {
+        formToDelete.outerHTML = "";
+        var button = document.getElementById(`${idHeader}AddButton`);
+        button.disabled = false;
+
+    } else {
+        row.parentNode.removeChild(row);
+    }
 }
 
 function registerVehicles(button) {
@@ -177,9 +206,5 @@ function updateVehicle(button) {
     // For testing purpose this will a row
     const table = document.getElementById(`${idHeader}Table`);
     console.log(table);
-    for (var vehicleID = 0; vehicleID < table.rows.length; vehicleID++) {
-        let updateMe = document.getElementById(`${idHeader}${colName}Row${vehicleID}`);
-        updateMe.innerHTML = "False";
-    }
 
 }
