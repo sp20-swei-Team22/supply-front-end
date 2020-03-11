@@ -1,4 +1,4 @@
-// Extract fleet number out of the button ID
+/* Extract fleet number out of the button ID */
 function getFleetNumFromButtonId(button) {
     let buttonId = button.id;
     // console.log(buttonId);
@@ -11,7 +11,7 @@ function getFleetNumFromButtonId(button) {
 }
 
 function addVehicle(button) {
-    // Post request
+    /* Post request */
     alert('I will add a vehicle to the database!');
 
     let br = document.createElement('BR');
@@ -25,11 +25,12 @@ function addVehicle(button) {
     const names = ['Make', 'Model', 'Liscence Plate'];
     const numCols = names.length;
 
-    // Only generate a new table if there isn't one already
+    /* Only generate a new table if there isn't one already */
     if (findExistingAddNewBtn == null) {
-
-        // This button will allow more input rows if the fleet manager
-        // wants to input multiple vehicles
+        /* 
+            This button will allow more input rows if the fleet manager
+            wants to input multiple vehicles
+        */
         let addNewButton = document.createElement('BUTTON');
         addNewButton.innerHTML = 'Add another';
         addNewButton.setAttribute('id', `${idHeader}AddNewBtn`);
@@ -37,11 +38,17 @@ function addVehicle(button) {
         addNewButton.setAttribute('onclick', 'addVehicle(this)');
         addNewButton.setAttribute('type', 'button');
 
+        /* 
+            Old add vehicle button can't be clicked anymore 
+            TODO: need to disable the hover properties when disabled
+        */
         button.disabled = true;
 
-        // Once done inputing all needed entries, POST to DB
-        // TODO Have an empty input check that will only fire off
-        // if some of the other inputs in its row contain content 
+        /* 
+            Once done inputing all needed entries, POST to DB
+            TODO Have an empty input check that will only fire off
+            if some of the other inputs in its row contain content 
+        */
         let submitNewButton = document.createElement('BUTTON');
         submitNewButton.innerHTML = 'Submit';
         submitNewButton.setAttribute('id', `${idHeader}SubmitNewBtn`);
@@ -49,31 +56,36 @@ function addVehicle(button) {
         submitNewButton.setAttribute('type', 'button');
         submitNewButton.setAttribute('onclick', 'registerVehicles(this)');
 
-        // Creating a new form so we can just capture all the children inputs
-        // instead of having to index for each input
+        /* 
+            Creating a new form so we can just capture all the children inputs
+            instead of having to index for each input
+        */
         var addVehicleForm = document.createElement('FORM');
         addVehicleForm.setAttribute('id', `${idHeader}AddNewForm`);
         const actionDiv = document.getElementById(`${idHeader}ActionRow`);
 
-        // Makes it easier if we also want a fleet manager to use multiple action buttons at a time
+        /* Makes it easier if we also want a fleet manager to use multiple action buttons at a time */
         actionDiv.appendChild(addVehicleForm);
 
-
-        // Table mostly for formatting and container filling. 
-        // Abusing tables build in rows and column nature. Ofc
-        // this is possible with the bootstrap gridlayout,
-        // but tables aldo provide headers and I think it came out alright
+        /* 
+            Table mostly for formatting and container filling. 
+            Abusing tables build in rows and column nature. Ofc
+            this is possible with the bootstrap gridlayout,
+            but tables aldo provide headers and I think it came out alright
+        */
         var addVehicleTable = document.createElement('TABLE');
         addVehicleTable.setAttribute('id', `${idHeader}AddNewTable`);
         addVehicleTable.setAttribute('min-width', '100%');
         let header = addVehicleTable.createTHead();
         header.insertRow(0);
 
-        // Populate headers with relavent to fleet manager IN THE PARTICULAR INSTANCE
-        // that he is just adding new vehicles. Other things like fleet ID are 
-        // implicit based on the input and form they are entering the data into
-        // TLDR, there's a lot more data that get's added to the POST body
-        // that the fleet manager doesn't need to enter themselves
+        /* 
+            Populate headers with relavent to fleet manager IN THE PARTICULAR INSTANCE
+            that he is just adding new vehicles. Other things like fleet ID are 
+            implicit based on the input and form they are entering the data into
+            TLDR, there's a lot more data that get's added to the POST body
+            that the fleet manager doesn't need to enter themselves
+        */
         for (var col = 0; col < numCols; col++) {
             let th = document.createElement('TH');
             let tr = addVehicleTable.tHead.children[0];
@@ -88,8 +100,7 @@ function addVehicle(button) {
         addVehicleForm.appendChild(submitNewButton)
     }
 
-    // Fetch table, perhaps redundant on first click, but it's one line...
-
+    /* // Fetch table, perhaps redundant on first click?, but it's one line... */
     myTable = document.getElementById(`${idHeader}AddNewTable`);
     var rowCount = myTable.rows.length;
     tbody = myTable.tBodies[0];
@@ -101,7 +112,6 @@ function addVehicle(button) {
             let newVehicleInput = document.createElement('INPUT');
             newVehicleInput.setAttribute('id', `input${rowCount}${names[col]}`);
             newVehicleInput.setAttribute('style', 'margin-bottom: 10px;; margin-right: 5px;');
-            // newVehicleInput.setAttribute('value', 'aaa')
             newCell.appendChild(newVehicleInput);
         } else {
             let delRow = document.createElement('H1');
@@ -126,7 +136,8 @@ function deleteRow(deleteMe) {
     var formToDelete = document.getElementById(formID);
 
     var row = document.getElementById(delMe);
-    if (fleetTableNumRows == 2) {
+    const onlyOneEntry = fleetTableNumRows == 2;
+    if (onlyOneEntry) {
         formToDelete.outerHTML = "";
         var button = document.getElementById(`${idHeader}AddButton`);
         button.disabled = false;
@@ -152,7 +163,7 @@ function registerVehicles(button) {
         let make = document.getElementById(`${idHeader}AddNewForm`).elements[row].value;
         let model = document.getElementById(`${idHeader}AddNewForm`).elements[row + 1].value;
         let lp = document.getElementById(`${idHeader}AddNewForm`).elements[row + 2].value;
-        if (make == "" || model == "" || lp == "") {
+        if (make.length == 0 || model.length == 0 || lp.length == 0) {
             alert(`One of the entry ${row + 1} are partially filled!`)
             canPost = false;
             break;
@@ -160,6 +171,7 @@ function registerVehicles(button) {
             postBody[`newVechicle${row/3}`] = {
                 'Make': make,
                 'Model': model,
+                /* TODO: Fix 'lisence' spelling */
                 'Liscence Plate': lp
             }
         }
@@ -167,7 +179,7 @@ function registerVehicles(button) {
     if (canPost) {
         console.log(postBody)
 
-        const options = {
+        const payload = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -175,15 +187,19 @@ function registerVehicles(button) {
             mode: 'no-cors',
             body: JSON.stringify(postBody)
         }
-        console.log(options)
+        console.log(payload)
         const url = "https://supply.team22.softwareengineeringii.com/addVehicle";
-        fetch(url, options).then(function(response) {
+
+        fetch(url, payload).then(function(response) {
+            console.log(response.status);
             if (response.status == 200) {
                 alert('Vehicles Successfully Added!')
             } else {
                 alert('Something went wrong!')
                 alert(response.json())
             }
+        }).catch(function(error) {
+            console.error(error)
         });
     }
 }

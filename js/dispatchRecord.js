@@ -4,19 +4,11 @@ function randomDate(start, end) {
 
 function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
-
     // console.log(vehicleID)
 
-    // var cellBlockId = vehicle.id;
-    // var n = cellBlockId.indexOf('v');
-    // console.log(n);
-    // const idHeader = cellBlockId.substring(0, n);
-    // console.log(idHeader);
-
-    // get dispatch record where all the courieres have this vID
+    /* get dispatch record where all the courieres have this vID */
     const colNames = ['Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
     const numCols = colNames.length;
-
     const numDispatches = 100;
 
     document.getElementById('dispatchRecordPopupLabel').innerHTML = `Vehicle ID: ${vehicleID}`;
@@ -35,19 +27,33 @@ function getDispatch(vehicle) {
         let th = document.createElement('TH');
         let tr = popupTable.tHead.children[0];
         th.innerHTML = colNames[col];
-        if (col == 4) {
-            th.setAttribute('max-width', '10vw')
-        }
         tr.appendChild(th);
     }
+
+    /*
+        Because we are utilising thead and not just tr's and td's, we will be defining a body in which our actual
+        entries will be rendered
+    */
     let tbody = document.createElement('TBODY');
     popupTable.appendChild(tbody);
 
+    /*
+        Now we are populating the table by row then by its cells
+        But can probably map or forEach at a row level instead of working at a cell level, but need to see what pulling the SQL
+        into JS looks like
+    */
     for (var row = 0; row < numDispatches; row++) {
         let newRow = tbody.insertRow(row);
         for (col = 0; col < numCols; col++) {
             let newCell = newRow.insertCell(col);
             var newText;
+
+            /* 
+                This entire switch block is just random populating the cells of these rows sudo randomly
+                but with somewhat expected inputs of data that we might pull from our database.
+                This is where the SQL data will be inserted. But can probably map or forEach at a row level
+                instead of working at a cell level
+            */
             switch (col) {
                 case 0:
                     let randomOID = Math.floor(Math.random() * 1000000000);
@@ -117,14 +123,18 @@ function getDispatch(vehicle) {
     }
     modalTable.appendChild(popupTable);
 
+    /* Our map of the current running dispatch will be appended here! */
     const modalMap = document.getElementById('modal-map');
     modalMapHeader = document.createElement('H3');
     modalMapHeader.innerHTML = 'Current Running Dispatch';
     modalMap.appendChild(modalMapHeader);
 
     $(document).ready(function() {
+        /* Added sorted enum so that we can define a custom sort to status column */
         $.fn.dataTable.enum(['Running', 'Queued', 'Completed']);
+        /* Enaabling date time formatting so that we can sort this table's dates */
         $.fn.dataTable.moment("DD/MM/YYYY HH:mm:ss a");
+        /* Sorting logic for multicolumn sorts */
         $('table.popup').DataTable({
             order: [
                 [5, 'asc'],
@@ -134,11 +144,6 @@ function getDispatch(vehicle) {
             columnDefs: [{
                 targets: [5],
                 orderData: [5, 4]
-            }]
-        }, {
-            columnDefs: [{
-                targets: [4],
-                type: 'date-eu'
             }]
         });
     });
