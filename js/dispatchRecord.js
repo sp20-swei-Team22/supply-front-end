@@ -31,7 +31,10 @@ function getDispatch(vehicle) {
         let th = document.createElement('TH');
         let tr = popupTable.tHead.children[0];
         th.innerHTML = colNames[col];
-        tr.appendChild(th);
+        if (col == 4) {
+            th.setAttribute('max-width', '10vw')
+        }
+         tr.appendChild(th);
     }
     let tbody = document.createElement('TBODY');
     popupTable.appendChild(tbody);
@@ -40,7 +43,7 @@ function getDispatch(vehicle) {
         let newRow = tbody.insertRow(row);
         for (col = 0; col < numCols; col++) {
             let newCell = newRow.insertCell(col);
-            let newText = document.createTextNode(col == numCols - 1 ? 10 : Math.random());
+            let newText = document.createTextNode(col != 5 ? col + row : "Queued");
             let colName = colNames[col];
             let firstLetter = colName.charAt(0).toLowerCase()
             let restOfWord = colName.substring(1, colName.length);
