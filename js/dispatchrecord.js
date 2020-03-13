@@ -6,8 +6,10 @@ function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
     // console.log(vehicleID)
 
-    var url = new URL("https://supply.team22.softwareengineeringii.com/"),
-        params = { 'vid': vehicleID }
+    var url = new URL("https://supply.team22.softwareengineeringii.com/getDispatch/"),
+        params = {
+            'vid': vehicleID
+        }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url).then(function(response) {
         console.log(response.status);
@@ -25,7 +27,7 @@ function getDispatch(vehicle) {
 
 
     /* get dispatch record where all the courieres have this vID */
-    const colNames = ['Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
+    const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
     const numCols = colNames.length;
     const numDispatches = 100;
 
@@ -74,17 +76,27 @@ function getDispatch(vehicle) {
             */
             switch (col) {
                 case 0:
+                    let randomDID = Math.floor(Math.random() * 1000000000);
+                    newText = document.createTextNode(randomDID);
+                    break;
+                case 1:
                     let randomOID = Math.floor(Math.random() * 1000000000);
                     newText = document.createTextNode(randomOID);
                     break;
-                case 1:
+                case 2:
                     let randomCID = Math.floor(Math.random() * 1000000000);
                     newText = document.createTextNode(randomCID);
                     break;
-                case 2:
-                    newText = document.createTextNode("St. Edward's University");
-                    break;
                 case 3:
+                    // newText = document.createTextNode("St. Edward's University");
+                    let randomLat = Math.floor(Math.random() * (9000 - 100) + 100) / 100;
+                    let randomLon = Math.floor(Math.random() * (18000 - 100) + 100) / 100;
+                    randomLat *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+                    randomLon *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+                    newText = document.createTextNode(`Lat: ${randomLat}, Lon: ${randomLon}`);
+                    break;
+                    break;
+                case 4:
                     let randomServiceNum = Math.floor(Math.random() * (5 - 1) + 1);
                     switch (randomServiceNum) {
                         case 1:
@@ -104,7 +116,7 @@ function getDispatch(vehicle) {
                             break;
                     }
                     break;
-                case 4:
+                case 5:
                     var testDate = randomDate(new Date(2019, 0, 1), new Date());
                     // var someDate = testDate.toLocaleDateString('en-GB', {
                     //     day: '2-digit',
@@ -119,7 +131,7 @@ function getDispatch(vehicle) {
                     dateAsStr = dateAsStr.substring(0, dateAsStr.length - 5);
                     newText = document.createTextNode(dateAsStr);
                     break;
-                case 5:
+                case 6:
                     let randomStatusNum = Math.floor(Math.random() * (4 - 1) + 1);
                     switch (randomStatusNum) {
                         case 1:

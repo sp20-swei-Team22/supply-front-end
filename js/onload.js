@@ -7,6 +7,25 @@ let welcomeHeader = document.getElementById('welcomeH1');
 let newText = document.createTextNode(`Welcome ${user}!`);
 welcomeHeader.appendChild(newText);
 
+var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
+    params = {
+        'user': user
+    }
+Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+fetch(url).then(function(response) {
+    console.log(response.status);
+    response.json().then(function(parsedJSON) {
+        console.log(parsedJSON);
+    })
+    if (response.status == 200) {
+
+    } else {
+        alert('something went wrong');
+    }
+}).catch(function(error) {
+    console.error(error)
+});
+
 /* These will all be things that will be parsed after a database table get but for initial testing, hardcode will do */
 let numFleets = 1;
 let numVehicles = 50;
