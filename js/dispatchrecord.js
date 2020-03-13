@@ -6,6 +6,24 @@ function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
     // console.log(vehicleID)
 
+    var url = new URL("https://supply.team22.softwareengineeringii.com/"),
+        params = { 'vid': vehicleID }
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    fetch(url).then(function(response) {
+        console.log(response.status);
+        response.json().then(function(parsedJSON) {
+            console.log(parsedJSON);
+        })
+        if (response.status == 200) {
+
+        } else {
+            alert('something went wrong');
+        }
+    }).catch(function(error) {
+        console.error(error)
+    });
+
+
     /* get dispatch record where all the courieres have this vID */
     const colNames = ['Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
     const numCols = colNames.length;
@@ -88,15 +106,18 @@ function getDispatch(vehicle) {
                     break;
                 case 4:
                     var testDate = randomDate(new Date(2019, 0, 1), new Date());
-                    var someDate = testDate.toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    })
-                    newText = document.createTextNode(someDate);
+                    // var someDate = testDate.toLocaleDateString('en-GB', {
+                    //     day: '2-digit',
+                    //     month: '2-digit',
+                    //     year: 'numeric',
+                    //     hour: '2-digit',
+                    //     minute: '2-digit',
+                    //     second: '2-digit'
+                    // })
+                    dateAsStr = testDate.toISOString();
+                    dateAsStr = dateAsStr.replace('T', ' ');
+                    dateAsStr = dateAsStr.substring(0, dateAsStr.length - 5);
+                    newText = document.createTextNode(dateAsStr);
                     break;
                 case 5:
                     let randomStatusNum = Math.floor(Math.random() * (4 - 1) + 1);
