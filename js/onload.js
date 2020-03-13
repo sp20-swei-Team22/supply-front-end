@@ -93,8 +93,10 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
                     }
                     break;
                 case 2:
-                    let randomLat = Math.floor(Math.random() * (100000 - 100) + 100) / 100;
-                    let randomLon = Math.floor(Math.random() * (100000 - 100) + 100) / 100;
+                    let randomLat = Math.floor(Math.random() * (9000 - 100) + 100) / 100;
+                    let randomLon = Math.floor(Math.random() * (18000 - 100) + 100) / 100;
+                    randomLat *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+                    randomLon *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
                     newText = document.createTextNode(`Lat: ${randomLat}, Lon: ${randomLon}`);
                     break;
                 case 3:
@@ -113,15 +115,18 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
                     break;
                 case 4:
                     var testDate = randomDate(new Date(2019, 0, 1), new Date());
-                    var someDate = testDate.toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    })
-                    newText = document.createTextNode(someDate);
+                    // var someDate = testDate.toLocaleDateString('en-GB', {
+                    //     year: 'numeric',
+                    //     month: '2-digit',
+                    //     day: '2-digit',
+                    //     hour: '2-digit',
+                    //     minute: '2-digit',
+                    //     second: '2-digit'
+                    // })
+                    dateAsStr = testDate.toISOString();
+                    dateAsStr = dateAsStr.replace('T', ' ');
+                    dateAsStr = dateAsStr.substring(0, dateAsStr.length - 5);
+                    newText = document.createTextNode(dateAsStr);
                     break;
                 case 5:
                     let randomLicensePlate = Math.floor(Math.random() * 1000000000);
