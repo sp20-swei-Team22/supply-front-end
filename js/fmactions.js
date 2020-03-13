@@ -172,7 +172,7 @@ function registerVehicles(button) {
                 'Make': make,
                 'Model': model,
                 /* TODO: Fix 'lisence' spelling */
-                'Liscence Plate': lp
+                'LicensePlate': lp
             }
         }
     }
