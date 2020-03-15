@@ -3,7 +3,6 @@ function getFleetNumFromButtonId(button) {
     let buttonId = button.id;
     // console.log(buttonId);
     let start = 5;
-    let length = button.id.length;
     let sub = button.id.substring(start, buttonId.length);
     let index = /[a-z]/i.exec(sub).index;
     let fleetNumToUpdate = sub.substring(0, index);
@@ -12,13 +11,12 @@ function getFleetNumFromButtonId(button) {
 
 function addVehicle(button) {
     /* Post request */
-    alert('I will add a vehicle to the database!');
+    // alert('I will add a vehicle to the database!');
 
     let br = document.createElement('BR');
     const fleetNumToUpdate = getFleetNumFromButtonId(button);
     const idHeader = `fleet${fleetNumToUpdate}`;
     const findExistingAddNewBtn = document.getElementById(`${idHeader}AddNewBtn`);
-    const findExistingForm = document.getElementById(`${idHeader}AddNewForm`);
 
 
     let myTable;
@@ -97,7 +95,7 @@ function addVehicle(button) {
         addVehicleTable.appendChild(tBody);
         addVehicleForm.appendChild(addVehicleTable);
         addVehicleForm.appendChild(addNewButton);
-        addVehicleForm.appendChild(submitNewButton)
+        addVehicleForm.appendChild(submitNewButton);
     }
 
     /* // Fetch table, perhaps redundant on first click?, but it's one line... */
@@ -116,7 +114,7 @@ function addVehicle(button) {
         } else {
             let delRow = document.createElement('H1');
             delRow.innerHTML = "X";
-            newCell.appendChild(delRow)
+            newCell.appendChild(delRow);
             newCell.setAttribute('id', `del${newRow.id}`);
             newCell.setAttribute('onclick', 'deleteRow(this)');
         }
@@ -125,9 +123,11 @@ function addVehicle(button) {
 }
 
 function deleteRow(deleteMe) {
+    // console.log(deleteMe);
     // console.log(deleteMe.id);
     var id = deleteMe.id;
     var delMe = id.substring(3, );
+    // console.log(delMe);
     const idHeader = id.substring(3, 9);
     var fleetTableID = `${idHeader}AddNewTable`;
     var fleetTableDom = document.getElementById(fleetTableID);
@@ -148,12 +148,11 @@ function deleteRow(deleteMe) {
 }
 
 function registerVehicles(button) {
-    // alert(button.id);
+    // console.log(button.id);
     const fleetNumToUpdate = getFleetNumFromButtonId(button);
     const idHeader = `fleet${fleetNumToUpdate}`;
-    const myForm = document.getElementById(`${idHeader}AddNewForm`).elements
-    console.log(myForm);
-    console.log(myForm.length - 2);
+    // console.log(idHeader);
+    const myForm = document.getElementById(`${idHeader}AddNewForm`).elements;
     const numRowsOfEntries = myForm.length - 2;
     let postBody = {
         'fleetNum': fleetNumToUpdate
@@ -165,43 +164,49 @@ function registerVehicles(button) {
         let lp = document.getElementById(`${idHeader}AddNewForm`).elements[row + 2].value;
         if (make.length == 0 || model.length == 0 || lp.length == 0) {
             alert(`One of the entry ${row + 1} are partially filled!`)
-            canPost = false;
-            break;
+                // canPost = false;
+                // break;
+            continue;
         } else {
             postBody[`newVechicle${row/3}`] = {
                 'Make': make,
                 'Model': model,
-                /* TODO: Fix 'lisence' spelling */
                 'LicensePlate': lp
             }
         }
     }
-    if (canPost) {
-        console.log(postBody)
-
-        const payload = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            mode: 'no-cors',
-            body: JSON.stringify(postBody)
-        }
-        console.log(payload)
-        const url = "https://supply.team22.softwareengineeringii.com/addVehicle";
-
-        fetch(url, payload).then(function(response) {
-            console.log(response.status);
-            if (response.status == 200) {
-                alert('Vehicles Successfully Added!')
-            } else {
-                alert('Something went wrong!')
-                alert(response.json())
-            }
-        }).catch(function(error) {
-            console.error(error)
-        });
+    // if (canPost) {
+    // console.log(postBody)
+    const payload = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        mode: 'no-cors',
+        body: JSON.stringify(postBody)
     }
+    console.log(payload)
+    const url = "https://supply.team22.softwareengineeringii.com/addVehicle";
+
+    fetch(url, payload).then(function(response) {
+        console.log(response.status);
+        if (response.status == 200) {
+            alert('Vehicles Successfully Added!');
+            /* 
+                Since the table update was successful, we can either reload the page, or... idk what else.
+                Confer with team :C
+            */
+            var formID = `${idHeader}AddNewForm`;
+            var formToDelete = document.getElementById(formID);
+            formToDelete.outerHTML = "";
+        } else {
+            alert('Something went wrong!');
+            alert(response.json());
+        }
+    }).catch(function(error) {
+        console.error(error);
+    });
+    // }
 }
 
 function updateVehicle(button) {
