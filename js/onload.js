@@ -16,20 +16,15 @@ fetch(url).then(function(response) {
     console.log(response.status);
     response.json().then(function(parsedJSON) {
         console.log(parsedJSON);
-    })
-    if (response.status == 200) {
-
-    } else {
-        alert('something went wrong');
-    }
-}).catch(function(error) {
-    console.error(error)
-});
+        if (response.status == 200) {
+            parsedJSON.forEach(e => console.log(e));
+            console.log(parsedJSON.length);
+            var sortedByFleets;
 
 /* These will all be things that will be parsed after a database table get but for initial testing, hardcode will do */
 let numFleets = 1;
-let numVehicles = 50;
-let colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
+let numVehicles = parsedJSON.length;
+let colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
 let numCols = colNames.length;
 
 let multFleets = numFleets > 1;
@@ -67,23 +62,29 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     let tbody = document.createElement('TBODY');
     table.appendChild(tbody);
 
-    /* 
+    /* x
         Now we are populating the table by row then by its cells
         But can probably map or forEach at a row level instead of working at a cell level, but need to see what pulling the SQL
         into JS looks like 
     */
+
     for (var row = 0; row < numVehicles; row++) {
         let newRow = tbody.insertRow(row);
         for (col = 0; col < numCols; col++) {
-            let newCell = newRow.insertCell(col);
+        let newCell = newRow.insertCell(col);
 
             /*
                 This entire switch block is just random populating the cells of these rows sudo randomly
                 but with somewhat expected inputs of data that we might pull from our database.
                 This is where the SQL data will be inserted. 
             */
-            let newText;
-            switch (col) {
+            // console.log();
+            let content = `${parsedJSON[row][col]}`
+            //if (col == 2) {
+            //    content = `${parsedJSON[row][col], parsedJSON[row][col+1]}`;
+            //}
+            let newText = document.createTextNode(content);
+            /*switch (col) {
                 case 0:
                     let randomVID = Math.floor(Math.random() * 1000000000);
                     newText = document.createTextNode(randomVID);
@@ -151,7 +152,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
                     let randomLicensePlate = Math.floor(Math.random() * 1000000000);
                     newText = document.createTextNode(randomLicensePlate);
                     break;
-            }
+            } */
 
             /* 
                 We will also be assigning a unique ID for this particular cell. 
@@ -172,6 +173,7 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
             }
         }
     }
+
 
     let br = document.createElement('BR');
     let br2 = document.createElement('BR');
@@ -231,3 +233,10 @@ for (var tableNum = 0; tableNum < numFleets; tableNum++) {
     tableDiv.appendChild(collapseRow);
     tableDiv.appendChild(br2);
 }
+        } else {
+            alert('something went wrong');
+        }
+})
+}).catch(function(error) {
+    console.error(error)
+});
