@@ -21,7 +21,7 @@ fetch(url).then(function (response) {
 
             /* These will all be things that will be parsed after a database table get but for initial testing, hardcode will do */
             fleets = {};
-            arr.forEach(function (e) {
+            parsedJSON.forEach(function (e) {
                 key = e[0];
                 if (!(key in fleets)) {
                     fleets[e[0]] = [];
