@@ -98,8 +98,8 @@
     const numFleets = Object.keys(fleets).length;
     const colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
     const numCols = colNames.length;
-    
-    Object.keys(fleets).forEach(function(fleetNum) {
+
+    Object.keys(fleets).forEach(function (fleetNum) {
         var fleetData = fleets[fleetNum]
         const idHeader = `fleet${fleetNum}`;
         console.log(idHeader);
@@ -112,7 +112,7 @@
 
         let header = table.createTHead();
         header.insertRow(0);
-        colNames.forEach(function(name) {
+        colNames.forEach(function (name) {
             let th = document.createElement('TH');
             let tr = table.tHead.children[0];
             th.innerHTML = name;
@@ -120,16 +120,17 @@
         });
         let tbody = document.createElement('TBODY');
         table.appendChild(tbody);
-        fleetData.forEach(function(entry) {
+        fleetData.forEach(function (entry) {
             console.log(entry);
             var row = document.createElement('TR');
-            entry.forEach(function(colVal, col, _) {
+            entry.forEach(function (colVal, col, _) {
                 var cell = document.createElement('TD');
                 cell.appendChild(document.createTextNode(colVal));
                 if (col == 0) {
                     cell.setAttribute('onclick', 'getDispatch(this)');
                     cell.setAttribute('data-toggle', 'modal');
-                    cell.setAttribute('data-target', '#dispatchRecordPopup')                }
+                    cell.setAttribute('data-target', '#dispatchRecordPopup')
+                }
                 row.append(cell);
                 // console.log(i, colVal);
             });
@@ -155,16 +156,15 @@
         buttonRow.setAttribute('id', `${idHeader}ButtonRow`);
         buttonRow.setAttribute('class', 'row');
         let verbs = ['Add', 'Remove', 'Update']
-        for (var buttons = 0; buttons < verbs.length; buttons++) {
+        verbs.forEach(function (verb) {
             let button = document.createElement('BUTTON');
-            let verb = verbs[buttons];
             button.innerHTML = `${verb} Vehicle`;
             button.setAttribute('id', `${idHeader}${verb}Button`);
             verb = verb.toLowerCase();
             button.setAttribute('onclick', `${verb}Vehicle(this)`);
             button.setAttribute('class', 'smol')
             buttonRow.appendChild(button);
-        }
+        });
 
         const actionRow = document.createElement('DIV');
         actionRow.setAttribute('id', `${idHeader}ActionRow`);
@@ -185,7 +185,6 @@
         collapseRow.setAttribute('class', 'collapse');
 
         collapseRow.appendChild(divRow);
-        // divRow.appendChild(br);
 
         /* Now we put everything together */
         tableDiv.appendChild(tableTitle);
