@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+    <!-- DataTables CDNs -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <!-- <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script> -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="http://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
+    <script src="http://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
+
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+    <!-- Site wide and page specific Styles -->
+    <link rel="stylesheet" href="../styling/style.css" media="screen">
+    <link rel="stylesheet" href="../styling/table.css" media="screen">
+    <link rel="stylesheet" href="../styling/dashboard.css" media="screen">
+
+    <title>WeGo Fleet</title>
+
+    <script>
+        $(document).ready(function() {
+            $('table.index').DataTable();
+        });
+    </script>
+</head>
+
+<body>
+    <!-- <p id='demoID'>Hi</p> -->
+    <div
+         id='tableBlock'>
+
+    </div>
+</body>
+<script>
+    arr = [
+        [1, 13, "Tesla: Model-T", "Lat: 10.1 Lon: 10.1", "active", null, "AS1234", null],
+        [1, 14, "Tesla: Model-T", "Lat: 20.2 Lon: 20.2", "active", null, "PO7319", null],
+        [1, 15, "Tesla: Model-S", "Lat: 30.3 Lon: 30.3", "active", null, "FQ1843", null],
+        [3, 16, "Tesla: Model-V", "Lat: 81.41 Lon: 71.54", "maintenance", null, "ZA2401", null],
+        [3, 17, "Tesla: Model-X", "Lat: 42.27 Lon: 230.91", "active", null, "MA1927", null],
+        [1, 19, "Tesla: Model-V", "Lat: 12.41 Lon: 1.54", "maintenance", null, "XC3908", null]
+    ];
+    keys = {};
+    arr.forEach(function (e) {
+        keys[e[0]] = [];
+        // e.shift();
+        // console.log(e);
+    });
+    Object.keys(keys).forEach(function (key) {
+        arr.forEach(function (entry) {
+            if (entry[0] == key) {
+                // console.log(entry);
+                // // console.log(keys[key]);
+                keys[key].push(entry.slice(1));
+            }
+        });
+    });
+    var tableDiv = document.getElementById('tableBlock');
+    const numFleets = Object.keys(keys).length;
+    console.log(numFleets);
+    const colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
+    const numCols = colNames.length;
+
+    /* The outer most loop is indicitive of the number of tables we are making */
+    for (var tableNum = 0; tableNum < numFleets; tableNum++) {
+        const fleetNum = Object.keys(keys)[tableNum];
+        const rows = Object.values(keys)[tableNum]
+        const numVehicles = rows.length;
+        const idHeader = `fleet${fleetNum}`;
+
+        let table = document.createElement('TABLE');
+        table.setAttribute('id', `${idHeader}Table`);
+        table.setAttribute('class', 'index table-bordered table-sm');
+        table.setAttribute('min-width', '100%');
+
+        let header = table.createTHead();
+        /* Because technically a header isn't implicitly it's own row, we have to manually insert one first */
+        header.insertRow(0);
+        for (var col = 0; col < numCols; col++) {
+            let th = document.createElement('TH');
+            let tr = table.tHead.children[0];
+            th.innerHTML = colNames[col];
+            tr.appendChild(th);
+        }
+        let tbody = document.createElement('TBODY');
+        table.appendChild(tbody);
+
+        for (var row = 0; row < numVehicles; row++) {
+            let newRow = tbody.insertRow(row);
+            for (col = 0; col < numCols; col++) {
+                let newCell = newRow.insertCell(col);
+                let content = `${rows[row][col]}`;
+                let newText = document.createTextNode(content);
+
+                /*
+                    We will also be assigning a unique ID for this particular cell.
+                    Basically identifying it's coloumn and row in its ID
+                    Hopefully, this wil made table access just a little bit easier
+                */
+                let colName = colNames[col];
+                let firstLetter = colName.charAt(0).toLowerCase()
+                let restOfWord = colName.substring(1, colName.length);
+                colName = firstLetter.concat(restOfWord).replace(/ /g, '');
+                newCell.setAttribute('id', `${idHeader}${colName}Row${row}`);
+                newCell.appendChild(newText);
+            }
+        } let br2 = document.createElement('BR');
+
+        /* Simple header for each table */
+        let tableTitle = document.createElement('BUTTON');
+        tableTitle.innerHTML = `Fleet #${fleetNum} Vehicle List`;
+        tableTitle.setAttribute('type', 'button');
+        tableTitle.setAttribute('class', 'collapseButton')
+        tableTitle.setAttribute('data-toggle', 'collapse');
+        tableTitle.setAttribute('data-target', `#${idHeader}collapse`);
+        tableTitle.setAttribute('aria-expanded', 'false');
+        tableTitle.setAttribute('aria-controls', `${idHeader}collapse`);
+
+        /* 
+            Now lets add those buttons that will allow our fleet manager to 'interact' with our database and
+            actually manage his vehicles 
+        */
+        let buttonRow = document.createElement('DIV');
+        buttonRow.setAttribute('id', `${idHeader}ButtonRow`);
+        buttonRow.setAttribute('class', 'row');
+        let verbs = ['Add', 'Remove', 'Update']
+        for (var buttons = 0; buttons < verbs.length; buttons++) {
+            let button = document.createElement('BUTTON');
+            let verb = verbs[buttons];
+            button.innerHTML = `${verb} Vehicle`;
+            button.setAttribute('id', `${idHeader}${verb}Button`);
+            verb = verb.toLowerCase();
+            button.setAttribute('onclick', `${verb}Vehicle(this)`);
+            button.setAttribute('class', 'smol')
+            buttonRow.appendChild(button);
+        }
+
+        const actionRow = document.createElement('DIV');
+        actionRow.setAttribute('id', `${idHeader}ActionRow`);
+        actionRow.setAttribute('class', 'row');
+        /* Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can */
+        let divRow = document.createElement('DIV');
+        divRow.setAttribute('id', `${idHeader}Row`);
+        divRow.setAttribute('class', 'justify-content-start card card-body');
+        divRow.setAttribute('style', 'padding-top: 10px');
+        divRow.setAttribute('object-fit', 'contain');
+
+        divRow.appendChild(buttonRow);
+        divRow.appendChild(actionRow);
+        divRow.appendChild(table);
+
+        const collapseRow = document.createElement('DIV');
+        collapseRow.setAttribute('id', `${idHeader}collapse`);
+        collapseRow.setAttribute('class', 'collapse');
+
+        collapseRow.appendChild(divRow);
+        // divRow.appendChild(br);
+
+        /* Now we put everything together */
+        tableDiv.appendChild(tableTitle);
+        tableDiv.appendChild(collapseRow);
+        tableDiv.appendChild(br2);
+    }
+    // document.getElementById('demoID').innerHTML = arr;
+</script>
+
+</html>
