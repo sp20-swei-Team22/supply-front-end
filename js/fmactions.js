@@ -60,6 +60,7 @@ function addVehicle(button) {
         */
         var addVehicleForm = document.createElement('FORM');
         addVehicleForm.setAttribute('id', `${idHeader}AddNewForm`);
+        addVehicleForm.setAttribute('object-fit', 'contain');
         const actionDiv = document.getElementById(`${idHeader}ActionRow`);
 
         /* Makes it easier if we also want a fleet manager to use multiple action buttons at a time */
@@ -73,7 +74,7 @@ function addVehicle(button) {
         */
         var addVehicleTable = document.createElement('TABLE');
         addVehicleTable.setAttribute('id', `${idHeader}AddNewTable`);
-        addVehicleTable.setAttribute('min-width', '100%');
+        addVehicleTable.setAttribute('max-width', '100vw');
         let header = addVehicleTable.createTHead();
         header.insertRow(0);
 
@@ -109,7 +110,7 @@ function addVehicle(button) {
         if (col < numCols) {
             let newVehicleInput = document.createElement('INPUT');
             newVehicleInput.setAttribute('id', `input${rowCount}${names[col]}`);
-            newVehicleInput.setAttribute('style', 'margin-bottom: 10px;; margin-right: 5px;');
+            newVehicleInput.setAttribute('style', 'margin-bottom: 10px;; margin-right: 5px; width:33vw;');
             newCell.appendChild(newVehicleInput);
         } else {
             let delRow = document.createElement('H1');

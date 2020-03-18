@@ -170,13 +170,13 @@ function getDispatch(vehicle) {
         /* Sorting logic for multicolumn sorts */
         $('table.popup').DataTable({
             order: [
-                [5, 'asc'],
-                [4, 'asc']
+                [6, 'asc'],
+                [5, 'asc']
             ]
         }, {
             columnDefs: [{
-                targets: [5],
-                orderData: [5, 4]
+                targets: [6],
+                orderData: [6, 5]
             }]
         });
     });

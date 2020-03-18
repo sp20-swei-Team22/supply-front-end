@@ -13,11 +13,11 @@ var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleReques
     }
 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 fetch(url).then(function (response) {
-    console.log(response.status);
+    // console.log(response.status);
     response.json().then(function (parsedJSON) {
-        console.log(parsedJSON);
+        // console.log(parsedJSON);
         if (response.status == 200) {
-            parsedJSON.forEach(e => console.log(e));
+            // parsedJSON.forEach(e => console.log(e));
 
             /* These will all be things that will be parsed after a database table get but for initial testing, hardcode will do */
             fleets = {};
@@ -30,7 +30,7 @@ fetch(url).then(function (response) {
                 fleets[key].push(e);
             });
             var tableDiv = document.getElementById('tableBlock');
-            const colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
+            const colNames = ['Vehicle ID', 'Vehicle Type', 'Location', 'Status', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
 
             Object.keys(fleets).forEach(function (fleetNum) {
                 var fleetData = fleets[fleetNum]
@@ -41,7 +41,7 @@ fetch(url).then(function (response) {
                 let table = document.createElement('TABLE');
                 table.setAttribute('id', `${idHeader}Table`);
                 table.setAttribute('class', 'index table-bordered table-sm');
-                table.setAttribute('min-width', '100%');
+                table.setAttribute('max-width', '100vw');
 
                 let header = table.createTHead();
                 header.insertRow(0);
@@ -124,6 +124,14 @@ fetch(url).then(function (response) {
                 tableDiv.appendChild(collapseRow);
                 tableDiv.appendChild(br);
             });
+        $(document).ready(function() {
+            $('table.index').DataTable({
+                columnDefs: [{
+                    targets: 2,
+                    orderable: false
+                }]
+            });
+        });
         } else {
             alert('something went wrong');
         }
