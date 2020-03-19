@@ -18,10 +18,20 @@ fetch(url).then(function (response) {
         // console.log(parsedJSON);
         if (response.status == 200) {
             // parsedJSON.forEach(e => console.log(e));
-
+            arr = []
+            Object.keys(parsedJSON).forEach(function(key) {
+                index = key.indexOf('D')
+                vid = parseInt(key.substring(index + 1));
+                inner = parsedJSON[key];
+                arr.push(
+                    [inner['fleetid'], vid, `${inner['make']}: ${inner['model']}`,
+                    `Lat: ${inner['current_lat']} Lon: ${inner['current_lon']}`,
+                    inner['status'], null, inner['licenseplate'], inner['last_heartbeat']
+                ])
+            });
             /* These will all be things that will be parsed after a database table get but for initial testing, hardcode will do */
             fleets = {};
-            parsedJSON.forEach(function (e) {
+            arr.forEach(function (e) {
                 key = e[0];
                 if (!(key in fleets)) {
                     fleets[e[0]] = [];
