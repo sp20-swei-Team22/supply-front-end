@@ -77,14 +77,41 @@
     </div>
 </body>
 <script>
-    arr = [
-        [1, 13, "Tesla: Model-T", "Lat: 10.1 Lon: 10.1", "active", null, "AS1234", null],
-        [1, 14, "Tesla: Model-T", "Lat: 20.2 Lon: 20.2", "active", null, "PO7319", null],
-        [1, 15, "Tesla: Model-S", "Lat: 30.3 Lon: 30.3", "active", null, "FQ1843", null],
-        [3, 16, "Tesla: Model-V", "Lat: 81.41 Lon: 71.54", "maintenance", null, "ZA2401", null],
-        [3, 17, "Tesla: Model-X", "Lat: 42.27 Lon: 230.91", "active", null, "MA1927", null],
-        [1, 19, "Tesla: Model-V", "Lat: 12.41 Lon: 1.54", "maintenance", null, "XC3908", null]
-    ];
+    json = {
+        'VehicleID13': {
+            'status': "active",
+            'licenseplate': "AS1234",
+            'fleetid': 1,
+            'make': "Tesla",
+            'model': "Model-T",
+            'current_lat': 10.1,
+            'current_lon': 10.1,
+            'last_heartbeat': null,
+        },
+        'VehicleID14': {
+            'status': "active",
+            'licenseplate': "PO7319",
+            'fleetid': 1,
+            'make': "Tesla",
+            'model': "Model-T",
+            'current_lat': 20.2,
+            'current_lon': 20.2,
+            'last_heartbeat': null,
+        }
+    }
+    arr = []
+    Object.keys(json).forEach(function (key) {
+        index = key.indexOf('D')
+        vid = parseInt(key.substring(index + 1));
+        inner = json[key];
+        arr.push(
+            [inner['fleetid'], vid, `${inner['make']}: ${inner['model']}`,
+            `Lat: ${inner['current_lat']} Lon: ${inner['current_lon']}`,
+            inner['status'], null, inner['licenseplate'], inner['last_heartbeat']
+            ])
+    });
+    console.log(arr)
+
     fleets = {};
     arr.forEach(function (e) {
         key = e[0];
