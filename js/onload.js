@@ -3,6 +3,7 @@ function randomDate(start, end) {
 }
 
 let user = sessionStorage.getItem('username');
+user = 'test'
 let welcomeHeader = document.getElementById('welcomeH1');
 let newText = document.createTextNode(`Welcome ${user}!`);
 welcomeHeader.appendChild(newText);
@@ -11,12 +12,17 @@ var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleReques
     params = {
         'user': user
     }
+
 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-fetch(url).then(function (response) {
-    // console.log(response.status);
+const myRequest = new Request(url, {
+    method: 'GET',
+    mode: 'no-cors',
+});
+fetch(myRequest).then(function (response) {
+    console.log(response.status);
     response.json().then(function (parsedJSON) {
-        // console.log(parsedJSON);
         if (response.status == 200) {
+            console.log(parsedJSON);
             // parsedJSON.forEach(e => console.log(e));
             arr = []
             Object.keys(parsedJSON).forEach(function(key) {
@@ -134,14 +140,14 @@ fetch(url).then(function (response) {
                 tableDiv.appendChild(collapseRow);
                 tableDiv.appendChild(br);
             });
-        $(document).ready(function() {
-            $('table.index').DataTable({
-                columnDefs: [{
-                    targets: 2,
-                    orderable: false
-                }]
+            $(document).ready(function () {
+                $('table.index').DataTable({
+                    columnDefs: [{
+                        targets: 2,
+                        orderable: false
+                    }]
+                });
             });
-        });
         } else {
             alert('something went wrong');
         }
