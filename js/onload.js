@@ -35,7 +35,6 @@ fetch(myRequest).then(function (response) {
                     inner['status'], null, inner['licenseplate'], inner['last_heartbeat']
                 ])
             });
-            /* These will all be things that will be parsed after a database table get but for initial testing, hardcode will do */
             fleets = {};
             arr.forEach(function (e) {
                 key = e[0];
@@ -69,7 +68,7 @@ fetch(myRequest).then(function (response) {
                 });
                 let tbody = document.createElement('TBODY');
                 table.appendChild(tbody);
-                fleetData.forEach(function (entry) {
+                fleetData.forEach(function(entry) {
                     // console.log(entry);
                     var row = document.createElement('TR');
                     entry.forEach(function (colVal, col, _) {
@@ -81,7 +80,6 @@ fetch(myRequest).then(function (response) {
                             cell.setAttribute('data-target', '#dispatchRecordPopup')
                         }
                         row.append(cell);
-                        // console.log(i, colVal);
                     });
                     tbody.appendChild(row);
                 });
