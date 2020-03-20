@@ -1,40 +1,104 @@
 /* Extract fleet number out of the button ID */
 function getFleetNumFromButtonId(button) {
     let buttonId = button.id;
-    // console.log(buttonId);
-    let start = 5;
-    let sub = button.id.substring(start, buttonId.length);
-    let index = /[a-z]/i.exec(sub).index;
-    let fleetNumToUpdate = sub.substring(0, index);
+    // console.log(buttonId)
+    var startOfFleetNum = buttonId.indexOf('t') + 1;
+    let sub = button.id.substring(startOfFleetNum, buttonId.length);
+    let end = /[a-z]/i.exec(sub).index;
+    let fleetNumToUpdate = sub.substring(0, end);
     return fleetNumToUpdate;
 }
-
-function addVehicle(button) {
-    /* Post request */
-    // alert('I will add a vehicle to the database!');
-
-    let br = document.createElement('BR');
+function getVerbFromButtonId(button) {
+    let buttonId = button.id;
+    var verb;
+    if (buttonId.includes('Add') || buttonId.includes('Register')) {
+        verb = 'Add'
+    } else if (buttonId.includes('Remove') || buttonId.includes('Delete')) {
+        verb = 'Remove'
+    }
+    return verb;
+}
+function getActionVars(button) {
     const fleetNumToUpdate = getFleetNumFromButtonId(button);
     const idHeader = `fleet${fleetNumToUpdate}`;
-    const findExistingAddNewBtn = document.getElementById(`${idHeader}AddNewBtn`);
+    const verb = getVerbFromButtonId(button);
 
+    var myForm = document.getElementById(`${idHeader}${verb}NewForm`);
+    var myFormEle = null;
+    numRowsOfEntries = null;
+    if (myForm != null) {
+        myFormEle = myForm.elements;
+        numRowsOfEntries = myFormEle.length - 2;
+    }
+    return [fleetNumToUpdate, idHeader, verb, myForm, myFormEle, numRowsOfEntries]
+}
+function postOut(postBody, verb, myForm, fleetNumToUpdate) {
+    if (Object.keys(postBody).length > 0) {
+        postBody['fleetNum'] = fleetNumToUpdate
+        const payload = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'no-cors',
+            body: JSON.stringify(postBody)
+        }
+        // console.log(payload);
+        const url = `https://supply.team22.softwareengineeringii.com/${verb.toLowerCase()}Vehicle`;
+
+        fetch(url, payload).then(function (response) {
+            // console.log(response.status);
+            if (response.status == 200) {
+                alert(`Vehicles Successfully ${verb}ed!`);
+                /* 
+                    Since the table update was successful, we can either reload the page, or... idk what else.
+                    Confer with team :C
+                */
+                myForm.outerHTML = "";
+            } else {
+                alert('Something went wrong!');
+                alert(response.json());
+            }
+        }).catch(function (error) {
+            console.error(error);
+        });
+    } else {
+        alert('You cannot send nothing!')
+    }
+}
+
+function buildActionTable(button) {
+    // console.log(button.id);
+    [fleetNumToUpdate, idHeader, verb, ..._] = getActionVars(button);
+
+    // console.log(idHeader);
+    // console.log(verb);
+
+    const findExistingBtn = document.getElementById(`${idHeader}${verb}NewBtn`);
+    // console.log(findExistingBtn);
 
     let myTable;
-    const names = ['Make', 'Model', 'Liscence Plate'];
+    var names = ['Make', 'Model', 'Liscence Plate'];
+    if (verb == 'Remove') {
+        names = ['Vehicle ID']
+    }
     const numCols = names.length;
-
-    /* Only generate a new table if there isn't one already */
-    if (findExistingAddNewBtn == null) {
+    /* 
+        Only generate a new table, form and buttons if 
+        they dont exist already. We only have to check
+        for one of them because they're a package deal
+    */
+    if (findExistingBtn == null) {
         /* 
             This button will allow more input rows if the fleet manager
-            wants to input multiple vehicles
+            wants to input multiple vehicles entries
         */
-        let addNewButton = document.createElement('BUTTON');
-        addNewButton.innerHTML = 'Add another';
-        addNewButton.setAttribute('id', `${idHeader}AddNewBtn`);
-        addNewButton.setAttribute('class', 'smol');
-        addNewButton.setAttribute('onclick', 'addVehicle(this)');
-        addNewButton.setAttribute('type', 'button');
+        let newActionButton = document.createElement('BUTTON');
+        newActionButton.innerHTML = `${verb} another`;
+        newActionButton.setAttribute('id', `${idHeader}${verb}NewBtn`);
+        newActionButton.setAttribute('class', 'smol');
+        newActionButton.setAttribute('onclick', 'buildActionTable(this)');
+        newActionButton.setAttribute('type', 'button');
 
         /* 
             Old add vehicle button can't be clicked anymore 
@@ -42,75 +106,68 @@ function addVehicle(button) {
         */
         button.disabled = true;
 
-        /* 
-            Once done inputing all needed entries, POST to DB
-            TODO Have an empty input check that will only fire off
-            if some of the other inputs in its row contain content 
-        */
         let submitNewButton = document.createElement('BUTTON');
         submitNewButton.innerHTML = 'Submit';
-        submitNewButton.setAttribute('id', `${idHeader}SubmitNewBtn`);
+        submitNewButton.setAttribute('id', `${idHeader}${verb}SubmitNewBtn`);
         submitNewButton.setAttribute('class', 'smol');
         submitNewButton.setAttribute('type', 'button');
-        submitNewButton.setAttribute('onclick', 'registerVehicles(this)');
+        submitNewButton.setAttribute('onclick', `${verb.toLowerCase()}Vehicles(this)`);
 
         /* 
             Creating a new form so we can just capture all the children inputs
-            instead of having to index for each input
+            instead of having to index for each input. Kind of
         */
-        var addVehicleForm = document.createElement('FORM');
-        addVehicleForm.setAttribute('id', `${idHeader}AddNewForm`);
-        addVehicleForm.setAttribute('object-fit', 'contain');
+        var vehicleForm = document.createElement('FORM');
+        vehicleForm.setAttribute('id', `${idHeader}${verb}NewForm`);
+        vehicleForm.setAttribute('object-fit', 'contain');
         const actionDiv = document.getElementById(`${idHeader}ActionRow`);
 
         /* Makes it easier if we also want a fleet manager to use multiple action buttons at a time */
-        actionDiv.appendChild(addVehicleForm);
+        actionDiv.appendChild(vehicleForm);
 
         /* 
             Table mostly for formatting and container filling. 
-            Abusing tables build in rows and column nature. Ofc
-            this is possible with the bootstrap gridlayout,
-            but tables aldo provide headers and I think it came out alright
+            Abusing tables build in rows and column nature.
         */
-        var addVehicleTable = document.createElement('TABLE');
-        addVehicleTable.setAttribute('id', `${idHeader}AddNewTable`);
-        addVehicleTable.setAttribute('max-width', '100vw');
-        let header = addVehicleTable.createTHead();
+        var vehicleActionTable = document.createElement('TABLE');
+        vehicleActionTable.setAttribute('id', `${idHeader}${verb}NewTable`);
+        vehicleActionTable.setAttribute('max-width', '100vw');
+        let header = vehicleActionTable.createTHead();
         header.insertRow(0);
 
         /* 
             Populate headers with relavent to fleet manager IN THE PARTICULAR INSTANCE
-            that he is just adding new vehicles. Other things like fleet ID are 
+            that he is just interacting with fleet. Other things like fleet ID are 
             implicit based on the input and form they are entering the data into
-            TLDR, there's a lot more data that get's added to the POST body
+            TLDR, there may be other data that get's added to the POST body
             that the fleet manager doesn't need to enter themselves
         */
-        for (var col = 0; col < numCols; col++) {
+        names.forEach(function (colName) {
             let th = document.createElement('TH');
-            let tr = addVehicleTable.tHead.children[0];
-            th.innerHTML = names[col];
+            let tr = vehicleActionTable.tHead.children[0];
+            th.innerHTML = colName
             tr.appendChild(th);
-        }
-        // Making the table accessible and scalable
+        });
+
         tBody = document.createElement('TBODY');
-        addVehicleTable.appendChild(tBody);
-        addVehicleForm.appendChild(addVehicleTable);
-        addVehicleForm.appendChild(addNewButton);
-        addVehicleForm.appendChild(submitNewButton);
+        vehicleActionTable.appendChild(tBody);
+        vehicleForm.appendChild(vehicleActionTable);
+        vehicleForm.appendChild(newActionButton);
+        vehicleForm.appendChild(submitNewButton);
     }
 
     /* // Fetch table, perhaps redundant on first click?, but it's one line... */
-    myTable = document.getElementById(`${idHeader}AddNewTable`);
+    myTable = document.getElementById(`${idHeader}${verb}NewTable`);
     var rowCount = myTable.rows.length;
     tbody = myTable.tBodies[0];
     var newRow = tbody.insertRow();
-    newRow.id = `${idHeader}AddNewVehicleEntry${rowCount}`;
+    newRow.id = `${idHeader}${verb}VehicleEntry${rowCount}`;
     for (var col = 0; col <= numCols; col++) {
         let newCell = newRow.insertCell(col);
         if (col < numCols) {
             let newVehicleInput = document.createElement('INPUT');
             newVehicleInput.setAttribute('id', `input${rowCount}${names[col]}`);
-            newVehicleInput.setAttribute('style', 'margin-bottom: 10px;; margin-right: 5px; width:33vw;');
+            newVehicleInput.setAttribute('style', 'margin-bottom: 10px;; margin-right: 5px;');
             newCell.appendChild(newVehicleInput);
         } else {
             let delRow = document.createElement('H1');
@@ -120,27 +177,32 @@ function addVehicle(button) {
             newCell.setAttribute('onclick', 'deleteRow(this)');
         }
     }
-
 }
 
 function deleteRow(deleteMe) {
     // console.log(deleteMe);
-    // console.log(deleteMe.id);
     var id = deleteMe.id;
-    var delMe = id.substring(3, );
+
+    var delMe = id.substring(3);
+    [fleetNumToUpdate, idHeader, verb, myForm, ..._] = getActionVars(deleteMe);
+
+    // console.log(id);
+
     // console.log(delMe);
-    const idHeader = id.substring(3, 9);
-    var fleetTableID = `${idHeader}AddNewTable`;
+
+    /*
+        Need to figure out ID from this particuar button.
+        Different enough from the generic instance 
+    */
+    var fleetTableID = `${idHeader}${verb}NewTable`;
     var fleetTableDom = document.getElementById(fleetTableID);
     var fleetTableNumRows = fleetTableDom.rows.length;
-    var formID = `${idHeader}AddNewForm`;
-    var formToDelete = document.getElementById(formID);
 
     var row = document.getElementById(delMe);
     const onlyOneEntry = fleetTableNumRows == 2;
     if (onlyOneEntry) {
-        formToDelete.outerHTML = "";
-        var button = document.getElementById(`${idHeader}AddButton`);
+        myForm.outerHTML = "";
+        var button = document.getElementById(`${idHeader}${verb}Button`);
         button.disabled = false;
 
     } else {
@@ -148,85 +210,47 @@ function deleteRow(deleteMe) {
     }
 }
 
-function registerVehicles(button) {
+function addVehicles(button) {
     // console.log(button.id);
-    const fleetNumToUpdate = getFleetNumFromButtonId(button);
-    const idHeader = `fleet${fleetNumToUpdate}`;
-    // console.log(idHeader);
-    const myForm = document.getElementById(`${idHeader}AddNewForm`).elements;
-    const numRowsOfEntries = myForm.length - 2;
-    let postBody = {
-        'fleetNum': fleetNumToUpdate
-    }
-    let canPost = true;
+    [fleetNumToUpdate, idHeader, verb, myForm, myFormEle, numRowsOfEntries] = getActionVars(button);
+
+    let postBody = {}
     for (var row = 0; row < numRowsOfEntries; row += 3) {
-        let make = document.getElementById(`${idHeader}AddNewForm`).elements[row].value;
-        let model = document.getElementById(`${idHeader}AddNewForm`).elements[row + 1].value;
-        let lp = document.getElementById(`${idHeader}AddNewForm`).elements[row + 2].value;
+        let make = myFormEle[row].value;
+        let model = myFormEle[row + 1].value;
+        let lp = myFormEle[row + 2].value;
+        var rowNum = Math.floor(row / 3) + 1;
         if (make.length == 0 || model.length == 0 || lp.length == 0) {
-            alert(`One of the entry ${row + 1} are partially filled!`)
-                // canPost = false;
-                // break;
+            alert(`One of the entries in row ${rowNum} is partially filled!`);
             continue;
         } else {
-            postBody[`newVechicle${row/3}`] = {
+            postBody[`newVechicle${rowNum}`] = {
                 'Make': make,
                 'Model': model,
                 'LicensePlate': lp
             }
         }
     }
-    // if (canPost) {
-    // console.log(postBody)
-    const payload = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        mode: 'no-cors',
-        body: JSON.stringify(postBody)
-    }
-    console.log(payload)
-    const url = "https://supply.team22.softwareengineeringii.com/addVehicle";
 
-    fetch(url, payload).then(function(response) {
-        console.log(response.status);
-        if (response.status == 200) {
-            alert('Vehicles Successfully Added!');
-            /* 
-                Since the table update was successful, we can either reload the page, or... idk what else.
-                Confer with team :C
-            */
-            var formID = `${idHeader}AddNewForm`;
-            var formToDelete = document.getElementById(formID);
-            formToDelete.outerHTML = "";
-        } else {
-            alert('Something went wrong!');
-            alert(response.json());
-        }
-    }).catch(function(error) {
-        console.error(error);
-    });
-    // }
+    // console.log(postBody);
+    postOut(postBody, verb, myForm, fleetNumToUpdate);
 }
 
-function updateVehicle(button) {
-    // Patch request
-    alert('I will update a vehicle in the database!');
+function removeVehicles(button) {
+    // console.log(button.id);
+    [fleetNumToUpdate, idHeader, verb, myForm, myFormEle, numRowsOfEntries] = getActionVars(button);
 
-    const fleetNumToUpdate = getFleetNumFromButtonId(button);
-    const idHeader = `fleet${fleetNumToUpdate}`;
+    let postBody = {}
+    for (var row = 0; row < numRowsOfEntries; row++) {
+        let vid = myFormEle[row].value;
+        if (vid.length == 0) {
+            alert(`Entry at row ${row + 1} is empty!`);
+            continue;
+        } else {
+            postBody[`vid${row + 1}`] = vid;
+        }
+    }
 
-    console.log(fleetNumToUpdate);
-    console.log(idHeader);
-
-
-    let colName = 'Status';
-    let firstLetter = colName.charAt(0).toLowerCase();
-    let restOfWord = colName.substring(1, colName.length);
-    colName = firstLetter.concat(restOfWord).replace(/ /g, '');
-    // For testing purpose this will a row
-    const table = document.getElementById(`${idHeader}Table`);
-    console.log(table);
-
+    // console.log(postBody);
+    postOut(postBody, verb, myForm, fleetNumToUpdate);
 }
