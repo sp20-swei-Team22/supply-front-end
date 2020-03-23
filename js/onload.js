@@ -108,7 +108,7 @@ fetch(myRequest).then(function (response) {
                     button.innerHTML = `${verb} Vehicle`;
                     button.setAttribute('id', `${idHeader}${verb}Button`);
                     verb = verb.toLowerCase();
-                    button.setAttribute('onclick', `${verb}Vehicle(this)`);
+                    button.setAttribute('onclick', `buildActionTable(this)`);
                     button.setAttribute('class', 'smol')
                     buttonRow.appendChild(button);
                 });
