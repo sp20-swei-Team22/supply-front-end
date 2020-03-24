@@ -19,10 +19,10 @@ const myRequest = new Request(url, {
     mode: 'no-cors',
 });
 fetch(myRequest).then(function (response) {
-    console.log(response.status);
+    // console.log(response.status);
     response.json().then(function (parsedJSON) {
         if (response.status == 200) {
-            console.log(parsedJSON);
+            // console.log(parsedJSON);
             // parsedJSON.forEach(e => console.log(e));
             arr = []
             Object.keys(parsedJSON).forEach(function(key) {
@@ -31,7 +31,6 @@ fetch(myRequest).then(function (response) {
                 inner = parsedJSON[key];
                 arr.push(
                     [inner['fleetid'], vid, `${inner['make']}: ${inner['model']}`,
-                    `Lat: ${inner['current_lat']} Lon: ${inner['current_lon']}`,
                     inner['status'], null, inner['licenseplate'], inner['last_heartbeat']
                 ])
             });
@@ -45,7 +44,7 @@ fetch(myRequest).then(function (response) {
                 fleets[key].push(e);
             });
             var tableDiv = document.getElementById('tableBlock');
-            const colNames = ['Vehicle ID', 'Vehicle Type', 'Location', 'Status', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
+            const colNames = ['Vehicle ID', 'Vehicle Type', 'Status', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
 
             Object.keys(fleets).forEach(function (fleetNum) {
                 var fleetData = fleets[fleetNum]
@@ -75,6 +74,7 @@ fetch(myRequest).then(function (response) {
                         var cell = document.createElement('TD');
                         cell.appendChild(document.createTextNode(colVal));
                         if (col == 0) {
+                            row.setAttribute('id', `${idHeader}VID${colVal}`)
                             cell.setAttribute('onclick', 'getDispatch(this)');
                             cell.setAttribute('data-toggle', 'modal');
                             cell.setAttribute('data-target', '#dispatchRecordPopup')
