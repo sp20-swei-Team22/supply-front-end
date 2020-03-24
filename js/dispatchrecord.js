@@ -12,15 +12,16 @@ function getDispatch(vehicle) {
         }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url).then(function (response) {
-        console.log(response.status);
+        // console.log(response.status);
         response.json().then(function (parsedJSON) {
             if (response.status == 200) {
-                console.log(parsedJSON);
+                // console.log(parsedJSON);
                 // parsedJSON.forEach(e => console.log(e));
                 dispatchArr = []
                 Object.keys(parsedJSON).forEach(function(key) {
-                    index = key.indexOf('D')
+                    index = key.lastIndexOf('D')
                     did = parseInt(key.substring(index + 1));
+                    // console.log(did)
                     inner = parsedJSON[key];
                     dispatchArr.push(
                         [did, inner['orderid'], inner['customerid'], inner['destination'],
@@ -39,7 +40,7 @@ function getDispatch(vehicle) {
                 popupTable.setAttribute('class', 'popup table-bordered table-sm');
                 popupTable.setAttribute('max-width', '80%');
 
-                let header = table.createTHead();
+                let header = popupTable.createTHead();
                 header.insertRow(0);
                 colNames.forEach(function (name) {
                     let th = document.createElement('TH');
