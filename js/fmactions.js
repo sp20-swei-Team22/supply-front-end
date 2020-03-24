@@ -237,12 +237,13 @@ function addVehicles(button) {
 }
 
 function removeVehicles(button) {
-    // console.log(button.id);
+    console.log(button.id);
     [fleetNumToUpdate, idHeader, verb, myForm, myFormEle, numRowsOfEntries] = getActionVars(button);
-
+    vids = []
     let postBody = {}
     for (var row = 0; row < numRowsOfEntries; row++) {
         let vid = myFormEle[row].value;
+        vids.push(vid);
         if (vid.length == 0) {
             alert(`Entry at row ${row + 1} is empty!`);
             continue;
@@ -253,4 +254,9 @@ function removeVehicles(button) {
 
     // console.log(postBody);
     postOut(postBody, verb, myForm, fleetNumToUpdate);
+    // console.log(idHeader);
+    vids.forEach(vid => {
+        rowToDel = document.getElementById(`${idHeader}VID${vid}`);
+        rowToDel.parentNode.removeChild(rowToDel);
+    });
 }
