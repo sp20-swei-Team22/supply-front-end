@@ -100,7 +100,7 @@ fetch(url).then(res => {
                     radio.setAttribute('id', `${idHeader}${e}Rad`)
                     // radio.setAttribute('value', `${e.toLowerCase()}`);
                     if (e == 'Map') radio.setAttribute('checked', 'true');
-                    radio.innerHTML = e;
+                    // radio.innerHTML = e;
 
                     let label = document.createElement('LABEL');
                     label.setAttribute('for', `#${idHeader}${e}Rad`);
