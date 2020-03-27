@@ -13,6 +13,7 @@ console.log(url)
 fetch(url).then(res => {
     res.json().then(json => {
         if (res.status == 200) {
+            console.log(json);
             alert('got the vehicles! if there are any ._.');
         } else {
             alert('something went wrong');
