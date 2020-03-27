@@ -172,6 +172,7 @@ Object.keys(fleets).forEach(fleetNum => {
         radio.setAttribute('name', 'vis');
         radio.setAttribute('id', `${idHeader}${e}Rad`)
         radio.setAttribute('value', `${e.toLowerCase()}`);
+        console.log(e.toLowerCase());
         if (e == 'Map') radio.setAttribute('checked', 'true');
         radio.innerHTML = e;
     
