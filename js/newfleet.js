@@ -13,7 +13,7 @@ $('#newFleetForm').submit(async e => {
         // console.log(e.id);
         fleet[`${e.id}`] = e.value;
     });
-    // console.log(fleet);
+    console.log(fleet);
 
     await fetch(url, {
         method: 'POST',
