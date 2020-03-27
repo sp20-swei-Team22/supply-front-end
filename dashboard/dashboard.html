@@ -34,6 +34,10 @@
 
     <!-- Page Specific Scripts -->
     <script src="/supply-front-end/js/fleetvisualisationswitcher.js"></script>
+    <script src="/supply-front-end/js/onload.js"></script>
+    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
+    <script src="/supply-front-end/js/newfleet.js"></script>
+
 
     <!-- Page Specific Styles -->
     <link rel="stylesheet" href="/supply-front-end/styling/table.css" media="screen">
@@ -42,7 +46,7 @@
     <title>WeGo Fleet Master</title>
 </head>
 
-<body>
+<body onload="loadTables();">
     <header id="appHeader" class="navbar sticky-top justify-content-between shadow py-3">
         <div>
             <a class="navbar-brand" style="cursor: pointer;" href="/">WeGo Services</a>
@@ -116,9 +120,6 @@
         </div>
     </main>
     
-    <script src="/supply-front-end/js/onload.js"></script>
-    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
-    <script src="/supply-front-end/js/newfleet.js"></script>
 
 
     <!-- <script>
