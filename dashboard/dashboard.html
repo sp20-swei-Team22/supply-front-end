@@ -53,7 +53,10 @@
         </div>
     </header>
 
-    <main style="margin: 5vh 0 5vh 0; height: 100%;">
+    <main style="margin: 5vh 0 5vh 0; min-height: 80vh;">
+
+        <!-- Modal for dispatch record? -->
+
         <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
@@ -61,15 +64,6 @@
                     aria-selected="true">Home</a>
                 </li>
 
-                <!-- <li class="nav-item">
-                    <a class="nav-link" id="fleet1451Tab" data-toggle="tab" href="#fleet1451" role="tab" aria-controls="fleet1451"
-                    aria-selected="false">Fleet 1451</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="fleet141Tab" data-toggle="tab" href="#fleet141" role="tab" aria-controls="fleet141"
-                    aria-selected="false">Fleet 141</a>
-                </li> -->
-                
                 <li class="nav-item">
                     <a class="nav-link" id="newFleetTab" data-toggle="tab" href="#newFleet" role="tab" aria-controls="newFleet" 
                     aria-selected="false">Add new fleet +</a>
@@ -81,10 +75,10 @@
                     <form>
                         <div class="row justify-content-center">
                             <div style="margin-right: 5vw;">
-                                <input type="radio" name="vis" id="homeMapRad" value="map" checked><label for="#map">Map</label>
+                                <input type="radio" name="vis" id="homeMapRad" value="map" checked><label for="#homeMapRad">Map</label>
                             </div>
                             <div style="margin-left: 5vw;">
-                                <input type="radio" name="vis" id="homeTableRad" value="table"><label for="#table">Table</a> 
+                                <input type="radio" name="vis" id="homeTableRad" value="table"><label for="#homeTableRad">Table</a> 
                             </div>
                         </div>
                     </form>
@@ -95,44 +89,6 @@
                         Table goes here
                     </div>
                 </div>
-
-                <!-- <div class="tab-pane fade" id="fleet1451" role="tabpanel" aria-labelledby="fleet1451Tab">
-                    <form>
-                        <div class="row justify-content-center">
-                            <div style="margin-right: 5vw;">
-                                <input type="radio" name="vis" id="fleet1451MapRad" value="map" checked><label for="#map">Map</label>
-                            </div>
-                            <div style="margin-left: 5vw;">
-                                <input type="radio" name="vis" id="fleet1451TableRad" value="table"><label for="#table">Table</a> 
-                            </div>
-                        </div>
-                    </form>
-                    <div id="fleet1451MapDiv" class="mapDiv">
-                        Map goes here
-                    </div>
-                    <div id="fleet1451TableDiv" class="tableDiv">
-                        Table goes here
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="fleet141" role="tabpanel" aria-labelledby="fleet141Tab">
-                    <form>
-                        <div class="row justify-content-center">
-                            <div style="margin-right: 5vw;">
-                                <input type="radio" name="vis" id="fleet141MapRad" value="map" checked><label for="#map">Map</label>
-                            </div>
-                            <div style="margin-left: 5vw;">
-                                <input type="radio" name="vis" id="fleet141TableRad" value="table"><label for="#table">Table</a> 
-                            </div>
-                        </div>
-                    </form>
-                    <div id="fleet141MapDiv" class="mapDiv">
-                        Map goes here
-                    </div>
-                    <div id="fleet141TableDiv" class="tableDiv">
-                        Table goes here
-                    </div>
-                </div> -->
                 
                 <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
                     <form id="newFleetForm">
