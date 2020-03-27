@@ -10,7 +10,7 @@ var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleReques
 
 if (isEmail(identity)) {
     let arr = identity.split('@');
-    console.log(arr);
+    // console.log(arr);
     url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
         params = {
             'user': arr[0],
@@ -19,13 +19,13 @@ if (isEmail(identity)) {
 }
 
 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-console.log(url)
+// console.log(url)
 
 fetch(url).then(res => {
     res.json().then(json => {
         if (res.status == 200) {
-            console.log(json);
-            alert('got the vehicles! if there are any ._.');
+            // console.log(json);
+            // alert('got the vehicles! if there are any ._.');
             arr = []
             json.forEach(vehicleDict => {
                 // console.log(vehicleDict);
@@ -125,7 +125,7 @@ fetch(url).then(res => {
                 tableDiv.setAttribute('id', `${idHeader}TableDiv`);
                 tableDiv.setAttribute('class', 'tableDiv');
                 fleetData = fleets[fleetNum];
-                console.log(fleetData);
+                // console.log(fleetData);
 
                 let table = document.createElement('TABLE');
                 table.setAttribute('id', `${idHeader}Table`);
