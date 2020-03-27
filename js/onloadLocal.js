@@ -198,7 +198,7 @@ Object.keys(fleets).forEach(fleetNum => {
     tableDiv.setAttribute('id', `${idHeader}TableDiv`);
     tableDiv.setAttribute('class', 'tableDiv');
     fleetData = fleets[fleetNum];
-    console.log(fleetData);
+    // console.log(fleetData);
 
     let table = document.createElement('TABLE');
     table.setAttribute('id', `${idHeader}Table`);
