@@ -3,7 +3,7 @@ $('#newFleetForm').submit(async e => {
     
     var url = 'https://supply.team22.softwareengineeringii.com/addFleet';
     
-    var fleet = {'username': document.getElementById('username').value};
+    var fleet = {'username': document.getElementById('accountName').value};
     form = document.getElementById('newFleetForm');
     fields = form.querySelectorAll('input, select');
     // console.log(form);
