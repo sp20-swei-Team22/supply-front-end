@@ -92,15 +92,14 @@ fetch(url).then(res => {
                 ['Map', 'Table'].forEach(e => {
                     radDiv = document.createElement('DIV');
                     e == 'Map' ?
-                        radDiv.setAttribute('style', 'margin-right: 5vw;') : radDiv.setAttribute('style', 'margin-left: 5vw;');
+                        radDiv.setAttribute('style', 'margin-right: 5vw;') :
+                        radDiv.setAttribute('style', 'margin-left: 5vw;');
 
                     let radio = document.createElement('INPUT');
                     radio.setAttribute('type', 'radio');
                     radio.setAttribute('name', 'vis');
                     radio.setAttribute('id', `${idHeader}${e}Rad`)
-                    // radio.setAttribute('value', `${e.toLowerCase()}`);
                     if (e == 'Map') radio.setAttribute('checked', 'true');
-                    // radio.innerHTML = e;
 
                     let label = document.createElement('LABEL');
                     label.setAttribute('for', `#${idHeader}${e}Rad`);

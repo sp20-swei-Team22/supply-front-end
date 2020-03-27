@@ -12,10 +12,10 @@ if (isEmail(identity)) {
     let arr = identity.split('@');
     console.log(arr);
     url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
-    params = {
-        'user': arr[0],
-        'emailExt': arr[1],
-    }
+        params = {
+            'user': arr[0],
+            'emailExt': arr[1],
+        }
 }
 
 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
@@ -164,17 +164,16 @@ Object.keys(fleets).forEach(fleetNum => {
 
     ['Map', 'Table'].forEach(e => {
         radDiv = document.createElement('DIV');
-        e == 'Map' ? 
-        radDiv.setAttribute('style', 'margin-right: 5vw;') : radDiv.setAttribute('style', 'margin-left: 5vw;');
+        e == 'Map' ?
+            radDiv.setAttribute('style', 'margin-right: 5vw;') :
+            radDiv.setAttribute('style', 'margin-left: 5vw;');
 
         let radio = document.createElement('INPUT');
         radio.setAttribute('type', 'radio');
         radio.setAttribute('name', 'vis');
         radio.setAttribute('id', `${idHeader}${e}Rad`)
-        // radio.setAttribute('value', `${e.toLowerCase()}`);
         if (e == 'Map') radio.setAttribute('checked', 'true');
-        // radio.innerHTML = e;
-    
+
         let label = document.createElement('LABEL');
         label.setAttribute('for', `#${idHeader}${e}Rad`);
         label.innerHTML = e;
@@ -215,7 +214,7 @@ Object.keys(fleets).forEach(fleetNum => {
     });
     let tbody = document.createElement('TBODY');
     table.appendChild(tbody);
-    
+
     fleetData.forEach(entry => {
         let row = document.createElement('TR');
         entry.forEach((colVal, col, _) => {
