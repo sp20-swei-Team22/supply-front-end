@@ -27,7 +27,16 @@ let loadTables = () => {
             if (res.status == 200) {
                 // console.log(json);
                 // alert('got the vehicles! if there are any ._.');
+                fleetIDs = json[0]['fleets'];
+                fleets = {}
+                fleetIDs.forEach(function (fleetID) {
+                    // console.log(fleetID)
+                    fleets[fleetID] = [];
+                });
+                
+                // console.log(fleetIDs);
                 arr = []
+                json.shift()
                 json.forEach(vehicleDict => {
                     // console.log(vehicleDict);
                     let dateAdded = vehicleDict['date_added']
@@ -39,18 +48,15 @@ let loadTables = () => {
                     );
                 })
                 // console.log(arr);
-
-                fleets = {}
-                arr.forEach(function (e) {
-                    key = e[0];
-                    if (!(key in fleets)) {
-                        fleets[e[0]] = [];
-                    }
-                    e.shift();
-                    fleets[key].push(e);
-                });
+            
+                arr.forEach(entry => {
+                    // console.log(entry);
+                    key = entry[0]
+                    entry.shift();
+                    fleets[key].push(entry);
+                })
                 // console.log(fleets);
-
+                
                 const colNames = ['Vehicle ID', 'Status', 'Vehicle Type', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
 
                 var myTab = document.getElementById('myTab');

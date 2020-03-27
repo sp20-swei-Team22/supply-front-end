@@ -1,4 +1,4 @@
-let loadTable = () => {
+let loadTables = () => {
     let isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
     let identity = localStorage.getItem('username');
     // console.log(identity)
@@ -37,6 +37,9 @@ let loadTable = () => {
 
     json = [
         {
+            'fleets': [1, 5, 3]
+        },
+        {
             'vehicleid': 1,
             'status': 1,
             'licenseplate': 1,
@@ -46,7 +49,7 @@ let loadTable = () => {
             'current_lat': 1,
             'current_lon': 1,
             'last_heartbeat': 1,
-            'date_added': 1,
+            'date_added': '1T',
         },
         {
             'vehicleid': 2,
@@ -58,7 +61,7 @@ let loadTable = () => {
             'current_lat': 2,
             'current_lon': 2,
             'last_heartbeat': 2,
-            'date_added': 2,
+            'date_added': '2T',
         },
         {
             'vehicleid': 3,
@@ -70,7 +73,7 @@ let loadTable = () => {
             'current_lat': 3,
             'current_lon': 3,
             'last_heartbeat': 3,
-            'date_added': 3,
+            'date_added': '3T',
         },
         {
             'vehicleid': 4,
@@ -82,7 +85,7 @@ let loadTable = () => {
             'current_lat': 4,
             'current_lon': 4,
             'last_heartbeat': 4,
-            'date_added': 4,
+            'date_added': '4T',
         },
         {
             'vehicleid': 5,
@@ -94,11 +97,20 @@ let loadTable = () => {
             'current_lat': 5,
             'current_lon': 5,
             'last_heartbeat': 5,
-            'date_added': 5,
+            'date_added': '5T',
         }
     ];
 
+    fleetIDs = json[0]['fleets'];
+    fleets = {}
+    fleetIDs.forEach(function (fleetID) {
+        // console.log(fleetID)
+        fleets[fleetID] = [];
+    });
+    
+    // console.log(fleetIDs);
     arr = []
+    json.shift()
     json.forEach(vehicleDict => {
         // console.log(vehicleDict);
         let dateAdded = vehicleDict['date_added']
@@ -111,15 +123,12 @@ let loadTable = () => {
     })
     // console.log(arr);
 
-    fleets = {}
-    arr.forEach(function (e) {
-        key = e[0];
-        if (!(key in fleets)) {
-            fleets[e[0]] = [];
-        }
-        e.shift();
-        fleets[key].push(e);
-    });
+    arr.forEach(entry => {
+        // console.log(entry);
+        key = entry[0]
+        entry.shift();
+        fleets[key].push(entry);
+    })
     // console.log(fleets);
 
     const colNames = ['Vehicle ID', 'Status', 'Vehicle Type', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
