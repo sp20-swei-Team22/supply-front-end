@@ -30,11 +30,11 @@ let loadTables = () => {
                 arr = []
                 json.forEach(vehicleDict => {
                     // console.log(vehicleDict);
-                    dateAdded = vehicleDict['date_added']
-                    trimmedDate = dateAdded.substring(0, dateAdded.indexOf('T'));
+                    let dateAdded = vehicleDict['date_added']
+                    let trimmedDate = dateAdded.substring(0, dateAdded.indexOf('T'));
                     arr.push(
                         [vehicleDict['fleetid'], vehicleDict['vehicleid'], vehicleDict['status'],
-                        `${vehicleDict['make']}: ${vehicleDict['model']}`, vehicleDict['date_added'],
+                        `${vehicleDict['make']}: ${vehicleDict['model']}`, trimmedDate,
                         vehicleDict['licenseplate'], vehicleDict['last_heartbeat']]
                     );
                 })
