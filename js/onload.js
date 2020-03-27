@@ -1,3 +1,4 @@
+let isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
 let identity = localStorage.getItem('username');
 // console.log(identity)
 document.getElementById('accountName').text = identity;
@@ -6,6 +7,16 @@ var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleReques
     params = {
         'user': identity
     }
+
+if (isEmail(identity)) {
+    let arr = identity.split('@');
+    console.log(arr);
+    url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
+    params = {
+        'user': arr[0],
+        'emailExt': arr[1],
+    }
+}
 
 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 console.log(url)
