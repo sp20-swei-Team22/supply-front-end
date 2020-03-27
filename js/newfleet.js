@@ -4,7 +4,7 @@ $('#newFleetForm').submit(async e => {
     var url = 'https://supply.team22.softwareengineeringii.com/addFleet';
     
     var fleet = {};
-    form = document.getElementById(this.id);
+    form = document.getElementById('newFleetForm');
     fields = form.querySelectorAll('input, select');
     // console.log(form);
     console.log(fields);
