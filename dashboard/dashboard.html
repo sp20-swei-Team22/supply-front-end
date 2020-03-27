@@ -32,7 +32,10 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
 
-    <!-- Page specific Styles -->
+    <!-- Page Specific Scripts -->
+    <script src="../js/fleetVisualisationSwitcher.js"></script>
+
+    <!-- Page Specific Styles -->
     <link rel="stylesheet" href="/supply-front-end/styling/table.css" media="screen">
     <link rel="stylesheet" href="/supply-front-end/styling/dashboard.css" media="screen">
 
@@ -45,57 +48,122 @@
             <a class="navbar-brand" style="cursor: pointer;" href="/">WeGo Services</a>
         </div>
         <div>
-            Account
+            <a href="">Account</a> 
         </div>
     </header>
 
-    <div class="modal fade bd-example-modal-lg" id="dispatchRecordPopup" tabindex="-1" role="dialog" aria-labelledby="dispatchRecordPopupLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg mw-100 w-100" role="document" style="padding: 35px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="dispatchRecordPopupLabel"></h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="height: 100%; border-bottom-left-radius: 5px;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div id="modal-table" class="col-7"></div>
-                        <div id="modal-map" class="col-auto">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="height: 40px;">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-flex">
-        <div class="row justify-content-start" style="width: 100%; margin-left: 0px; margin-right: 0px;">
-            <div id="tableBlock" class="col"></div>
-            <div class="col-3">
-                <button type="button" class="collapseButton" data-toggle="collapse" data-target="#collapseBulletin" aria-expanded="false" aria-controls="collapseBulletin">Bulletin</button>
-                <div id="collapseBulletin" class="collapse">
-                    <div class="card card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="../js/onload.js"></script>
-    <!-- <script src="../js/onloadLocal.js"></script> -->
+    <main style="margin: 5vh 0 5vh 0; height: 100%;">
+        <div class="container">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="homeTab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="fleet1451Tab" data-toggle="tab" href="#fleet1451" role="tab" aria-controls="fleet1451"
+                    aria-selected="false">Fleet 1451</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="fleet141Tab" data-toggle="tab" href="#fleet141" role="tab" aria-controls="fleet141"
+                    aria-selected="false">Fleet 141</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="newFleetTab" data-toggle="tab" href="#newFleet" role="tab" aria-controls="newFleet" 
+                    aria-selected="false">Add new fleet +</a>
+                </li>
+            </ul>
 
-    <script src="../js/fmactions.js"></script>
-    <script src="../js/dispatchrecord.js"></script>
-    <script>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="homeTab">
+                    <form>
+                        <div class="row justify-content-center">
+                            <div style="margin-right: 5vw;">
+                                <input type="radio" name="vis" id="homeMapRad" value="map" checked><label for="#map">Map</label>
+                            </div>
+                            <div style="margin-left: 5vw;">
+                                <input type="radio" name="vis" id="homeTableRad" value="table"><label for="#table">Table</a> 
+                            </div>
+                        </div>
+                    </form>
+                    <div id="homeMapDiv" class="mapDiv">
+                        Map goes here
+                    </div>
+                    <div id="homeTableDiv" class="tableDiv">
+                        Table goes here
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="fleet1451" role="tabpanel" aria-labelledby="fleet1451Tab">
+                    <form>
+                        <div class="row justify-content-center">
+                            <div style="margin-right: 5vw;">
+                                <input type="radio" name="vis" id="fleet1451MapRad" value="map" checked><label for="#map">Map</label>
+                            </div>
+                            <div style="margin-left: 5vw;">
+                                <input type="radio" name="vis" id="fleet1451TableRad" value="table"><label for="#table">Table</a> 
+                            </div>
+                        </div>
+                    </form>
+                    <div id="fleet1451MapDiv" class="mapDiv">
+                        Map goes here
+                    </div>
+                    <div id="fleet1451TableDiv" class="tableDiv">
+                        Table goes here
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="fleet141" role="tabpanel" aria-labelledby="fleet141Tab">
+                    <form>
+                        <div class="row justify-content-center">
+                            <div style="margin-right: 5vw;">
+                                <input type="radio" name="vis" id="fleet141MapRad" value="map" checked><label for="#map">Map</label>
+                            </div>
+                            <div style="margin-left: 5vw;">
+                                <input type="radio" name="vis" id="fleet141TableRad" value="table"><label for="#table">Table</a> 
+                            </div>
+                        </div>
+                    </form>
+                    <div id="fleet141MapDiv" class="mapDiv">
+                        Map goes here
+                    </div>
+                    <div id="fleet141TableDiv" class="tableDiv">
+                        Table goes here
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
+                    <form id="newFleetForm">
+                        <div class="form-group input-group">
+                            <label for="region">Region</label>
+                            <div class="input-group">
+                                <input required type="text" id="region" placeholder="Region">
+                            </div>
+                        </div>
+                        <div class="form-group input-group">
+                            <label for="serviceType">Region</label>
+                            <div class="input-group">
+                                <select id="serviceType">
+                                    <option value="1">Dry Cleaning</option>
+                                    <option value="2">RX</option>
+                                    <option value="3">Coffee</option>
+                                    <option value="4">Events</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-block">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="../js/newFleet.js"></script>
+
+    <!-- <script>
         $('#dispatchRecordPopup').on('hidden.bs.modal', function(e) {
             $('#modal-table').html("");
             $('#modal-map').html("");
         })
-    </script>
-    
+    </script> -->
+
     <footer class="page-footer font-small lighten-5 shadow-lg">
         <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
             <a class="dark-grey-text" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
