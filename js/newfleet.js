@@ -3,12 +3,12 @@ $('#newFleetForm').submit(async e => {
     
     var url = 'https://supply.team22.softwareengineeringii.com/addFleet';
     
-    var fleet = {};
+    var fleet = {'username': document.getElementById('username').value};
     form = document.getElementById('newFleetForm');
     fields = form.querySelectorAll('input, select');
     // console.log(form);
     console.log(fields);
-    
+
     fields.forEach((e, i) => {
         // console.log(e.id);
         fleet[`${e.id}`] = e.value;
