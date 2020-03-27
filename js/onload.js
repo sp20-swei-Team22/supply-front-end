@@ -98,8 +98,7 @@ fetch(url).then(res => {
                     radio.setAttribute('type', 'radio');
                     radio.setAttribute('name', 'vis');
                     radio.setAttribute('id', `${idHeader}${e}Rad`)
-                    radio.setAttribute('value', `${e.toLowerCase()}`);
-                    radio.innerHTML = '';
+                    // radio.setAttribute('value', `${e.toLowerCase()}`);
                     if (e == 'Map') radio.setAttribute('checked', 'true');
                     radio.innerHTML = e;
 

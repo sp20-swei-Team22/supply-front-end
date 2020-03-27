@@ -8,7 +8,7 @@ $(document).ready(function () {
         let tableDiv = idHeader + 'TableDiv'
         // console.log(mapDiv);
         // console.log(tableDiv)
-        if($(this).attr('value') == 'map') {
+        if($(this).attr('id').includes('Map')) {
             $(mapDiv).show()
             $(tableDiv).hide()
         } else {
