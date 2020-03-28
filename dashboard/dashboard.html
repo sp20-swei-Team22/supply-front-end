@@ -34,9 +34,8 @@
 
     <!-- Page Specific Scripts -->
     <script src="/supply-front-end/js/fleetvisualisationswitcher.js"></script>
-    <script src="/supply-front-end/js/onload.js"></script>
-    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
-    <script src="/supply-front-end/js/newfleet.js"></script>
+    <!-- <script src="/supply-front-end/js/onload.js"></script> -->
+    <script src="/supply-front-end/js/onloadLocal.js"></script>
 
 
     <!-- Page Specific Styles -->
@@ -44,6 +43,7 @@
     <link rel="stylesheet" href="/supply-front-end/styling/dashboard.css" media="screen">
 
     <title>WeGo Fleet Master</title>
+
 </head>
 
 <body onload="loadTables();">
@@ -64,19 +64,18 @@
         <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="homeTab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                    aria-selected="true">Home</a>
+                    <a class="nav-link active" id="homeTab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" id="newFleetTab" data-toggle="tab" href="#newFleet" role="tab" aria-controls="newFleet" 
-                    aria-selected="false">Add new fleet +</a>
+                    <a class="nav-link" id="newFleetTab" data-toggle="tab" href="#newFleet" role="tab" aria-controls="newFleet" aria-selected="false">Add new fleet +</a>
                 </li>
             </ul>
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="homeTab">
                     <form>
+                        <h6 style="text-align: center;">Viewing Methods</h6>
                         <div class="row justify-content-center">
                             <div style="margin-right: 5vw;">
                                 <input type="radio" name="vis" id="homeMapRad" checked="true"><label for="#homeMapRad">Map</label>
@@ -86,11 +85,109 @@
                             </div>
                         </div>
                     </form>
+                    <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Update Your Fleets
+                    </a>
+                    <div class="collapse" id="collapseExample">
+                        <div class="container" style="margin: 2vh 0 2vh 0;">
+                            <div id="actionDiv" class="row align-items-start">
+                                <ul class="nav nav-pills flex-column col-2" role="tablist"> 
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="homeAddPill" data-toggle="pill" href="#homeAdd" role="pill" aria-controls="homeAdd" aria-selected="true">Add Vehicle</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="homeRemovePill" data-toggle="pill" href="#homeRemove" role="pill" aria-controls="homeRemove" aria-selected="false">Remove Vehicle</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="homeUpdatePill" data-toggle="pill" href="#homeUpdate" role="pill" aria-controls="homeUpdate" aria-selected="false">Update Vehicle</a>                            
+                                    </li>
+                                </ul>
+                                <div class="tab-content col">
+                                    <div class="tab-pane fade show active" id="homeAdd" role="pillpanel" aria-labelledby="homeAddPill">
+                                        <div class="row">
+                                            <form class="col addVehicle" style="text-align: right;">
+                                                <button type="submit">Submit All</button>
+                                                <button onclick="alert('clicked'); return false;">Another Form</button>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="fleetid">Fleet To Add To:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="fleetid" placeholder="Ex: 51">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="make">Make:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="make" placeholder="Ex: Tesla">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="model">Model:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="model" placeholder="Ex: Model-X">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="licenseplate">License Plate:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="licenseplate" placeholder="Ex: FA8912">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="col">
+                                                <form class="confirm">
+                                                    <button type="submit">Confirm Registration</button>
+                                                    <select class="selectsForUpdates" id="vehiclesToAdd" multiple size="5" style="width: 100%;"></select>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="homeRemove" role="pillpanel" aria-labelledby="homeRemovePill">
+                                        <div class="row">
+                                            <form class="col removeVehicle">
+                                                <a for="">Double click the vehicle you want to remove</a>
+                                                <select class="vidsThatCanBeDeleted" multiple size="5" style="width: 100%;" ondblclick="alert(this.value);"></select>
+                                                <script>
+                                                </script>
+                                            </form>
+                                            <div class="col">
+                                                <form class="confirm">
+                                                    <button>Confirm Removal</button>
+                                                    <select class="selectsForUpdates" id="vehicleToDel" multiple size="5" style="width: 100%;" ondblclick="alert(this.value)"></select>
+                                                </form>
+                                <script>
+                                    $(function () {
+                                        let selectClass = $('select.selectsForUpdates');
+                                        // console.log(selectClass);
+                                        let numSelects = selectClass.length;
+
+                                        for (var select = 0; select < numSelects; select++) {
+                                            selectID = selectClass[select].id
+                                            // console.log(selectID);
+                                            let numOptions = $(`#${selectID} option`).length;
+                                            if (5 < numOptions && numOptions <= 10) {
+                                                $(`#${selectID}`).attr('size', numOptions);
+                                            } else if (numOptions > 10){
+                                                $(`#${selectID}`).attr('size', 10);
+                                            }
+                                        }
+                                    });
+                                    // let deleteablesSelect = $('.removeVehicle')[0].children[0]
+                                    // console.log(deleteablesSelect);
+                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="homeUpdate" role="pillpanel" aria-labelledby="homeUpdatePill">
+                                        Update
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="homeMapDiv" class="mapDiv">
                         Map goes here
                     </div>
                     <div id="homeTableDiv" class="tableDiv">
-                        Table goes here
                     </div>
                 </div>
                 
@@ -119,7 +216,10 @@
             </div>
         </div>
     </main>
-    
+
+    <script src="/supply-front-end/js/addvehicle.js"></script>    
+    <script src="/supply-front-end/js/addsend.js"></script>
+    <script src="/supply-front-end/js/newfleet.js"></script>
 
 
     <!-- <script>
