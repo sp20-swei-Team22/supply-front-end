@@ -33,7 +33,7 @@ let loadTables = () => {
                     // console.log(fleetID)
                     fleets[fleetID] = [];
                 });
-                
+
                 // console.log(fleetIDs);
                 arr = []
                 json.shift()
@@ -48,16 +48,55 @@ let loadTables = () => {
                     );
                 })
                 // console.log(arr);
-            
+
+
                 arr.forEach(entry => {
                     // console.log(entry);
-                    key = entry[0]
-                    entry.shift();
-                    fleets[key].push(entry);
+                    key = entry[0];
+                    // entry.shift();
+                    fleets[key].push(entry.slice(1, entry.length));
                 })
+                // console.log(arr);
                 // console.log(fleets);
-                
-                const colNames = ['Vehicle ID', 'Status', 'Vehicle Type', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
+
+                var colNames = ['Vehicle ID', 'Fleet ID', 'Status', 'Vehicle Type', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
+
+                // console.log(arr);
+                arr.forEach(e => {
+                    // console.log(e);
+                    let vid = e[0];
+                    e[0] = e[1]
+                    e[1] = vid
+                    // console.log(e);
+                })
+                // console.log(arr);
+
+                let homeTableDiv = document.getElementById('homeTableDiv');
+                homeTable = buildTable('homeTable', colNames, arr);
+                homeTable.setAttribute('class', 'home')
+                homeTableDiv.appendChild(homeTable);
+
+                let rows = homeTable.rows;
+                let vids = []
+                for (var row = 1; row < rows.length; row++) {
+                    let rowID = rows.item(row).id;
+                    let vid = parseInt(rowID.substring(rowID.lastIndexOf('D') + 1));
+                    // console.log(rowID);  
+                    // console.log(vid);
+                    vids.push(vid);
+                }
+
+                let homeRemoveSelect = document.getElementsByClassName('vidsThatCanBeDeleted')[0];
+                // console.log(homeRemoveSelect);
+                vids.forEach(vid => {
+                    let option = document.createElement('OPTION');
+                    let optionTextNode = document.createTextNode(`Vehicle ID: ${vid}`);
+                    option.appendChild(optionTextNode);
+                    option.value = vid;
+                    homeRemoveSelect.appendChild(option);
+                })
+
+                colNames.splice(1, 1)
 
                 var myTab = document.getElementById('myTab');
                 var myTabContent = document.getElementById('myTabContent');
@@ -135,37 +174,8 @@ let loadTables = () => {
                     fleetData = fleets[fleetNum];
                     // console.log(fleetData);
 
-                    let table = document.createElement('TABLE');
-                    table.setAttribute('id', `${idHeader}Table`);
-                    table.setAttribute('class', 'index table-bordered table-sm');
-                    table.setAttribute('max-width', '100vw');
-
-                    let header = table.createTHead();
-                    header.insertRow(0);
-                    colNames.forEach(function (name) {
-                        let th = document.createElement('TH');
-                        let tr = table.tHead.children[0];
-                        th.innerHTML = name;
-                        tr.appendChild(th);
-                    });
-                    let tbody = document.createElement('TBODY');
-                    table.appendChild(tbody);
-
-                    fleetData.forEach(entry => {
-                        let row = document.createElement('TR');
-                        entry.forEach((colVal, col, _) => {
-                            let cell = document.createElement('TD');
-                            cell.appendChild(document.createTextNode(colVal));
-                            // if (col == 0) {
-                            //     row.setAttribute('id', `${idHeader}VID${colVal}`)
-                            //     cell.setAttribute('onclick', 'getDispatch(this)');
-                            //     cell.setAttribute('data-toggle', 'modal');
-                            //     cell.setAttribute('data-target', '#dispatchRecordPopup')
-                            // }
-                            row.append(cell);
-                        });
-                        tbody.appendChild(row);
-                    });
+                    let table = buildTable(idHeader, colNames, fleetData);
+                    table.setAttribute('class', 'index');
 
                     tableDiv.appendChild(table);
                     tabContentContainer.appendChild(tableDiv);
@@ -178,6 +188,12 @@ let loadTables = () => {
                             orderable: false
                         }]
                     });
+                    $('table.home').DataTable({
+                        columnDefs: [{
+                            targets: 3,
+                            orderable: false
+                        }]
+                    });
                 });
             } else {
                 alert('something went wrong');
@@ -186,4 +202,41 @@ let loadTables = () => {
     }).catch(err => {
         console.log('Error: ', err);
     });
+}
+
+let buildTable = (idHeader, colNames, data) => {
+    // console.log(data)
+    let table = document.createElement('TABLE');
+    table.setAttribute('id', `${idHeader}Table`);
+    table.setAttribute('class', 'table-bordered table-sm');
+    table.setAttribute('max-width', '100vw');
+
+    let header = table.createTHead();
+    header.insertRow(0);
+    colNames.forEach(name => {
+        let th = document.createElement('TH');
+        let tr = table.tHead.children[0];
+        th.innerHTML = name;
+        tr.appendChild(th);
+    });
+    let tbody = document.createElement('TBODY');
+    table.appendChild(tbody);
+
+    data.forEach(entry => {
+        let row = document.createElement('TR');
+        entry.forEach((colVal, col, _) => {
+            let cell = document.createElement('TD');
+            cell.appendChild(document.createTextNode(colVal));
+            if (col == 0) {
+                row.setAttribute('id', `${idHeader}VID${colVal}`)
+                //     cell.setAttribute('onclick', 'getDispatch(this)');
+                //     cell.setAttribute('data-toggle', 'modal');
+                //     cell.setAttribute('data-target', '#dispatchRecordPopup')
+            }
+            row.append(cell);
+        });
+        tbody.appendChild(row);
+    });
+
+    return table;
 }
