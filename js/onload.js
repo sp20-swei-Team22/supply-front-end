@@ -9,18 +9,8 @@ let loadTables = () => {
             'user': identity
         }
 
-    if (isEmail(identity)) {
-        let arr = identity.split('@');
-        // console.log(arr);
-        url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
-            params = {
-                'user': arr[0],
-                'emailExt': arr[1],
-            }
-    }
-
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-    // console.log(url)
+    console.log(url)
 
     fetch(url).then(res => {
         res.json().then(json => {
