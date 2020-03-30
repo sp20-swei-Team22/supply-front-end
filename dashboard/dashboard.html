@@ -21,9 +21,10 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <!-- Site Wide Style -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">   
     <link rel="stylesheet" href="/common-services/styling/style.css" media="screen">
 <!-- END    ALWAYS GOES IN THE HEAD OF EVERY HTML PAGE -->
-    
     
     <!-- DataTables CDNs -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
@@ -51,9 +52,12 @@
         <div>
             <a class="navbar-brand" style="cursor: pointer;" href="/">WeGo Services</a>
         </div>
-        <div>
-            <a href="">Account</a> 
+        <div> 
             <a id="accountName"></a>
+            <a href="#" data-toggle="tooltip" title="Settings">
+                <i class="fa fa-cog" aria-hidden="true"></i>
+            </a>
+            
         </div>
     </header>
 
