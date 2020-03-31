@@ -37,6 +37,9 @@
     <script src="/supply-front-end/js/fleetvisualisationswitcher.js"></script>
     <script src="/supply-front-end/js/onload.js"></script>
     <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
+    <script src="/supply-front-end/js/addvehicle.js" defer></script>    
+    <script src="/supply-front-end/js/addsend.js" defer></script>
+    <script src="/supply-front-end/js/newfleet.js" defer></script>
 
 
     <!-- Page Specific Styles -->
@@ -52,15 +55,17 @@
         <div>
             <a class="navbar-brand" style="cursor: pointer;" href="/">WeGo Services</a>
         </div>
-        <div> 
-            <a id="accountName"></a>
-            <a href="#" data-toggle="tooltip" title="Settings">
-                <i class="fa fa-cog" aria-hidden="true"></i>
-            </a>
-            
-        </div>
+        <div class="btn-group">
+            <button type="button" class="btn op dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                <a herf="#" id="accountName"></a>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="#">Logout</a>
+            </div>
+          </div>
     </header>
-
     <main style="margin: 5vh 0 5vh 0; min-height: 80vh;">
 
         <!-- Modal for dispatch record? -->
@@ -220,11 +225,6 @@
             </div>
         </div>
     </main>
-
-    <script src="/supply-front-end/js/addvehicle.js"></script>    
-    <script src="/supply-front-end/js/addsend.js"></script>
-    <script src="/supply-front-end/js/newfleet.js"></script>
-
 
     <!-- <script>
         $('#dispatchRecordPopup').on('hidden.bs.modal', function(e) {

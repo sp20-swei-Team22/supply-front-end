@@ -10,7 +10,7 @@ let loadTables = () => {
         }
 
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-    console.log(url)
+    // console.log(url)
 
     fetch(url).then(res => {
         res.json().then(json => {
