@@ -1,111 +1,232 @@
-let user = sessionStorage.getItem('username');
-let welcomeHeader = document.getElementById('welcomeH1');
-let newText = document.createTextNode(`Welcome ${user}!`);
-welcomeHeader.appendChild(newText);
+let loadTables = () => {
+    let isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+    let identity = localStorage.getItem('username');
+    // console.log(identity)
+    document.getElementById('accountName').text = identity;
 
-let numFleets = 3;
-let numVehicles = 2;
-let colNames = ['Vehicle ID', 'Make', 'Location', 'Status', 'Date Added', 'Liscence Plate'];
-let numCols = colNames.length;
+    var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
+        params = {
+            'user': identity
+        }
 
-let multFleets = numFleets > 1;
-let descriptionHeader = document.getElementById('welcomeDesc');
-newText = document.createTextNode(`Here ${multFleets ? 'are the' : 'is a'} table ${multFleets ? 's' : ''} of your fleet ${multFleets ? 's' : ''} and its vehicles`);
-descriptionHeader.appendChild(newText);
-// These will all be things that will be parsed after a database table get but for initial testing, hardcode will do
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    // console.log(url)
 
-// The entire purpose of this script will be to generate table(s) of fleets composed of all vehilces in the vehicles in said fleet
-let tableDiv = document.getElementById('tableBlock');
-// let attr = ['25%', '15%', '20%', '10%', '15%', '20%'];
+    fetch(url).then(res => {
+        res.json().then(json => {
+            if (res.status == 200) {
+                // console.log(json);
+                // alert('got the vehicles! if there are any ._.');
+                fleetIDs = json[0]['fleets'];
+                fleets = {}
+                fleetIDs.forEach(function (fleetID) {
+                    // console.log(fleetID)
+                    fleets[fleetID] = [];
+                });
 
-// The outer most loop is indicitive of the number of tables we are making
-for (var tableNum = 0; tableNum < numFleets; tableNum++) {
-    const fleetNum = tableNum;
-    const idHeader = `fleet${fleetNum}`;
+                // console.log(fleetIDs);
+                arr = []
+                json.shift()
+                json.forEach(vehicleDict => {
+                    // console.log(vehicleDict);
+                    let dateAdded = vehicleDict['date_added']
+                    let trimmedDate = dateAdded.substring(0, dateAdded.indexOf('T'));
+                    arr.push(
+                        [vehicleDict['fleetid'], vehicleDict['vehicleid'], vehicleDict['status'],
+                        `${vehicleDict['make']}: ${vehicleDict['model']}`, trimmedDate,
+                        vehicleDict['licenseplate'], vehicleDict['last_heartbeat']]
+                    );
+                })
+                // console.log(arr);
 
+
+                arr.forEach(entry => {
+                    // console.log(entry);
+                    key = entry[0];
+                    // entry.shift();
+                    fleets[key].push(entry.slice(1, entry.length));
+                })
+                // console.log(arr);
+                // console.log(fleets);
+
+                var colNames = ['Vehicle ID', 'Fleet ID', 'Status', 'Vehicle Type', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
+
+                // console.log(arr);
+                arr.forEach(e => {
+                    // console.log(e);
+                    let vid = e[0];
+                    e[0] = e[1]
+                    e[1] = vid
+                    // console.log(e);
+                })
+                // console.log(arr);
+
+                let homeTableDiv = document.getElementById('homeTableDiv');
+                homeTable = buildTable('homeTable', colNames, arr);
+                homeTable.setAttribute('class', 'home')
+                homeTableDiv.appendChild(homeTable);
+
+                let rows = homeTable.rows;
+                let vids = []
+                for (var row = 1; row < rows.length; row++) {
+                    let rowID = rows.item(row).id;
+                    let vid = parseInt(rowID.substring(rowID.lastIndexOf('D') + 1));
+                    // console.log(rowID);  
+                    // console.log(vid);
+                    vids.push(vid);
+                }
+
+                let homeRemoveSelect = document.getElementsByClassName('vidsThatCanBeDeleted')[0];
+                // console.log(homeRemoveSelect);
+                vids.forEach(vid => {
+                    let option = document.createElement('OPTION');
+                    let optionTextNode = document.createTextNode(`Vehicle ID: ${vid}`);
+                    option.appendChild(optionTextNode);
+                    option.value = vid;
+                    homeRemoveSelect.appendChild(option);
+                })
+
+                colNames.splice(1, 1)
+
+                var myTab = document.getElementById('myTab');
+                var myTabContent = document.getElementById('myTabContent');
+
+                Object.keys(fleets).forEach(fleetNum => {
+                    let idHeader = `fleet${fleetNum}`;
+                    /*
+                        First generate the tab
+                    */
+                    let tabLI = document.createElement('LI');
+                    tabLI.setAttribute('class', 'nav-item');
+
+                    let tabA = document.createElement('A');
+                    let tabId = `${idHeader}Tab`
+                    tabA.setAttribute('class', 'nav-link')
+                    tabA.setAttribute('id', tabId);
+                    tabA.setAttribute('data-toggle', 'tab');
+                    tabA.setAttribute('href', `#${idHeader}`);
+                    tabA.setAttribute('rold', 'tab');
+                    tabA.setAttribute('aria-controls', idHeader);
+                    tabA.setAttribute('aria-selected', 'false');
+                    tabA.innerHTML = `Fleet ${fleetNum}`;
+
+                    tabLI.appendChild(tabA);
+                    myTab.insertBefore(tabLI, myTab.children[1]);
+
+                    /* 
+                        Now the tab content
+                    */
+                    let tabContentContainer = document.createElement('DIV');
+                    tabContentContainer.setAttribute('class', 'tab-pane fade');
+                    tabContentContainer.setAttribute('id', idHeader);
+                    tabContentContainer.setAttribute('role', 'tabpanel');
+                    tabContentContainer.setAttribute('aria-labelledby', `${idHeader}Tab`)
+
+                    let radioForm = document.createElement('FORM');
+
+                    let row = document.createElement('DIV');
+                    row.setAttribute('class', 'row justify-content-center');
+
+                    ['Map', 'Table'].forEach(e => {
+                        radDiv = document.createElement('DIV');
+                        e == 'Map' ?
+                            radDiv.setAttribute('style', 'margin-right: 5vw;') :
+                            radDiv.setAttribute('style', 'margin-left: 5vw;');
+
+                        let radio = document.createElement('INPUT');
+                        radio.setAttribute('type', 'radio');
+                        radio.setAttribute('name', 'vis');
+                        radio.setAttribute('id', `${idHeader}${e}Rad`)
+                        if (e == 'Map') radio.setAttribute('checked', 'true');
+
+                        let label = document.createElement('LABEL');
+                        label.setAttribute('for', `#${idHeader}${e}Rad`);
+                        label.innerHTML = e;
+
+                        radDiv.appendChild(radio);
+                        radDiv.appendChild(label);
+                        row.appendChild(radDiv);
+                    })
+
+                    radioForm.appendChild(row);
+                    tabContentContainer.appendChild(radioForm);
+
+                    let mapDiv = document.createElement('DIV');
+                    mapDiv.setAttribute('id', `${idHeader}MapDiv`);
+                    mapDiv.setAttribute('class', 'mapDiv');
+                    mapDiv.innerHTML = 'Map goes here';
+
+                    tabContentContainer.appendChild(mapDiv);
+
+                    let tableDiv = document.createElement('DIV');
+                    tableDiv.setAttribute('id', `${idHeader}TableDiv`);
+                    tableDiv.setAttribute('class', 'tableDiv');
+                    fleetData = fleets[fleetNum];
+                    // console.log(fleetData);
+
+                    let table = buildTable(idHeader, colNames, fleetData);
+                    table.setAttribute('class', 'index');
+
+                    tableDiv.appendChild(table);
+                    tabContentContainer.appendChild(tableDiv);
+                    myTabContent.insertBefore(tabContentContainer, myTabContent.children[1]);
+                })
+                $(document).ready(function () {
+                    $('table.index').DataTable({
+                        columnDefs: [{
+                            targets: 2,
+                            orderable: false
+                        }]
+                    });
+                    $('table.home').DataTable({
+                        columnDefs: [{
+                            targets: 3,
+                            orderable: false
+                        }]
+                    });
+                });
+            } else {
+                alert('something went wrong');
+            }
+        })
+    }).catch(err => {
+        console.log('Error: ', err);
+    });
+}
+
+let buildTable = (idHeader, colNames, data) => {
+    // console.log(data)
     let table = document.createElement('TABLE');
     table.setAttribute('id', `${idHeader}Table`);
-    // This attribute will both style, and allow our table to be sortable
-    table.setAttribute('class', 'display table-bordered table-sm');
-    table.setAttribute('min-width', '100%');
+    table.setAttribute('class', 'table-bordered table-sm');
+    table.setAttribute('max-width', '100vw');
 
-    // Our table head will contain all of our column titles as well as set their widths for the rest of the procceing entries
     let header = table.createTHead();
-    // And because technically a header isn't implicitly it's own row, we have to manually insert one first
     header.insertRow(0);
-    for (var col = 0; col < numCols; col++) {
+    colNames.forEach(name => {
         let th = document.createElement('TH');
-        // th.setAttribute('width', `${attr[col]}`);
         let tr = table.tHead.children[0];
-        th.innerHTML = colNames[col];
+        th.innerHTML = name;
         tr.appendChild(th);
-    }
-
-    // Because we are utilising thead and not just tr's and td's, we will be defining a body in which our actual
-    // entries will be rendered
+    });
     let tbody = document.createElement('TBODY');
     table.appendChild(tbody);
-    for (var row = 0; row < numVehicles; row++) {
-        let newRow = tbody.insertRow(row);
-        for (col = 0; col < numCols; col++) {
-            let newCell = newRow.insertCell(col);
-            // This is where the SQL data will go
-            let newText = document.createTextNode(Math.random());
-            // We will also be assigning a unique ID for this particular cell. 
-            // Basically identifying it's coloumn and row in its ID
-            // Hopefully, this wil made table access just a little bit easier
-            let colName = colNames[col];
-            let firstLetter = colName.charAt(0).toLowerCase()
-            let restOfWord = colName.substring(1, colName.length);
-            colName = firstLetter.concat(restOfWord).replace(/ /g, '');
-            newCell.setAttribute('id', `${idHeader}${colName}Row${row}`);
+
+    data.forEach(entry => {
+        let row = document.createElement('TR');
+        entry.forEach((colVal, col, _) => {
+            let cell = document.createElement('TD');
+            cell.appendChild(document.createTextNode(colVal));
             if (col == 0) {
-                newCell.setAttribute('onclick', 'getDispatch(this); openForm()');
+                row.setAttribute('id', `${idHeader}VID${colVal}`)
+                //     cell.setAttribute('onclick', 'getDispatch(this)');
+                //     cell.setAttribute('data-toggle', 'modal');
+                //     cell.setAttribute('data-target', '#dispatchRecordPopup')
             }
-            newCell.appendChild(newText);
-        }
-    }
+            row.append(cell);
+        });
+        tbody.appendChild(row);
+    });
 
-    let br = document.createElement('BR');
-    let br2 = document.createElement('BR');
-
-    // Simple header for each table
-    let tableTitle = document.createElement('BUTTON');
-    tableTitle.innerHTML = `Fleet #${fleetNum} Vehicle List`;
-    tableTitle.setAttribute('class', 'collapsible');
-
-    // Now lets add those buttons that will allow our fleet manager to 'interact' with our database and
-    // actually manage his vehicles
-    let buttonRow = document.createElement('DIV');
-    buttonRow.setAttribute('id', `${idHeader}ButtonRow`);
-    buttonRow.setAttribute('class', 'row');
-    let verbs = ['Add', 'Remove', 'Update']
-    for (var buttons = 0; buttons < verbs.length; buttons++) {
-        let button = document.createElement('BUTTON');
-        let verb = verbs[buttons];
-        button.innerHTML = `${verb} Vehicle`;
-        button.setAttribute('id', `${idHeader}${verb}Button`);
-        verb = verb.toLowerCase();
-        button.setAttribute('onclick', `${verb}Vehicle(this)`);
-        button.setAttribute('class', 'smol')
-        buttonRow.appendChild(button);
-    }
-
-    const actionRow = document.createElement('DIV');
-    actionRow.setAttribute('id', `${idHeader}ActionRow`)
-        // Making a row for consolidation. Might not need it, but if ever we actually want to disctinctly interact with the table blocks, now we can
-    let divRow = document.createElement('DIV');
-    divRow.setAttribute('id', `${idHeader}Row`);
-    divRow.setAttribute('class', 'justify-content-start content');
-
-    divRow.appendChild(buttonRow);
-    divRow.appendChild(actionRow);
-    divRow.appendChild(table);
-    // divRow.appendChild(br);
-
-    // Now we put everything together
-
-    tableDiv.appendChild(tableTitle);
-    tableDiv.appendChild(divRow);
-    tableDiv.appendChild(br2);
+    return table;
 }
