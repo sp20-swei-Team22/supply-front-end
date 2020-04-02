@@ -2,90 +2,242 @@
 <html lang="en">
 
 <head>
+<!-- START  ALWAYS GOES IN THE HEAD OF EVERY HTML PAGE -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="562601301105-t3d4socjlrl952tku6g03qsujcafa9q3.apps.googleusercontent.com">
 
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-
-    <!-- DataTables CDNs -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-    <!-- <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script> -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
 
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+    <!-- Google's Benevolence -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Site Wide Style -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">   
+    <link rel="stylesheet" href="/common-services/styling/style.css" media="screen">
+<!-- END    ALWAYS GOES IN THE HEAD OF EVERY HTML PAGE -->
+    
+    <!-- DataTables CDNs -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
+
+    <!-- Page Specific Scripts -->
+    <script src="/supply-front-end/js/fleetvisualisationswitcher.js"></script>
+    <script src="/supply-front-end/js/onload.js"></script>
+    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
+    <script src="/supply-front-end/js/addvehicle.js" defer></script>    
+    <script src="/supply-front-end/js/addsend.js" defer></script>
+    <script src="/supply-front-end/js/newfleet.js" defer></script>
 
 
-    <!-- Site wide and page specific Styles -->
-    <link rel="stylesheet" href="../styling/style.css" media="screen">
-    <link rel="stylesheet" href="../styling/table.css" media="screen">
-    <link rel="stylesheet" href="../styling/dashboard.css" media="screen">
+    <!-- Page Specific Styles -->
+    <link rel="stylesheet" href="/supply-front-end/styling/table.css" media="screen">
+    <link rel="stylesheet" href="/supply-front-end/styling/dashboard.css" media="screen">
 
-    <title>WeGo Fleet</title>
+    <title>WeGo Fleet Master</title>
+
 </head>
 
-<body>
-    <div class="cHeader container-fluid bg-info">
-        <h1 id="welcomeH1" style="text-align: center;"></h1>
-        <br>
-        <h4 id="welcomeDesc"></h4>
-        <br><br>
-    </div>
+<body onload="loadTables();">
+    <header id="appHeader" class="navbar sticky-top justify-content-between shadow py-3">
+        <div>
+            <a class="navbar-brand" style="cursor: pointer;" href="/">WeGo Services</a>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn op dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                <a herf="#" id="accountName"></a>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="#">Logout</a>
+            </div>
+          </div>
+    </header>
+    <main style="margin: 5vh 0 5vh 0; min-height: 80vh;">
 
-    <div class="modal fade bd-example-modal-lg" id="dispatchRecordPopup" tabindex="-1" role="dialog" aria-labelledby="dispatchRecordPopupLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg mw-100 w-100" role="document" style="padding: 35px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="dispatchRecordPopupLabel"></h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="height: 100%; border-bottom-left-radius: 5px;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div id="modal-table" class="col-7"></div>
-                        <div id="modal-map" class="col-auto">
+        <!-- Modal for dispatch record? -->
+
+        <div class="container">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="homeTab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="newFleetTab" data-toggle="tab" href="#newFleet" role="tab" aria-controls="newFleet" aria-selected="false">Add new fleet +</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="homeTab">
+                    <form>
+                        <h6 style="text-align: center;">Viewing Methods</h6>
+                        <div class="row justify-content-center">
+                            <div style="margin-right: 5vw;">
+                                <input type="radio" name="vis" id="homeMapRad" checked="true"><label for="#homeMapRad">Map</label>
+                            </div>
+                            <div style="margin-left: 5vw;">
+                                <input type="radio" name="vis" id="homeTableRad"><label for="#homeTableRad">Table</label> 
+                            </div>
+                        </div>
+                    </form>
+                    <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Update Your Fleets
+                    </a>
+                    <div class="collapse" id="collapseExample">
+                        <div class="container" style="margin: 2vh 0 2vh 0;">
+                            <div id="actionDiv" class="row align-items-start">
+                                <ul class="nav nav-pills flex-column col-2" role="tablist"> 
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="homeAddPill" data-toggle="pill" href="#homeAdd" role="pill" aria-controls="homeAdd" aria-selected="true">Add Vehicle</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="homeRemovePill" data-toggle="pill" href="#homeRemove" role="pill" aria-controls="homeRemove" aria-selected="false">Remove Vehicle</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="homeUpdatePill" data-toggle="pill" href="#homeUpdate" role="pill" aria-controls="homeUpdate" aria-selected="false">Update Vehicle</a>                            
+                                    </li>
+                                </ul>
+                                <div class="tab-content col">
+                                    <div class="tab-pane fade show active" id="homeAdd" role="pillpanel" aria-labelledby="homeAddPill">
+                                        <div class="row">
+                                            <form class="col addVehicle" style="text-align: right;">
+                                                <button type="submit">Submit All</button>
+                                                <button onclick="alert('clicked'); return false;">Another Form</button>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="fleetid">Fleet To Add To:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="fleetid" placeholder="Ex: 51">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="make">Make:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="make" placeholder="Ex: Tesla">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="model">Model:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="model" placeholder="Ex: Model-X">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5" for="licenseplate">License Plate:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="licenseplate" placeholder="Ex: FA8912">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="col">
+                                                <form class="confirm">
+                                                    <button type="submit">Confirm Registration</button>
+                                                    <select class="selectsForUpdates" id="vehiclesToAdd" multiple size="5" style="width: 100%;"></select>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="homeRemove" role="pillpanel" aria-labelledby="homeRemovePill">
+                                        <div class="row">
+                                            <form class="col removeVehicle">
+                                                <a for="">Double click the vehicle you want to remove</a>
+                                                <select class="vidsThatCanBeDeleted" multiple size="5" style="width: 100%;" ondblclick="alert(this.value);"></select>
+                                                <script>
+                                                </script>
+                                            </form>
+                                            <div class="col">
+                                                <form class="confirm">
+                                                    <button>Confirm Removal</button>
+                                                    <select class="selectsForUpdates" id="vehicleToDel" multiple size="5" style="width: 100%;" ondblclick="alert(this.value)"></select>
+                                                </form>
+                                <script>
+                                    $(function () {
+                                        let selectClass = $('select.selectsForUpdates');
+                                        // console.log(selectClass);
+                                        let numSelects = selectClass.length;
+
+                                        for (var select = 0; select < numSelects; select++) {
+                                            selectID = selectClass[select].id
+                                            // console.log(selectID);
+                                            let numOptions = $(`#${selectID} option`).length;
+                                            if (5 < numOptions && numOptions <= 10) {
+                                                $(`#${selectID}`).attr('size', numOptions);
+                                            } else if (numOptions > 10){
+                                                $(`#${selectID}`).attr('size', 10);
+                                            }
+                                        }
+                                    });
+                                    // let deleteablesSelect = $('.removeVehicle')[0].children[0]
+                                    // console.log(deleteablesSelect);
+                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="homeUpdate" role="pillpanel" aria-labelledby="homeUpdatePill">
+                                        Update
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="height: 40px;">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-flex">
-        <div class="row justify-content-start" style="width: 100%; margin-left: 0px; margin-right: 0px;">
-            <div id="tableBlock" class="col"></div>
-            <div class="col-3">
-                <button type="button" class="collapseButton" data-toggle="collapse" data-target="#collapseBulletin" aria-expanded="false" aria-controls="collapseBulletin">Bulletin</button>
-                <div id="collapseBulletin" class="collapse">
-                    <div class="card card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                    <div id="homeMapDiv" class="mapDiv">
+                        Map goes here
+                    </div>
+                    <div id="homeTableDiv" class="tableDiv">
                     </div>
                 </div>
+                
+                <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
+                    <form id="newFleetForm">
+                        <div class="form-group input-group">
+                            <label for="region">Region</label>
+                            <div class="input-group">
+                                <input required type="text" id="region" placeholder="Region">
+                            </div>
+                        </div>
+                        <div class="form-group input-group">
+                            <label for="serviceType">Region</label>
+                            <div class="input-group">
+                                <select id="serviceType">
+                                    <option value="1">Dry Cleaning</option>
+                                    <option value="2">RX</option>
+                                    <option value="3">Coffee</option>
+                                    <option value="4">Events</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-block">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <script src="../js/onload.js"></script>
-    <!-- <script src="../js/onloadLocal.js"></script> -->
+    </main>
 
-    <script src="../js/fmactions.js"></script>
-    <script src="../js/dispatchrecord.js"></script>
-    <script>
+    <!-- <script>
         $('#dispatchRecordPopup').on('hidden.bs.modal', function(e) {
             $('#modal-table').html("");
             $('#modal-map').html("");
         })
-    </script>
+    </script> -->
+
+    <footer class="page-footer font-small lighten-5 shadow-lg">
+        <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
+            <a class="dark-grey-text" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+        </div>
+    </footer>
 </body>
 
 </html>
