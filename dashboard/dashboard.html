@@ -35,10 +35,12 @@
 
     <!-- Page Specific Scripts -->
     <script src="/supply-front-end/js/fleetvisualisationswitcher.js"></script>
-    <script src="/supply-front-end/js/onload.js"></script>
-    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
-    <script src="/supply-front-end/js/addvehicle.js" defer></script>    
-    <script src="/supply-front-end/js/addsend.js" defer></script>
+    <!-- <script src="/supply-front-end/js/onload.js"></script> -->
+    <script src="/supply-front-end/js/onloadLocal.js"></script>
+    <script src="/supply-front-end/js/add-vehicle/pushadd.js" defer></script>    
+    <script src="/supply-front-end/js/del-vehicle/pushdel.js" defer></script>
+    <script src="/supply-front-end/js/postfmaction.js"></script>
+    
     <script src="/supply-front-end/js/newfleet.js" defer></script>
 
 
@@ -94,7 +96,7 @@
                             </div>
                         </div>
                     </form>
-                    <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <a data-toggle="collapse" class="coll" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                         Update Your Fleets
                     </a>
                     <div class="collapse" id="collapseExample">
@@ -114,36 +116,36 @@
                                 <div class="tab-content col">
                                     <div class="tab-pane fade show active" id="homeAdd" role="pillpanel" aria-labelledby="homeAddPill">
                                         <div class="row">
-                                            <form class="col addVehicle" style="text-align: right;">
+                                            <form class="col addVehicle home" style="text-align: right;">
                                                 <button type="submit">Submit All</button>
                                                 <button onclick="alert('clicked'); return false;">Another Form</button>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-5" for="fleetid">Fleet To Add To:</label>
+                                                    <label class="col-sm-5" for="homefleetid">Fleet To Add To:</label>
                                                     <div class="col-sm-7">
-                                                        <input type="text" id="fleetid" placeholder="Ex: 51">
+                                                        <input type="text" id="homefleetid" placeholder="Ex: 51">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-5" for="make">Make:</label>
+                                                    <label class="col-sm-5" for="homemake">Make:</label>
                                                     <div class="col-sm-7">
-                                                        <input type="text" id="make" placeholder="Ex: Tesla">
+                                                        <input type="text" id="homemake" placeholder="Ex: Tesla">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-5" for="model">Model:</label>
+                                                    <label class="col-sm-5" for="homemodel">Model:</label>
                                                     <div class="col-sm-7">
-                                                        <input type="text" id="model" placeholder="Ex: Model-X">
+                                                        <input type="text" id="homemodel" placeholder="Ex: Model-X">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-5" for="licenseplate">License Plate:</label>
+                                                    <label class="col-sm-5" for="homelicenseplate">License Plate:</label>
                                                     <div class="col-sm-7">
-                                                        <input type="text" id="licenseplate" placeholder="Ex: FA8912">
+                                                        <input type="text" id="homelicenseplate" placeholder="Ex: FA8912">
                                                     </div>
                                                 </div>
                                             </form>
                                             <div class="col">
-                                                <form class="confirm">
+                                                <form class="confirm add">
                                                     <button type="submit">Confirm Registration</button>
                                                     <select class="selectsForUpdates" id="vehiclesToAdd" multiple size="5" style="width: 100%;"></select>
                                                 </form>
@@ -153,36 +155,16 @@
                                     <div class="tab-pane fade" id="homeRemove" role="pillpanel" aria-labelledby="homeRemovePill">
                                         <div class="row">
                                             <form class="col removeVehicle">
-                                                <a for="">Double click the vehicle you want to remove</a>
-                                                <select class="vidsThatCanBeDeleted" multiple size="5" style="width: 100%;" ondblclick="alert(this.value);"></select>
-                                                <script>
-                                                </script>
+                                                <a>Double click the vehicle you want to remove</a>
+                                                <select class="vidsThatCanBeDeleted" multiple size="5" style="width: 100%;"></select>
                                             </form>
+                                        </div>
+                                        <div class="row">
                                             <div class="col">
-                                                <form class="confirm">
+                                                <form class="confirm remove">
                                                     <button>Confirm Removal</button>
-                                                    <select class="selectsForUpdates" id="vehicleToDel" multiple size="5" style="width: 100%;" ondblclick="alert(this.value)"></select>
+                                                    <select class="selectsForUpdates" multiple size="5" style="width: 100%;"></select>
                                                 </form>
-                                <script>
-                                    $(function () {
-                                        let selectClass = $('select.selectsForUpdates');
-                                        // console.log(selectClass);
-                                        let numSelects = selectClass.length;
-
-                                        for (var select = 0; select < numSelects; select++) {
-                                            selectID = selectClass[select].id
-                                            // console.log(selectID);
-                                            let numOptions = $(`#${selectID} option`).length;
-                                            if (5 < numOptions && numOptions <= 10) {
-                                                $(`#${selectID}`).attr('size', numOptions);
-                                            } else if (numOptions > 10){
-                                                $(`#${selectID}`).attr('size', 10);
-                                            }
-                                        }
-                                    });
-                                    // let deleteablesSelect = $('.removeVehicle')[0].children[0]
-                                    // console.log(deleteablesSelect);
-                                </script>
                                             </div>
                                         </div>
                                     </div>
@@ -194,7 +176,7 @@
                         </div>
                     </div>
                     <div id="homeMapDiv" class="mapDiv">
-                        Map goes here
+                        <img src="https://www.tourtexas.com/assets/img/maps/austin.jpg" alt="">
                     </div>
                     <div id="homeTableDiv" class="tableDiv">
                     </div>
@@ -205,7 +187,7 @@
                         <div class="form-group input-group">
                             <label for="region">Region</label>
                             <div class="input-group">
-                                <input required type="text" id="region" placeholder="Region">
+                                <input required type="text" id="region" placeholder="Ex: Austin">
                             </div>
                         </div>
                         <div class="form-group input-group">
