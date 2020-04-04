@@ -67,10 +67,10 @@ function postRemoveBody(optionsCollection) {
     for (var option = 0; option < optionsCollection.length; option++) {
         let optionValueList = optionsCollection[option].value.split(' ')
         // console.log(optionValueList);
-        let fleetid = optionValueList[0].substring(optionValueList[0].indexOf(': ') + 1, );
+        let vehicleid = optionValueList[0].substring(optionValueList[0].indexOf(': ') + 1, );
         // console.log(fleetid);
         vehicleDict = {
-            'fleetid': fleetid
+            'vehicleid': vehicleid
         };
         // console.log(vehicleDict);
         vehicles.push(vehicleDict);
