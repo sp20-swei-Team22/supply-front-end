@@ -93,6 +93,9 @@ let loadTables = () => {
 
                 Object.keys(fleets).forEach(fleetNum => {
                     let idHeader = `fleet${fleetNum}`;
+                    fleetData = fleets[fleetNum];
+                    // console.log(fleetData);
+
                     /*
                         First generate the tab
                     */
@@ -113,6 +116,223 @@ let loadTables = () => {
                     tabLI.appendChild(tabA);
                     myTab.insertBefore(tabLI, myTab.children[1]);
 
+                    let tabUpdateCollapose = document.createElement('BUTTON');
+                    tabUpdateCollapose.setAttribute('data-toggle', 'collapse');
+                    tabUpdateCollapose.setAttribute('class', 'coll collapsed');
+                    tabUpdateCollapose.setAttribute('href', `#collapse${idHeader}`);
+                    tabUpdateCollapose.setAttribute('role', 'button');
+                    tabUpdateCollapose.setAttribute('aria-expanded', 'false');
+                    tabUpdateCollapose.setAttribute('aria-controls', `collapse${idHeader}`);
+                    tabUpdateCollapose.innerHTML = 'Update Your Fleets';
+
+                    let tabUpdateWrapper = document.createElement('DIV');
+                    tabUpdateWrapper.setAttribute('class', 'collapse');
+                    tabUpdateWrapper.setAttribute('id', `collapse${idHeader}`);
+
+                    let tabUpdateContainer = document.createElement('DIV');
+                    tabUpdateContainer.setAttribute('class', 'container');
+                    tabUpdateContainer.setAttribute('style', 'margin: 2vh 0 2vh 0;');
+
+                    let tabUpdateActionDiv = document.createElement('DIV');
+                    tabUpdateActionDiv.setAttribute('id', 'actionDiv');
+                    tabUpdateActionDiv.setAttribute('class', 'row align-items-start');
+
+                    let tabUpdatePillList = document.createElement('UL');
+                    tabUpdatePillList.setAttribute('class', 'nav nav-pills flex-column col-2');
+                    tabUpdatePillList.setAttribute('role', 'tablist');
+
+                    let actions = ['Add', 'Remove', 'Update'];
+                    actions.forEach((action) => {
+                        let li = document.createElement('LI');
+                        li.setAttribute('class', 'nav-item');
+                        let a = document.createElement('A');
+                        action == 'Add' ? a.setAttribute('class', 'nav-link active') : a.setAttribute('class', 'nav-link');
+                        a.setAttribute('id', `${idHeader}${action}Pill`);
+                        a.setAttribute('data-toggle', 'pill');
+                        a.setAttribute('href', `#${idHeader}${action}`);
+                        a.setAttribute('role', 'pill');
+                        a.setAttribute('aria-controls', `${idHeader}${action}`);
+                        action == 'Add' ? a.setAttribute('aria-selected', 'true') : a.setAttribute('aria-selected', 'false');
+                        a.innerHTML = `${action} Vehicle`;
+                        li.appendChild(a);
+                        tabUpdatePillList.appendChild(li);
+                    });
+
+
+
+                    let actionTabContent = document.createElement('DIV');
+                    actionTabContent.setAttribute('class', 'tab-content col');
+
+
+                    // Add Vechiles
+                    let addTab = document.createElement('DIV');
+                    addTab.setAttribute('class', 'tab-pane fade show active');
+                    addTab.setAttribute('id', `${idHeader}Add`);
+                    addTab.setAttribute('role', 'pillpanel');
+                    addTab.setAttribute('aria-labelledby', `${idHeader}AddPill`);
+
+                    let addRow = document.createElement('DIV');
+                    addRow.setAttribute('class', 'row');
+
+                    let addFormCol = document.createElement('FORM');
+                    addFormCol.setAttribute('class', `col addVehicle ${idHeader}`);
+                    addFormCol.setAttribute('style', 'text-align: right;');
+
+                    let submitAddFormBtn = document.createElement('BUTTON');
+                    submitAddFormBtn.setAttribute('type', 'submit');
+                    submitAddFormBtn.innerHTML = 'Submit All';
+
+                    let anotherFormBtn = document.createElement('BUTTON');
+                    anotherFormBtn.innerHTML = 'Another Form';
+
+                    addFormCol.appendChild(submitAddFormBtn);
+                    addFormCol.appendChild(anotherFormBtn);
+
+                    let formAttr = {
+                        'Make:': ['make', 'Ex: Tesla'],
+                        'Model:': ['model', 'Ex: Model-X'],
+                        'License Plate:': ['liceseplate', 'Ex: FA8912']
+                    }
+                    Object.keys(formAttr).forEach(e => {
+                        let attrDiv = document.createElement('DIV');
+                        attrDiv.setAttribute('class', 'form-group row');
+
+                        let attrLabel = document.createElement('LABEL');
+                        attrLabel.setAttribute('class', 'col-sm-5');
+                        attrLabel.setAttribute('for', `${formAttr[e][0]}`);
+                        attrLabel.innerHTML = e;
+
+                        let inputDiv = document.createElement('DIV');
+                        inputDiv.setAttribute('class', 'col-sm-7');
+
+                        let attrInput = document.createElement('INPUT');
+                        attrInput.setAttribute('type', 'text');
+                        attrInput.setAttribute('id', `${idHeader}${formAttr[e][0]}`);
+                        attrInput.setAttribute('placeholder', `${formAttr[e][1]}`)
+
+                        inputDiv.appendChild(attrInput);
+
+                        attrDiv.appendChild(attrLabel);
+                        attrDiv.appendChild(inputDiv);
+
+                        addFormCol.appendChild(attrDiv);
+                    });
+
+                    let addConfirmCol = document.createElement('DIV');
+                    addConfirmCol.setAttribute('class', 'col');
+
+                    let addConfirmForm = document.createElement('FORM');
+                    addConfirmForm.setAttribute('class', 'confirm add');
+
+                    let confirmRegBtn = document.createElement('BUTTON');
+                    confirmRegBtn.setAttribute('type', 'submit');
+                    confirmRegBtn.innerHTML = 'Confirm Registration';
+
+                    let confirmRegSelect = document.createElement('SELECT');
+                    confirmRegSelect.setAttribute('class', 'selectsForUpdates');
+                    // confirmRegSelect.setAttribute('id', 'vehiclesToAdd');
+                    confirmRegSelect.setAttribute('multiple', 'true');
+                    confirmRegSelect.setAttribute('size', '5');
+                    confirmRegSelect.setAttribute('style', 'width: 100%');
+
+                    addConfirmForm.appendChild(confirmRegBtn);
+                    addConfirmForm.appendChild(confirmRegSelect);
+
+                    addConfirmCol.appendChild(addConfirmForm);
+
+                    addRow.appendChild(addFormCol);
+                    addRow.appendChild(addConfirmCol);
+
+                    addTab.appendChild(addRow);
+
+                    // Remove Vehicles
+                    let removeTab = document.createElement('DIV');
+                    removeTab.setAttribute('class', 'tab-pane fade');
+                    removeTab.setAttribute('id', `${idHeader}Remove`);
+                    removeTab.setAttribute('role', 'pillpanel');
+                    removeTab.setAttribute('aria-labelledby', `${idHeader}RemovePill`);
+
+                    let canDelRow = document.createElement('DIV');
+                    canDelRow.setAttribute('class', 'row');
+
+                    let canDelForm = document.createElement('FORM');
+                    canDelForm.setAttribute('class', 'col removeVehicle');
+
+                    let desc = document.createElement('A');
+                    desc.innerHTML = 'Double click the vehicle you want to remove';
+
+                    let canDelSelect = document.createElement('SELECT');
+                    canDelSelect.setAttribute('class', 'vidsThatCanBeDeleted');
+                    canDelSelect.setAttribute('multiple', 'true');
+                    canDelSelect.setAttribute('size', '5');
+                    canDelSelect.setAttribute('style', 'width: 100%');
+                    canDelSelect.setAttribute('ondbclick', 'alert(this);');
+
+                    fleetData.forEach(e => {
+                        // console.log(e);
+                        // console.log(e[0]);
+                        let delOptions = document.createElement('OPTION');
+                        delOptions.setAttribute('value', e[0]);
+                        delOptions.innerHTML = `Vehicle ID: ${e[0]}`;
+                        canDelSelect.appendChild(delOptions);
+                    })
+
+                    canDelForm.appendChild(desc);
+                    canDelForm.appendChild(canDelSelect);
+
+                    canDelRow.appendChild(canDelForm);
+
+                    removeTab.appendChild(canDelRow);
+                    // console.log(removeTab);
+
+                    let delConfirmRow = document.createElement('DIV');
+                    delConfirmRow.setAttribute('class', 'row');
+
+                    let delConfirmCol = document.createElement('DIV');
+                    delConfirmCol.setAttribute('class', 'col');
+
+                    let delConfirmForm = document.createElement('FORM');
+                    delConfirmForm.setAttribute('class', 'confirm remove');
+
+                    let delConfirmBtn = document.createElement('BUTTON');
+                    delConfirmBtn.innerHTML = 'Confirm Removal';
+
+                    let delConfirmSelect = document.createElement('SELECT');
+                    delConfirmSelect.setAttribute('class', 'selectsForUpdates');
+                    delConfirmSelect.setAttribute('multiple', 'true');
+                    delConfirmSelect.setAttribute('size', '5');
+                    delConfirmSelect.setAttribute('style', 'width: 100%');
+
+                    delConfirmForm.appendChild(delConfirmBtn);
+                    delConfirmForm.appendChild(delConfirmSelect);
+
+                    delConfirmCol.appendChild(delConfirmForm);
+                    delConfirmRow.appendChild(delConfirmCol);
+
+                    removeTab.appendChild(delConfirmRow);
+
+                    // Update Vehicles
+                    let updateTab = document.createElement('DIV');
+                    updateTab.setAttribute('class', 'tab-pane fade');
+                    updateTab.setAttribute('id', `${idHeader}Update`);
+                    updateTab.setAttribute('role', 'pillpanel');
+                    updateTab.setAttribute('aria-labelledby', `${idHeader}UpdatePill`);
+
+                    actionTabContent.appendChild(addTab);
+                    actionTabContent.appendChild(removeTab);
+                    actionTabContent.appendChild(updateTab);
+
+                    tabUpdateActionDiv.appendChild(tabUpdatePillList);
+                    tabUpdateActionDiv.appendChild(actionTabContent);
+
+                    tabUpdateContainer.appendChild(tabUpdateActionDiv);
+
+                    tabUpdateWrapper.appendChild(tabUpdateContainer);
+
+                    // tabUpdateCollapose.appendChild(tabUpdateWrapper);
+
+
+
                     /* 
                         Now the tab content
                     */
@@ -123,6 +343,12 @@ let loadTables = () => {
                     tabContentContainer.setAttribute('aria-labelledby', `${idHeader}Tab`)
 
                     let radioForm = document.createElement('FORM');
+
+                    let h6 = document.createElement('H6');
+                    h6.setAttribute('style', 'text-align: center');
+                    h6.innerHTML = 'Viewing Methods';
+
+                    radioForm.appendChild(h6);
 
                     let row = document.createElement('DIV');
                     row.setAttribute('class', 'row justify-content-center');
@@ -151,18 +377,19 @@ let loadTables = () => {
                     radioForm.appendChild(row);
                     tabContentContainer.appendChild(radioForm);
 
+                    tabContentContainer.appendChild(tabUpdateCollapose);
+                    tabContentContainer.appendChild(tabUpdateWrapper);
+
                     let mapDiv = document.createElement('DIV');
                     mapDiv.setAttribute('id', `${idHeader}MapDiv`);
-                    mapDiv.setAttribute('class', 'mapDiv');
+                    mapDiv.setAttribute('class', 'viewer mapDiv');
                     mapDiv.innerHTML = 'Map goes here';
 
                     tabContentContainer.appendChild(mapDiv);
 
                     let tableDiv = document.createElement('DIV');
                     tableDiv.setAttribute('id', `${idHeader}TableDiv`);
-                    tableDiv.setAttribute('class', 'tableDiv');
-                    fleetData = fleets[fleetNum];
-                    // console.log(fleetData);
+                    tableDiv.setAttribute('class', 'viewer tableDiv');
 
                     let table = buildTable(idHeader, colNames, fleetData);
                     table.setAttribute('class', 'index');
@@ -185,6 +412,26 @@ let loadTables = () => {
                         }]
                     });
                 });
+
+                $(document).on('change', '.selectsForUpdates', function (e) {
+                    console.log(e);
+                });
+                // $(function () {
+                //     let selectClass = $('select.selectsForUpdates');
+                //     console.log(selectClass);
+                //     let numSelects = selectClass.length;
+
+                //     for (var select = 0; select < numSelects; select++) {
+                //         selectID = selectClass[select].id
+                //         console.log(selectID);
+                //         let numOptions = $(`${selectID} option`).length;
+                //         if (5 < numOptions && numOptions <= 10) {
+                //             $('`#${selectID}`').attr('size', numOptions);
+                //         } else if (numOptions > 10){
+                //             $(`#${selectID}`).attr('size', 10);
+                //         }
+                //     }
+                // });
             } else {
                 alert('something went wrong');
             }
