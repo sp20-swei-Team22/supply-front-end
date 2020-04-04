@@ -69,8 +69,29 @@
           </div>
     </header>
     <main style="margin: 5vh 0 5vh 0; min-height: 80vh;">
-
-        <!-- Modal for dispatch record? -->
+        
+    <div class="modal fade bd-example-modal-lg" id="dispatchRecordPopup" tabindex="-1" role="dialog" aria-labelledby="dispatchRecordPopupLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg mw-100 w-100" role="document" style="padding: 35px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="dispatchRecordPopupLabel"></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="height: 100%; border-bottom-left-radius: 5px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div id="modal-table" class="col"></div>
+                        <div id="modal-map" class="col-auto">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="height: 40px;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
         <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -207,13 +228,14 @@
             </div>
         </div>
     </main>
+    <script src="/supply-front-end/js/dispatchRecord.js"></script>
 
-    <!-- <script>
+    <script>
         $('#dispatchRecordPopup').on('hidden.bs.modal', function(e) {
             $('#modal-table').html("");
             $('#modal-map').html("");
         })
-    </script> -->
+    </script>
 
     <footer class="page-footer font-small lighten-5 shadow-lg">
         <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:

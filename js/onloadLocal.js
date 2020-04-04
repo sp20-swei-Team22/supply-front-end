@@ -555,9 +555,9 @@ let buildTable = (idHeader, colNames, data) => {
             cell.appendChild(document.createTextNode(colVal));
             if (col == 0) {
                 row.setAttribute('id', `${idHeader}VID${colVal}`)
-            //     cell.setAttribute('onclick', 'getDispatch(this)');
-            //     cell.setAttribute('data-toggle', 'modal');
-            //     cell.setAttribute('data-target', '#dispatchRecordPopup')
+                cell.setAttribute('onclick', 'getDispatch(this)');
+                cell.setAttribute('data-toggle', 'modal');
+                cell.setAttribute('data-target', '#dispatchRecordPopup')
             }
             row.append(cell);
         });
