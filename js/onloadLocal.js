@@ -212,9 +212,9 @@ let loadTables = () => {
         tabLI.appendChild(tabA);
         myTab.insertBefore(tabLI, myTab.children[1]);
 
-        let tabUpdateCollapose = document.createElement('A');
+        let tabUpdateCollapose = document.createElement('BUTTON');
         tabUpdateCollapose.setAttribute('data-toggle', 'collapse');
-        tabUpdateCollapose.setAttribute('class', 'coll');
+        tabUpdateCollapose.setAttribute('class', 'coll collapsed');
         tabUpdateCollapose.setAttribute('href', `#collapse${idHeader}`);
         tabUpdateCollapose.setAttribute('role', 'button');
         tabUpdateCollapose.setAttribute('aria-expanded', 'false');
@@ -478,14 +478,14 @@ let loadTables = () => {
 
         let mapDiv = document.createElement('DIV');
         mapDiv.setAttribute('id', `${idHeader}MapDiv`);
-        mapDiv.setAttribute('class', 'mapDiv');
+        mapDiv.setAttribute('class', 'viewer mapDiv');
         mapDiv.innerHTML = 'Map goes here';
 
         tabContentContainer.appendChild(mapDiv);
 
         let tableDiv = document.createElement('DIV');
         tableDiv.setAttribute('id', `${idHeader}TableDiv`);
-        tableDiv.setAttribute('class', 'tableDiv');
+        tableDiv.setAttribute('class', 'viewer tableDiv');
 
         let table = buildTable(idHeader, colNames, fleetData);
         table.setAttribute('class', 'index');

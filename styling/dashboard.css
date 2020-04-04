@@ -14,7 +14,6 @@
     border-bottom-style: none;
 }
 .nav-tabs .nav-link.active{
-    /* color: teal; */
     border-top-color:  rgb(111, 64, 187);
     border-left-color:  rgb(111, 64, 187);
     border-right-color:  rgb(111, 64, 187);
@@ -53,9 +52,41 @@ input {
 
 }
 
-a.coll {
-    /* border: black solid 1px; */
-    /* margin-bottom: 10px; */
+button.coll {
+    /* min-height: 20px; */
+    color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-top-color:  rgb(111, 64, 187);
+    border-left-color:  rgb(111, 64, 187);
+    border-right-color:  rgb(111, 64, 187);
+    border-bottom-color: transparent;
+    background-color: rgb(210, 206, 198);    
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+button.collapsed {
+    /* min-height: 20px; */
+    color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-color:  rgb(111, 64, 187);
+    background-color: rgb(210, 206, 198);    
+    border-radius: 2px;
+}
+
+.collapsing,
+.collapse {
+    padding: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(111, 64, 187);
+    background-color: rgb(210, 206, 198);
+}
+
+.viewer {
+    margin: 15px;
 }
 
 a.nav-link {
