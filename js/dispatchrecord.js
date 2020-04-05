@@ -15,7 +15,7 @@ function getDispatch(vehicle) {
         // console.log(response.status);
         response.json().then(function (parsedJSON) {
             if (response.status == 200) {
-                // console.log(parsedJSON);
+                console.log(parsedJSON);
                 // parsedJSON.forEach(e => console.log(e));
                 dispatchDict = parsedJSON[0]
                 /*
@@ -29,6 +29,7 @@ function getDispatch(vehicle) {
                     status queued
                     serviceType drycleaning
                 */
+                console.log(dispatchDict)
                 dispatchArr = []
                 Object.keys(dispatchDict).forEach(function(dispatch) {
                     let start = dispatch['start_time'];
@@ -39,7 +40,7 @@ function getDispatch(vehicle) {
                         dispatch['serviceType'], , dispatch['status']
                     ])
                 });
-                
+                console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
 
                 document.getElementById('dispatchRecordPopupLabel').innerHTML = `Vehicle ID: ${vehicleID}`;
