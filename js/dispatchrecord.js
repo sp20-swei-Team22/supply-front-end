@@ -17,15 +17,26 @@ function getDispatch(vehicle) {
             if (response.status == 200) {
                 // console.log(parsedJSON);
                 // parsedJSON.forEach(e => console.log(e));
+                dispatchDict = parsedJSON[0]
+                /*
+                    did 67
+                    vid 28
+                    custid 531
+                    orderid 84013
+                    startLocation {'humanReadable': "St. Edward's University", 'lat': 30.2264, 'lon': 97.7553}
+                    endLocation {'humanReadable': '1234 That Street Ave', 'lat': 31.31, 'lon': 27.31}
+                    start_time 2018-03-29T13:34:00
+                    status queued
+                    serviceType drycleaning
+                */
                 dispatchArr = []
-                Object.keys(parsedJSON).forEach(function(key) {
-                    index = key.lastIndexOf('D')
-                    did = parseInt(key.substring(index + 1));
-                    // console.log(did)
-                    inner = parsedJSON[key];
+                Object.keys(dispatchDict).forEach(function(dispatch) {
+                    let start = dispatch['start_time'];
+                    start = start.replace('T', ' ');
                     dispatchArr.push(
-                        [did, inner['orderid'], inner['customerid'], inner['destination'],
-                        inner['serviceType'], inner['timeOrderCreated'], inner['status']
+                        [dispatch['did'], dispatch['orderid'], dispatch['custid'], 
+                        dispatch['endLocation']['humanReadable'],
+                        dispatch['serviceType'], , dispatch['status']
                     ])
                 });
                 
