@@ -31,9 +31,9 @@ function getDispatch(vehicle) {
                 */
                 console.log(dispatchDict);
                 dispatchArr = [
-                    dispatch['did'], dispatch['orderid'], dispatch['custid'], 
-                    dispatch['endLocation']['humanReadable'], dispatch['serviceType'], 
-                    dispatch['start_time'].replace('T', ' '), dispatch['status']
+                    dispatchDict['did'], dispatchDict['orderid'], dispatchDict['custid'], 
+                    dispatchDict['endLocation']['humanReadable'], dispatchDict['serviceType'], 
+                    dispatchDict['start_time'].replace('T', ' '), dispatchDict['status']
                 ]
                 console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
