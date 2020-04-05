@@ -17,7 +17,6 @@ function getDispatch(vehicle) {
             if (response.status == 200) {
                 console.log(parsedJSON);
                 // parsedJSON.forEach(e => console.log(e));
-                dispatchDict = parsedJSON[0]
                 /*
                     did 67
                     vid 28
@@ -29,15 +28,19 @@ function getDispatch(vehicle) {
                     status queued
                     serviceType drycleaning
                 */
-                console.log(dispatchDict);
-                dispatchArr = [
-                    dispatchDict['did'], dispatchDict['orderid'], dispatchDict['custid'], 
-                    dispatchDict['endLocation']['humanReadable'], dispatchDict['serviceType'], 
-                    dispatchDict['start_time'].replace('T', ' '), dispatchDict['status']
-                ]
+                dispatchArr = []
+                Object.keys(parsedJSON).forEach(function(dispatch) {
+                    let start = dispatch['start_time'];
+                    start = start.replace('T', ' ');
+                    dispatchArr.push(
+                        [dispatch['did'], dispatch['orderid'], dispatch['custid'], 
+                        dispatch['endLocation']['humanReadable'],
+                        dispatch['serviceType'], , dispatch['status']
+                    ])
+                });
                 console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
-                
+
                 document.getElementById('dispatchRecordPopupLabel').innerHTML = `Vehicle ID: ${vehicleID}`;
 
                 const modalTable = document.getElementById('modal-table');
