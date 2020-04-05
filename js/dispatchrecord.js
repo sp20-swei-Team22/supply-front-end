@@ -29,20 +29,15 @@ function getDispatch(vehicle) {
                     status queued
                     serviceType drycleaning
                 */
-                console.log(dispatchDict)
-                dispatchArr = []
-                Object.keys(dispatchDict).forEach(function(dispatch) {
-                    let start = dispatch['start_time'];
-                    start = start.replace('T', ' ');
-                    dispatchArr.push(
-                        [dispatch['did'], dispatch['orderid'], dispatch['custid'], 
-                        dispatch['endLocation']['humanReadable'],
-                        dispatch['serviceType'], , dispatch['status']
-                    ])
-                });
+                console.log(dispatchDict);
+                dispatchArr = [
+                    dispatch['did'], dispatch['orderid'], dispatch['custid'], 
+                    dispatch['endLocation']['humanReadable'], dispatch['serviceType'], 
+                    dispatch['start_time'].replace('T', ' '), dispatch['status']
+                ]
                 console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
-
+                
                 document.getElementById('dispatchRecordPopupLabel').innerHTML = `Vehicle ID: ${vehicleID}`;
 
                 const modalTable = document.getElementById('modal-table');
