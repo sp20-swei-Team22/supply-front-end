@@ -29,13 +29,16 @@ function getDispatch(vehicle) {
                     serviceType drycleaning
                 */
                 dispatchArr = []
-                Object.keys(parsedJSON).forEach(function(dispatch) {
+                Object.keys(parsedJSON).forEach(function(dispatchNum) {
+                    dispatch = parsedJSON[dispatchNum];
+                    console.log(dispatch)
                     let start = dispatch['start_time'];
                     start = start.replace('T', ' ');
+                    console.log(start);
                     dispatchArr.push(
                         [dispatch['did'], dispatch['orderid'], dispatch['custid'], 
                         dispatch['endLocation']['humanReadable'],
-                        dispatch['serviceType'], , dispatch['status']
+                        dispatch['serviceType'],start , dispatch['status']
                     ])
                 });
                 console.log(dispatchArr);
