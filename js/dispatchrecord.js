@@ -15,7 +15,7 @@ function getDispatch(vehicle) {
         // console.log(response.status);
         response.json().then(function (parsedJSON) {
             if (response.status == 200) {
-                console.log(parsedJSON);
+                // console.log(parsedJSON);
                 // parsedJSON.forEach(e => console.log(e));
                 /*
                     did 67
@@ -41,7 +41,7 @@ function getDispatch(vehicle) {
                         dispatch['serviceType'],start , dispatch['status']
                     ])
                 });
-                console.log(dispatchArr);
+                // console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
 
                 document.getElementById('dispatchRecordPopupLabel').innerHTML = `Vehicle ID: ${vehicleID}`;
