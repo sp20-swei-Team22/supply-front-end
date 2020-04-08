@@ -31,10 +31,10 @@ function getDispatch(vehicle) {
                 dispatchArr = []
                 Object.keys(parsedJSON).forEach(function(dispatchNum) {
                     dispatch = parsedJSON[dispatchNum];
-                    console.log(dispatch)
+                    // console.log(dispatch)
                     let start = dispatch['start_time'];
                     start = start.replace('T', ' ');
-                    console.log(start);
+                    // console.log(start);
                     dispatchArr.push(
                         [dispatch['did'], dispatch['orderid'], dispatch['custid'], 
                         dispatch['endLocation']['humanReadable'],
