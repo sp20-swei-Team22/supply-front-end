@@ -54,7 +54,7 @@ $(document).on('submit', '.addVehicle', async e => {
             fieldArr.forEach(field => {
                 field = field.replace(' ', '');
             })
-            console.log(fieldArr);
+            // console.log(fieldArr);
             let optionVal = fieldArr.join(' ');
             // console.log(optionVal);
             if (id != 'home') {
