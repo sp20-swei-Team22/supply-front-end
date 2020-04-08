@@ -6,9 +6,11 @@ $(document).on('submit', '.confirm', async e => {
     // console.log(confirmSend);
     let confirmType = confirmSend.classList[1]
     // console.log(confirmType);
-    let optionsCollection = confirmSend.children[1].children
+    let select = confirmSend.children[1];
+    let optionsCollection = select.children;
+    length = select.options.length;
     // console.log(optionsCollection);
-    if (optionsCollection.length == 0) {
+    if (length == 0) {
         alert('No vehicle data to send!');
     } else {
         vehicles = [];
@@ -32,8 +34,13 @@ $(document).on('submit', '.confirm', async e => {
             mode: 'no-cors',
             body: JSON.stringify(vehicles)
         }).then(res => {
+            // console.log(select);
+            // console.log(length);
             if (res.status == 200) {
                 alert(`Vehicle${vehicles.length > 0 ? 's' : ''} ${confirmType == 'add' ? 'added' : 'removed'}!`);
+                for (var i = length - 1; i >= 0; i--) {
+                    select.options[i] = null;
+                }
             } else {
                 alert('Something went wrong');
             }
