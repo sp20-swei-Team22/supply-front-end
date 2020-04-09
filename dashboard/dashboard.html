@@ -52,7 +52,7 @@
 
 </head>
 
-<body onload="loadTables();">
+<body onload="loadTables(); doSomething()">
     <header id="appHeader" class="navbar sticky-top justify-content-between shadow py-3">
         <div>
             <a class="navbar-brand" style="cursor: pointer;" href="/">WeGo Services</a>
@@ -235,6 +235,17 @@
             $('#modal-table').html("");
             $('#modal-map').html("");
         })
+    </script>
+
+    <script>
+        function doSomething() {
+            worker.postMessage({'msg': 'hello!'})
+        }
+
+        var worker = new Worker('/supply-front-ent/js/worker.js');
+        worker.addEventListener('message', function (e) {
+            console.log(e.data);
+        }, false);
     </script>
 
     <footer class="page-footer font-small lighten-5 shadow-lg">
