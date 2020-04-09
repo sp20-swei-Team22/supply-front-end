@@ -2,20 +2,21 @@ self.addEventListener('message', function(e) {
     console.log(e)
     var data = e.data;
     var url = new URL("https://supply.team22.softwareengineeringii.com/getDispatch/"),
-    // params = {
-    //     'vid': 123
-    // }
+        params = {
+            'vid': 28
+        }
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    // console.log(url);
     var interval = setInterval(function() {
-        console.log(data.msg);
-        // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+        // console.log(data.msg);
         fetch(url).then(function (resposne) {
-            console.log(data);
+            // console.log(data);
             resposne.json().then(function (jsonRes) {
                 if (resposne.status == 200) {
-                    console.log('nice')
+                    // console.log('nice')
                     self.postMessage(jsonRes);
                 } else {
-                    console.log('not nice')
+                    // console.log('not nice')
                     self.postMessage('bad status')
                 }   
             });
