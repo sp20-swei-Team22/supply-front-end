@@ -6,7 +6,7 @@ let loadTables = () => {
 
     var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
         params = {
-            'user': identity
+            'fmid': identity
         }
 
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
