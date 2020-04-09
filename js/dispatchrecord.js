@@ -28,19 +28,8 @@ function getDispatch(vehicle) {
                     status queued
                     serviceType drycleaning
                 */
-                dispatchArr = []
-                Object.keys(parsedJSON).forEach(function (dispatchNum) {
-                    dispatch = parsedJSON[dispatchNum];
-                    // console.log(dispatch)
-                    let start = dispatch['start_time'];
-                    start = start.replace('T', ' ');
-                    // console.log(start);
-                    dispatchArr.push(
-                        [dispatch['did'], dispatch['orderid'], dispatch['custid'],
-                        dispatch['endLocation']['humanReadable'],
-                        dispatch['serviceType'], start, dispatch['status']
-                        ])
-                });
+                dispatchArr = formatDispatchJSON(parsedJSON)
+                
                 // console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
 
@@ -61,18 +50,9 @@ function getDispatch(vehicle) {
                     th.innerHTML = name;
                     tr.appendChild(th);
                 });
-                let tbody = document.createElement('TBODY');
-                popupTable.appendChild(tbody);
-                dispatchArr.forEach(function (entry) {
-                    var row = document.createElement('TR');
-                    entry.forEach(function (colVal) {
-                        var cell = document.createElement('TD');
-                        cell.appendChild(document.createTextNode(colVal));
-                        row.append(cell);
-                    });
-                    tbody.appendChild(row);
-                });
+                let tbody = fillTBody(dispatchArr);
 
+                popupTable.appendChild(tbody);
                 modalTable.appendChild(popupTable);
 
                 /* Our map of the current running dispatch will be appended here! */
@@ -99,18 +79,21 @@ function getDispatch(vehicle) {
                         }]
                     });
                 });
-                
+
                 var worker = new Worker('/supply-front-end/js/worker.js');
                 worker.postMessage({ 'cmd': 'start', 'vid': vehicleID });
                 worker.addEventListener('message', function (e) {
                     console.log(e.data);
+                    dispatchJSON = e.data;
+                    list = formatDispatchJSON(dispatchJSON);
+                    console.log(list);
                 }, false);
 
                 $('#dispatchRecordPopup').on('hidden.bs.modal', function (e) {
-                    worker.postMessage({'cmd': 'stop', 'vid': null})
+                    worker.postMessage({ 'cmd': 'stop' })
                     $('#modal-table').html("");
                     $('#modal-map').html("");
-                })
+                });
             } else {
                 alert('something went wrong');
             }
@@ -118,4 +101,36 @@ function getDispatch(vehicle) {
     }).catch(function (error) {
         console.error(error)
     });
+}
+
+function fillTBody(dispatchArr) {
+    let tbody = document.createElement('TBODY');
+
+    dispatchArr.forEach(function (entry) {
+        var row = document.createElement('TR');
+        entry.forEach(function (colVal) {
+            var cell = document.createElement('TD');
+            cell.appendChild(document.createTextNode(colVal));
+            row.append(cell);
+        });
+        tbody.appendChild(row);
+    });
+    return tbody;
+}
+
+function formatDispatchJSON(parsedJSON) {
+    dispatchArr = []
+    Object.keys(parsedJSON).forEach(function (dispatchNum) {
+        dispatch = parsedJSON[dispatchNum];
+        // console.log(dispatch)
+        let start = dispatch['start_time'];
+        start = start.replace('T', ' ');
+        // console.log(start);
+        dispatchArr.push(
+            [dispatch['did'], dispatch['orderid'], dispatch['custid'],
+            dispatch['endLocation']['humanReadable'],
+            dispatch['serviceType'], start, dispatch['status']
+            ])
+    });
+    return dispatchArr;
 }

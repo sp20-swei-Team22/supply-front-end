@@ -1,5 +1,5 @@
 self.addEventListener('message', function (e) {
-    console.log(e)
+    // console.log(e)
     var data = e.data;
     if (data.cmd == 'start') {
         var vid = data.vid;
