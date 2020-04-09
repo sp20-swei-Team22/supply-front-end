@@ -61,30 +61,30 @@ let loadTables = () => {
                 })
                 // console.log(arr);
 
-                let homeTableDiv = document.getElementById('homeTableDiv');
-                homeTable = buildTable('homeTable', colNames, arr);
-                homeTable.setAttribute('class', 'home')
-                homeTableDiv.appendChild(homeTable);
+                // let homeTableDiv = document.getElementById('homeTableDiv');
+                // homeTable = buildTable('homeTable', colNames, arr);
+                // homeTable.setAttribute('class', 'home')
+                // homeTableDiv.appendChild(homeTable);
 
-                let rows = homeTable.rows;
-                let vids = []
-                for (var row = 1; row < rows.length; row++) {
-                    let rowID = rows.item(row).id;
-                    let vid = parseInt(rowID.substring(rowID.lastIndexOf('D') + 1));
-                    // console.log(rowID);  
-                    // console.log(vid);
-                    vids.push(vid);
-                }
+                // let rows = homeTable.rows;
+                // let vids = []
+                // for (var row = 1; row < rows.length; row++) {
+                //     let rowID = rows.item(row).id;
+                //     let vid = parseInt(rowID.substring(rowID.lastIndexOf('D') + 1));
+                //     // console.log(rowID);  
+                //     // console.log(vid);
+                //     vids.push(vid);
+                // }
 
-                let homeRemoveSelect = document.getElementsByClassName('vidsThatCanBeDeleted')[0];
-                // console.log(homeRemoveSelect);
-                vids.forEach(vid => {
-                    let option = document.createElement('OPTION');
-                    let optionTextNode = document.createTextNode(`Vehicle ID: ${vid}`);
-                    option.appendChild(optionTextNode);
-                    option.value = vid;
-                    homeRemoveSelect.appendChild(option);
-                })
+                // let homeRemoveSelect = document.getElementsByClassName('vidsThatCanBeDeleted')[0];
+                // // console.log(homeRemoveSelect);
+                // vids.forEach(vid => {
+                //     let option = document.createElement('OPTION');
+                //     let optionTextNode = document.createTextNode(`Vehicle ID: ${vid}`);
+                //     option.appendChild(optionTextNode);
+                //     option.value = vid;
+                //     homeRemoveSelect.appendChild(option);
+                // })
 
                 colNames.splice(1, 1)
 
