@@ -83,10 +83,12 @@ function getDispatch(vehicle) {
                 var worker = new Worker('/supply-front-end/js/worker.js');
                 worker.postMessage({ 'cmd': 'start', 'vid': vehicleID });
                 worker.addEventListener('message', function (e) {
-                    console.log(e.data);
-                    dispatchJSON = e.data;
-                    list = formatDispatchJSON(dispatchJSON);
-                    console.log(list);
+                    // console.log(e.data);
+                    let dispatchJSON = e.data;
+                    let dispatchArr = formatDispatchJSON(dispatchJSON);
+                    console.log(dispatchArr);
+                    console.log(modalTable.rows);
+                    // let tbody = fillTBody(dispatchArr);
                 }, false);
 
                 $('#dispatchRecordPopup').on('hidden.bs.modal', function (e) {
