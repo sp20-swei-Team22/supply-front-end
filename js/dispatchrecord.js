@@ -29,17 +29,17 @@ function getDispatch(vehicle) {
                     serviceType drycleaning
                 */
                 dispatchArr = []
-                Object.keys(parsedJSON).forEach(function(dispatchNum) {
+                Object.keys(parsedJSON).forEach(function (dispatchNum) {
                     dispatch = parsedJSON[dispatchNum];
                     // console.log(dispatch)
                     let start = dispatch['start_time'];
                     start = start.replace('T', ' ');
                     // console.log(start);
                     dispatchArr.push(
-                        [dispatch['did'], dispatch['orderid'], dispatch['custid'], 
+                        [dispatch['did'], dispatch['orderid'], dispatch['custid'],
                         dispatch['endLocation']['humanReadable'],
-                        dispatch['serviceType'],start , dispatch['status']
-                    ])
+                        dispatch['serviceType'], start, dispatch['status']
+                        ])
                 });
                 // console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
@@ -63,16 +63,16 @@ function getDispatch(vehicle) {
                 });
                 let tbody = document.createElement('TBODY');
                 popupTable.appendChild(tbody);
-                dispatchArr.forEach(function(entry) {
+                dispatchArr.forEach(function (entry) {
                     var row = document.createElement('TR');
-                    entry.forEach(function(colVal) {
+                    entry.forEach(function (colVal) {
                         var cell = document.createElement('TD');
                         cell.appendChild(document.createTextNode(colVal));
                         row.append(cell);
                     });
                     tbody.appendChild(row);
                 });
-                
+
                 modalTable.appendChild(popupTable);
 
                 /* Our map of the current running dispatch will be appended here! */
@@ -99,6 +99,18 @@ function getDispatch(vehicle) {
                         }]
                     });
                 });
+                
+                var worker = new Worker('worker.js');
+                worker.postMessage({ 'cmd': 'start', 'vid': vehicleID });
+                worker.addEventListener('message', function (e) {
+                    console.log(e.data);
+                }, false);
+
+                $('#dispatchRecordPopup').on('hidden.bs.modal', function (e) {
+                    worker.postMessage({'cmd': 'stop', 'vid': null})
+                    $('#modal-table').html("");
+                    $('#modal-map').html("");
+                })
             } else {
                 alert('something went wrong');
             }
