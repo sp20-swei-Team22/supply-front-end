@@ -86,9 +86,15 @@ function getDispatch(vehicle) {
                     // console.log(e.data);
                     let dispatchJSON = e.data;
                     let dispatchArr = formatDispatchJSON(dispatchJSON);
-                    console.log(dispatchArr);
-                    console.log(modalTable.rows);
-                    // let tbody = fillTBody(dispatchArr);
+                    // console.log(dispatchArr);
+                    let popupTable = document.getElementById('popupTable');
+                    // console.log(popupTable);
+                    oldTBody = popupTable.querySelectorAll('tbody')[0];
+                    // console.log('Old ', oldTBody);
+                    popupTable.removeChild(oldTBody);
+                    let tbody = fillTBody(dispatchArr);
+                    // console.log('New ', tbody);
+                    popupTable.appendChild(tbody);
                 }, false);
 
                 $('#dispatchRecordPopup').on('hidden.bs.modal', function (e) {
