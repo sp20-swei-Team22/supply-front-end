@@ -34,14 +34,15 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
 
     <!-- Page Specific Scripts -->
-    <script src="/supply-front-end/js/fleetvisualisationswitcher.js"></script>
-    <script src="/supply-front-end/js/onload.js"></script>
-    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
+    <!-- <script src="/supply-front-end/js/onload.js"></script> -->
+    <script src="/supply-front-end/js/onloadLocal.js"></script>
     <script src="/supply-front-end/js/pushadd.js" defer></script>    
     <script src="/supply-front-end/js/pushdel.js" defer></script>
     <script src="/supply-front-end/js/postfmaction.js"></script>
-    
+
     <script src="/supply-front-end/js/newfleet.js" defer></script>
+
+    <script src="/supply-front-end/js/togglefleetvis.js"></script>
     <script src="/supply-front-end/js/togglelivefleetupdate.js" defer></script>
 
 
@@ -106,17 +107,86 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="homeTab">
-                    <form>
-                        <h6 style="text-align: center;">Viewing Methods</h6>
-                        <div class="row justify-content-center">
-                            <div style="margin-right: 5vw;">
-                                <input type="radio" name="vis" id="homeMapRad" checked="true"><label for="#homeMapRad">Map</label>
-                            </div>
-                            <div style="margin-left: 5vw;">
-                                <input type="radio" name="vis" id="homeTableRad"><label for="#homeTableRad">Table</label> 
+                    <div class="row">
+                        <div class="col">
+                            <div class="row justify-content-center" style="margin-bottom: 5px;">Viewing Method</div>
+                            <div class="row justify-content-center">
+                                <label class="leftToggle">Map</label>
+                                <label class="switch vis">
+                                    <input type="checkbox" class="visSwitch" id="home">
+                                    <span class="slider round"></span>
+                                </label>
+                                <label class="rightToggle">Table</label>
                             </div>
                         </div>
+                        <div class="col">
+                            <div class="row justify-content-center" style="margin-bottom: 5px;">Toggle Live Fleet Update</div>
+                            <div class="row justify-content-center">
+                                <label class="leftToggle">Map</label>
+                                <label class="switch vis">
+                                    <input type="checkbox" class="updateSwitch">
+                                    <span class="slider round"></span>
+                                </label>
+                                <label class="rightToggle">Table</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="homeMapDiv" class="viewer mapDiv">
+                        <!-- <img src="https://www.tourtexas.com/assets/img/maps/austin.jpg" alt=""> -->
+                        <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+                        <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+                        <div id="map"></div>
+                        <script>
+                            mapboxgl.accessToken = '<your access token here>';
+                            var map = new mapboxgl.Map({
+                                container: 'map', // container id
+                                style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+                                center: [-74.5, 40], // starting position [lng, lat]
+                                zoom: 9 // starting zoom
+                            });
+                        </script>
+                    </div>
+                    <div id="homeTableDiv" class="viewer tableDiv">
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
+                    <form id="newFleetForm">
+                        <div class="form-group input-group">
+                            <label for="region">Region</label>
+                            <div class="input-group">
+                                <input required type="text" id="region" placeholder="Ex: Austin">
+                            </div>
+                        </div>
+                        <div class="form-group input-group">
+                            <label for="serviceType">Region</label>
+                            <div class="input-group">
+                                <select id="serviceType">
+                                    <option value="1">Dry Cleaning</option>
+                                    <option value="2">RX</option>
+                                    <option value="3">Coffee</option>
+                                    <option value="4">Events</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-block">Submit</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/supply-front-end/js/dispatchrecord.js"></script>
+
+    <footer class="page-footer font-small lighten-5 shadow-lg">
+        <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
+            <a class="dark-grey-text" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+        </div>
+    </footer>
+</body>
+
+</html>
+
+
                     <!-- <button data-toggle="collapse" class="coll collapsed" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                         Update Your Fleets
                     </button>
@@ -196,45 +266,3 @@
                             </div>
                         </div>
                     </div> -->
-                    <div id="homeMapDiv" class="viewer mapDiv">
-                        <img src="https://www.tourtexas.com/assets/img/maps/austin.jpg" alt="">
-                    </div>
-                    <div id="homeTableDiv" class="viewer tableDiv">
-                    </div>
-                </div>
-                
-                <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
-                    <form id="newFleetForm">
-                        <div class="form-group input-group">
-                            <label for="region">Region</label>
-                            <div class="input-group">
-                                <input required type="text" id="region" placeholder="Ex: Austin">
-                            </div>
-                        </div>
-                        <div class="form-group input-group">
-                            <label for="serviceType">Region</label>
-                            <div class="input-group">
-                                <select id="serviceType">
-                                    <option value="1">Dry Cleaning</option>
-                                    <option value="2">RX</option>
-                                    <option value="3">Coffee</option>
-                                    <option value="4">Events</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn-block">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
-    <script src="/supply-front-end/js/dispatchrecord.js"></script>
-
-    <footer class="page-footer font-small lighten-5 shadow-lg">
-        <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
-            <a class="dark-grey-text" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
-        </div>
-    </footer>
-</body>
-
-</html>
