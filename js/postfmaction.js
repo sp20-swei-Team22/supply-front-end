@@ -81,6 +81,11 @@ function postRemoveBody(optionsCollection) {
         };
         // console.log(vehicleDict);
         vehicles.push(vehicleDict);
+        console.log(vehicleid);
+        let row = document.getElementById(`vid${vehicleid}`);
+        let tbody = row.parentElement;
+        console.log(tbody);
+        tbody.removeChild(row);
     }
     return vehicles;
 }
