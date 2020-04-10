@@ -376,7 +376,27 @@ let loadTables = () => {
 
                     radioForm.appendChild(row);
                     tabContentContainer.appendChild(radioForm);
-
+            
+                    let switchLabelContainer = document.createElement('LABEL');
+                    switchLabelContainer.setAttribute('class', 'switch');
+                    switchLabelContainer.setAttribute('style', 'text-align: center');
+                    let switchInput = document.createElement('INPUT');
+                    switchInput.setAttribute('type', 'checkbox');
+                    switchInput.setAttribute('class', 'updateSwitch');
+                    let switchSpan = document.createElement('SPAN');
+                    switchSpan.setAttribute('class', 'slider round');
+                    let switchLabel = document.createElement('LABEL');
+                    switchLabel.setAttribute('style', 'padding-left: 5px'); 
+                    switchLabel.innerHTML = 'Toggle Map Live Update';
+                    switchLabelContainer.appendChild(switchInput);
+                    switchLabelContainer.appendChild(switchSpan);
+                    
+                    let switchRow = document.createElement('DIV');
+                    switchRow.setAttribute('class', 'row justify-content-center');
+                    switchRow.appendChild(switchLabelContainer);
+                    switchRow.appendChild(switchLabel);
+            
+                    tabContentContainer.appendChild(switchRow);
                     tabContentContainer.appendChild(tabUpdateCollapose);
                     tabContentContainer.appendChild(tabUpdateWrapper);
 
