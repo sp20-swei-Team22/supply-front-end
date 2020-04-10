@@ -61,30 +61,20 @@ let loadTables = () => {
                 })
                 // console.log(arr);
 
-                // let homeTableDiv = document.getElementById('homeTableDiv');
-                // homeTable = buildTable('homeTable', colNames, arr);
-                // homeTable.setAttribute('class', 'home')
-                // homeTableDiv.appendChild(homeTable);
+                let homeTableDiv = document.getElementById('homeTableDiv');
+                homeTable = buildTable('homeTable', colNames, arr);
+                homeTable.setAttribute('class', 'home')
+                homeTableDiv.appendChild(homeTable);
 
-                // let rows = homeTable.rows;
-                // let vids = []
-                // for (var row = 1; row < rows.length; row++) {
-                //     let rowID = rows.item(row).id;
-                //     let vid = parseInt(rowID.substring(rowID.lastIndexOf('D') + 1));
-                //     // console.log(rowID);  
-                //     // console.log(vid);
-                //     vids.push(vid);
-                // }
-
-                // let homeRemoveSelect = document.getElementsByClassName('vidsThatCanBeDeleted')[0];
-                // // console.log(homeRemoveSelect);
-                // vids.forEach(vid => {
-                //     let option = document.createElement('OPTION');
-                //     let optionTextNode = document.createTextNode(`Vehicle ID: ${vid}`);
-                //     option.appendChild(optionTextNode);
-                //     option.value = vid;
-                //     homeRemoveSelect.appendChild(option);
-                // })
+                let rows = homeTable.rows;
+                let vids = []
+                for (var row = 1; row < rows.length; row++) {
+                    let rowID = rows.item(row).id;
+                    let vid = parseInt(rowID.substring(rowID.lastIndexOf('D') + 1));
+                    // console.log(rowID);  
+                    // console.log(vid);
+                    vids.push(vid);
+                }
 
                 colNames.splice(1, 1)
 
@@ -108,7 +98,7 @@ let loadTables = () => {
                     tabA.setAttribute('id', tabId);
                     tabA.setAttribute('data-toggle', 'tab');
                     tabA.setAttribute('href', `#${idHeader}`);
-                    tabA.setAttribute('role', 'tab');
+                    tabA.setAttribute('rold', 'tab');
                     tabA.setAttribute('aria-controls', idHeader);
                     tabA.setAttribute('aria-selected', 'false');
                     tabA.innerHTML = `Fleet ${fleetNum}`;
@@ -158,13 +148,11 @@ let loadTables = () => {
                         tabUpdatePillList.appendChild(li);
                     });
 
-
-
                     let actionTabContent = document.createElement('DIV');
                     actionTabContent.setAttribute('class', 'tab-content col');
 
 
-                    // Add Vechiles
+                    // Add Vehicles
                     let addTab = document.createElement('DIV');
                     addTab.setAttribute('class', 'tab-pane fade show active');
                     addTab.setAttribute('id', `${idHeader}Add`);
@@ -342,63 +330,34 @@ let loadTables = () => {
                     tabContentContainer.setAttribute('role', 'tabpanel');
                     tabContentContainer.setAttribute('aria-labelledby', `${idHeader}Tab`)
 
-                    let radioForm = document.createElement('FORM');
+                    let switchRowVis = switchMaker(idHeader, 'visSwitch', 'Map', 'Table');
+                    let switchTitleVis = switchTitleMaker('Toggle Viewing Methods');
 
-                    let h6 = document.createElement('H6');
-                    h6.setAttribute('style', 'text-align: center');
-                    h6.innerHTML = 'Viewing Methods';
+                    let colVis = document.createElement('DIV');
+                    colVis.setAttribute('class', 'col');
 
-                    radioForm.appendChild(h6);
+                    colVis.appendChild(switchTitleVis);
+                    colVis.appendChild(switchRowVis);
 
-                    let row = document.createElement('DIV');
-                    row.setAttribute('class', 'row justify-content-center');
+                    let switchRowUpdate = switchMaker(null, 'visUpdate', 'Map', 'Table');
+                    let switchTitleUpdate = switchTitleMaker('Toggle Live Fleet Update');
 
-                    ['Map', 'Table'].forEach(e => {
-                        radDiv = document.createElement('DIV');
-                        e == 'Map' ?
-                            radDiv.setAttribute('style', 'margin-right: 5vw;') :
-                            radDiv.setAttribute('style', 'margin-left: 5vw;');
+                    let colUpdate = document.createElement('DIV');
+                    colUpdate.setAttribute('class', 'col')
 
-                        let radio = document.createElement('INPUT');
-                        radio.setAttribute('type', 'radio');
-                        radio.setAttribute('name', 'vis');
-                        radio.setAttribute('id', `${idHeader}${e}Rad`)
-                        if (e == 'Map') radio.setAttribute('checked', 'true');
+                    colUpdate.appendChild(switchTitleUpdate);
+                    colUpdate.appendChild(switchRowUpdate);
 
-                        let label = document.createElement('LABEL');
-                        label.setAttribute('for', `#${idHeader}${e}Rad`);
-                        label.innerHTML = e;
+                    let switchesRow = document.createElement('DIV');
+                    switchesRow.setAttribute('class', 'row');
 
-                        radDiv.appendChild(radio);
-                        radDiv.appendChild(label);
-                        row.appendChild(radDiv);
-                    })
+                    switchesRow.appendChild(colVis);
+                    switchesRow.appendChild(colUpdate);
 
-                    radioForm.appendChild(row);
-                    tabContentContainer.appendChild(radioForm);
-            
-                    let switchLabelContainer = document.createElement('LABEL');
-                    switchLabelContainer.setAttribute('class', 'switch');
-                    switchLabelContainer.setAttribute('style', 'text-align: center');
-                    let switchInput = document.createElement('INPUT');
-                    switchInput.setAttribute('type', 'checkbox');
-                    switchInput.setAttribute('class', 'updateSwitch');
-                    let switchSpan = document.createElement('SPAN');
-                    switchSpan.setAttribute('class', 'slider round');
-                    let switchLabel = document.createElement('LABEL');
-                    switchLabel.setAttribute('style', 'padding-left: 5px'); 
-                    switchLabel.innerHTML = 'Toggle Map Live Update';
-                    switchLabelContainer.appendChild(switchInput);
-                    switchLabelContainer.appendChild(switchSpan);
-                    
-                    let switchRow = document.createElement('DIV');
-                    switchRow.setAttribute('class', 'row justify-content-center');
-                    switchRow.appendChild(switchLabelContainer);
-                    switchRow.appendChild(switchLabel);
-            
-                    tabContentContainer.appendChild(switchRow);
+                    tabContentContainer.appendChild(switchesRow);
                     tabContentContainer.appendChild(tabUpdateCollapose);
                     tabContentContainer.appendChild(tabUpdateWrapper);
+
 
                     let mapDiv = document.createElement('DIV');
                     mapDiv.setAttribute('id', `${idHeader}MapDiv`);
@@ -432,26 +391,6 @@ let loadTables = () => {
                         }]
                     });
                 });
-
-                $(document).on('change', '.selectsForUpdates', function (e) {
-                    console.log(e);
-                });
-                // $(function () {
-                //     let selectClass = $('select.selectsForUpdates');
-                //     console.log(selectClass);
-                //     let numSelects = selectClass.length;
-
-                //     for (var select = 0; select < numSelects; select++) {
-                //         selectID = selectClass[select].id
-                //         console.log(selectID);
-                //         let numOptions = $(`${selectID} option`).length;
-                //         if (5 < numOptions && numOptions <= 10) {
-                //             $('`#${selectID}`').attr('size', numOptions);
-                //         } else if (numOptions > 10){
-                //             $(`#${selectID}`).attr('size', 10);
-                //         }
-                //     }
-                // });
             } else {
                 alert('something went wrong');
             }
@@ -459,6 +398,48 @@ let loadTables = () => {
     }).catch(err => {
         console.log('Error: ', err);
     });
+}
+
+let switchTitleMaker = (title) => {
+    let switchTitle = document.createElement('DIV');
+    switchTitle.setAttribute('class', 'row justify-content-center');
+    switchTitle.setAttribute('style', 'margin-bottom: 5px');
+    switchTitle.innerHTML = title;
+
+    return switchTitle
+}
+
+let switchMaker = (id, classes, left, right) => {
+    let switchLabelVis = document.createElement('LABEL');
+    switchLabelVis.setAttribute('class', 'switch vis');
+    switchLabelVis.setAttribute('style', 'text-align: center');
+    let switchInputVis = document.createElement('INPUT');
+    switchInputVis.setAttribute('type', 'checkbox');
+    switchInputVis.setAttribute('class', classes);
+    if (id != null) switchInputVis.setAttribute('id', id);
+
+    let switchSpanVis = document.createElement('SPAN');
+    switchSpanVis.setAttribute('class', 'slider round');
+
+    switchLabelVis.appendChild(switchInputVis);
+    switchLabelVis.appendChild(switchSpanVis);
+
+    let switchLeft = document.createElement('LABEL');
+    switchLeft.setAttribute('class', 'leftToggle');
+    switchLeft.innerHTML = left;
+    let switchRight = document.createElement('LABEL');
+    switchRight.setAttribute('class', 'rightToggle');
+    switchRight.innerHTML = right;
+
+
+    let switchRowVis = document.createElement('DIV');
+    switchRowVis.setAttribute('class', 'row justify-content-center');
+
+    switchRowVis.appendChild(switchLeft);
+    switchRowVis.appendChild(switchLabelVis);
+    switchRowVis.appendChild(switchRight);
+
+    return switchRowVis;
 }
 
 let buildTable = (idHeader, colNames, data) => {
@@ -485,10 +466,10 @@ let buildTable = (idHeader, colNames, data) => {
             let cell = document.createElement('TD');
             cell.appendChild(document.createTextNode(colVal));
             if (col == 0) {
-                row.setAttribute('id', `vid${colVal}`)
-                    cell.setAttribute('onclick', 'getDispatch(this)');
-                    cell.setAttribute('data-toggle', 'modal');
-                    cell.setAttribute('data-target', '#dispatchRecordPopup')
+                row.setAttribute('id', `${idHeader}VID${colVal}`)
+                cell.setAttribute('onclick', 'getDispatch(this)');
+                cell.setAttribute('data-toggle', 'modal');
+                cell.setAttribute('data-target', '#dispatchRecordPopup')
             }
             row.append(cell);
         });
