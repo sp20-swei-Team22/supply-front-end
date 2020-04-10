@@ -123,7 +123,7 @@ let loadTables = () => {
                     tabUpdateCollapose.setAttribute('role', 'button');
                     tabUpdateCollapose.setAttribute('aria-expanded', 'false');
                     tabUpdateCollapose.setAttribute('aria-controls', `collapse${idHeader}`);
-                    tabUpdateCollapose.innerHTML = 'Update Your Fleets';
+                    tabUpdateCollapose.innerHTML = 'Fleet Actions';
 
                     let tabUpdateWrapper = document.createElement('DIV');
                     tabUpdateWrapper.setAttribute('class', 'collapse');
