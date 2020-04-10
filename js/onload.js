@@ -108,7 +108,7 @@ let loadTables = () => {
                     tabA.setAttribute('id', tabId);
                     tabA.setAttribute('data-toggle', 'tab');
                     tabA.setAttribute('href', `#${idHeader}`);
-                    tabA.setAttribute('rold', 'tab');
+                    tabA.setAttribute('role', 'tab');
                     tabA.setAttribute('aria-controls', idHeader);
                     tabA.setAttribute('aria-selected', 'false');
                     tabA.innerHTML = `Fleet ${fleetNum}`;
