@@ -465,7 +465,7 @@ let buildTable = (idHeader, colNames, data) => {
             let cell = document.createElement('TD');
             cell.appendChild(document.createTextNode(colVal));
             if (col == 0) {
-                row.setAttribute('id', `${idHeader}VID${colVal}`)
+                row.setAttribute('id', `vid${colVal}`)
                     cell.setAttribute('onclick', 'getDispatch(this)');
                     cell.setAttribute('data-toggle', 'modal');
                     cell.setAttribute('data-target', '#dispatchRecordPopup')
