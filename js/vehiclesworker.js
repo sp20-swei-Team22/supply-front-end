@@ -7,10 +7,10 @@ self.addEventListener('message', function (e) {
             params = {
                 'fid': fid
             }
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
         if (fid == 'home') {
             url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/")
         }
-        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
         // console.log(url);
         setInterval(function () {
             // console.log(data.msg);
