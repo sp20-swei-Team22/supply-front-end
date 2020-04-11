@@ -9,7 +9,7 @@ $(document).on('change', '.updateSwitch', function (e) {
     let fid = this.parentNode.parentNode.parentNode.parentNode.parentNode.id
     // console.log(fid);
     fid = fid.substring(fid.indexOf('t') + 1);
-    console.log(fid);
+    // console.log(fid);
 
 
     if (fid in switchDict) {
@@ -23,7 +23,7 @@ $(document).on('change', '.updateSwitch', function (e) {
             const generic = fid == 'home'
             let vehiclesJSON = e.data;
             let vehiclesData = formatVehicleJSON(vehiclesJSON, generic);
-            console.log(vehiclesData);
+            // console.log(vehiclesData);
             let vehicleTable = generic ? 
                 document.getElementById('homeTableTable') : 
                 document.getElementById(`fleet${fid}Table`);
@@ -44,7 +44,6 @@ $(document).on('change', '.updateSwitch', function (e) {
 
 function fillTBody(data) {
     let tbody = document.createElement('TBODY');
-    table.appendChild(tbody);
 
     data.forEach(entry => {
         let row = document.createElement('TR');
@@ -52,7 +51,7 @@ function fillTBody(data) {
             let cell = document.createElement('TD');
             cell.appendChild(document.createTextNode(colVal));
             if (col == 0) {
-                row.setAttribute('id', `${idHeader}VID${colVal}`)
+                row.setAttribute('id', `VID${colVal}`)
                 cell.setAttribute('onclick', 'getDispatch(this)');
                 cell.setAttribute('data-toggle', 'modal');
                 cell.setAttribute('data-target', '#dispatchRecordPopup')
@@ -71,16 +70,19 @@ function formatVehicleJSON(json, generic) {
         // console.log(vehicleDict);
         let dateAdded = vehicleDict['date_added']
         let trimmedDate = dateAdded.substring(0, dateAdded.indexOf('T'));
-        arr.push(
-            [vehicleDict['fleetid'], vehicleDict['vehicleid'], vehicleDict['status'],
-            `${vehicleDict['make']}: ${vehicleDict['model']}`, trimmedDate,
-            vehicleDict['licenseplate'], vehicleDict['last_heartbeat']]
-        );
+        if (!generic) {
+            arr.push(
+                [vehicleDict['vehicleid'], vehicleDict['status'],
+                `${vehicleDict['make']}: ${vehicleDict['model']}`, trimmedDate,
+                vehicleDict['licenseplate'], vehicleDict['last_heartbeat']]
+            );
+        } else {
+            arr.push(
+                [vehicleDict['vehicleid'], vehicleDict['fleetid'], vehicleDict['status'],
+                `${vehicleDict['make']}: ${vehicleDict['model']}`, trimmedDate,
+                vehicleDict['licenseplate'], vehicleDict['last_heartbeat']]
+            );
+        }
     })
-    if (!generic) {
-        arr.forEach(entry => {
-            entry.shift()
-        })
-    }
     return arr;
 }
