@@ -34,8 +34,8 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
 
     <!-- Page Specific Scripts -->
-    <!-- <script src="/supply-front-end/js/onload.js"></script> -->
-    <script src="/supply-front-end/js/onloadLocal.js"></script>
+    <script src="/supply-front-end/js/onload.js"></script>
+    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
     <script src="/supply-front-end/js/pushadd.js" defer></script>    
     <script src="/supply-front-end/js/pushdel.js" defer></script>
     <script src="/supply-front-end/js/postfmaction.js"></script>
@@ -132,17 +132,23 @@
                         </div>
                     </div>
                     <div id="homeMapDiv" class="viewer mapDiv">
-                        <!-- <img src="https://www.tourtexas.com/assets/img/maps/austin.jpg" alt=""> -->
                         <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
                         <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
                         <div id="map"></div>
+                        <style>
+                            	#map { 
+                                    display: block;
+                                    height: 60vh;
+                                    width: 100%; }
+
+                        </style>
                         <script>
-                            mapboxgl.accessToken = '<your access token here>';
+                            mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
                             var map = new mapboxgl.Map({
                                 container: 'map', // container id
                                 style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-                                center: [-74.5, 40], // starting position [lng, lat]
-                                zoom: 9 // starting zoom
+                                center: [-97.7553, 30.2264], // starting position [lng, lat]
+                                zoom: 15 // starting zoom
                             });
                         </script>
                     </div>
