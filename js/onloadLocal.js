@@ -435,7 +435,7 @@ let loadTables = () => {
         colVis.appendChild(switchTitleVis);
         colVis.appendChild(switchRowVis);        
         
-        let switchRowUpdate = switchMaker(null, 'visUpdate', 'Map', 'Table');  
+        let switchRowUpdate = switchMaker(null, 'updateSwitch', 'Off', 'On');  
         let switchTitleUpdate = switchTitleMaker('Toggle Live Fleet Update');
 
         let colUpdate = document.createElement('DIV');
