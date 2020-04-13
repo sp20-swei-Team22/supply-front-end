@@ -1,4 +1,7 @@
+var mapExists = {}
+
 let loadTables = () => {
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
     let isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
     let identity = localStorage.getItem('username');
     // console.log(identity)
@@ -119,7 +122,7 @@ let loadTables = () => {
         // console.log(fleetID)
         fleets[fleetID] = [];
     });
-    
+
     // console.log(fleetIDs);
     arr = []
     json.shift()
@@ -135,16 +138,16 @@ let loadTables = () => {
     })
     // console.log(arr);
 
-    
+
     arr.forEach(entry => {
         // console.log(entry);
         key = entry[0];
         // entry.shift();
-        fleets[key].push(entry.slice(1,entry.length));
+        fleets[key].push(entry.slice(1, entry.length));
     })
     // console.log(arr);
     // console.log(fleets);
-    
+
     var colNames = ['Vehicle ID', 'Fleet ID', 'Status', 'Vehicle Type', 'Date Added', 'Liscence Plate', 'Last Heartbeat'];
 
     // console.log(arr);
@@ -172,7 +175,7 @@ let loadTables = () => {
         vids.push(vid);
     }
 
-    colNames.splice(1,1)
+    colNames.splice(1, 1)
 
     var myTab = document.getElementById('myTab');
     var myTabContent = document.getElementById('myTabContent');
@@ -261,7 +264,7 @@ let loadTables = () => {
         let addFormCol = document.createElement('FORM');
         addFormCol.setAttribute('class', `col addVehicle ${idHeader}`);
         addFormCol.setAttribute('style', 'text-align: right;');
-        
+
         let submitAddFormBtn = document.createElement('BUTTON');
         submitAddFormBtn.setAttribute('type', 'submit');
         submitAddFormBtn.innerHTML = 'Submit All';
@@ -298,7 +301,7 @@ let loadTables = () => {
 
             attrDiv.appendChild(attrLabel);
             attrDiv.appendChild(inputDiv);
-            
+
             addFormCol.appendChild(attrDiv);
         });
 
@@ -371,7 +374,7 @@ let loadTables = () => {
 
         let delConfirmRow = document.createElement('DIV');
         delConfirmRow.setAttribute('class', 'row');
-        
+
         let delConfirmCol = document.createElement('DIV');
         delConfirmCol.setAttribute('class', 'col');
 
@@ -410,7 +413,7 @@ let loadTables = () => {
         tabUpdateActionDiv.appendChild(actionTabContent);
 
         tabUpdateContainer.appendChild(tabUpdateActionDiv);
-        
+
         tabUpdateWrapper.appendChild(tabUpdateContainer);
 
         // tabUpdateCollapose.appendChild(tabUpdateWrapper);
@@ -425,7 +428,7 @@ let loadTables = () => {
         tabContentContainer.setAttribute('id', idHeader);
         tabContentContainer.setAttribute('role', 'tabpanel');
         tabContentContainer.setAttribute('aria-labelledby', `${idHeader}Tab`)
-        
+
         let switchRowVis = switchMaker(idHeader, 'visSwitch', 'Map', 'Table');
         let switchTitleVis = switchTitleMaker('Toggle Viewing Methods');
 
@@ -433,9 +436,9 @@ let loadTables = () => {
         colVis.setAttribute('class', 'col');
 
         colVis.appendChild(switchTitleVis);
-        colVis.appendChild(switchRowVis);        
-        
-        let switchRowUpdate = switchMaker(null, 'updateSwitch', 'Off', 'On');  
+        colVis.appendChild(switchRowVis);
+
+        let switchRowUpdate = switchMaker(null, 'updateSwitch', 'Off', 'On');
         let switchTitleUpdate = switchTitleMaker('Toggle Live Fleet Update');
 
         let colUpdate = document.createElement('DIV');
@@ -453,13 +456,17 @@ let loadTables = () => {
         tabContentContainer.appendChild(switchesRow);
         tabContentContainer.appendChild(tabUpdateCollapose);
         tabContentContainer.appendChild(tabUpdateWrapper);
-        
+
 
         let mapDiv = document.createElement('DIV');
         mapDiv.setAttribute('id', `${idHeader}MapDiv`);
         mapDiv.setAttribute('class', 'viewer mapDiv');
-        mapDiv.innerHTML = 'Map goes here';
 
+        let fleetMap = document.createElement('DIV');
+        fleetMap.setAttribute('class', 'mapContainer')
+        fleetMap.setAttribute('id', `${idHeader}Map`)
+
+        mapDiv.appendChild(fleetMap);
         tabContentContainer.appendChild(mapDiv);
 
         let tableDiv = document.createElement('DIV');
@@ -472,7 +479,23 @@ let loadTables = () => {
         tableDiv.appendChild(table);
         tabContentContainer.appendChild(tableDiv);
         myTabContent.insertBefore(tabContentContainer, myTabContent.children[1]);
+        var map = new mapboxgl.Map({
+            container: `fleet${fleetNum}Map`, // container id
+            style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+            center: [-97.7553, 30.2264], // starting position [lng, lat]
+            zoom: 13 // starting zoom
+        });
+        mapExists[`fleet${fleetNum}`] = map;
     })
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
+    var map = new mapboxgl.Map({        
+        container: 'homeMap', // container id
+        style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+        center: [-97.7553, 30.2264], // starting position [lng, lat]
+        zoom: 13 // starting zoom
+    });
+    mapExists['home'] = map;
+    
     $(document).ready(function () {
         $('table.index').DataTable({
             columnDefs: [{
@@ -489,6 +512,26 @@ let loadTables = () => {
     });
 }
 
+$(document).on('click', '.nav-item', function(e) {
+    // console.log(e);
+    let tabID = this.children[0].id;
+    let fleet = tabID.substring(0, tabID.indexOf('T'));
+    let map = mapExists[fleet];
+    // console.log(map);
+    var timesrun = 0;
+    var interval = setInterval(() => {
+        timesrun += 1;
+        // console.log('count')
+        if (timesrun === 4) {
+            clearInterval(interval);
+            // console.log('stopped')
+            return;
+        }
+        map.resize()
+    }, 500);
+    // setTimeout(() => map.resize(), 500);
+})
+
 let switchTitleMaker = (title) => {
     let switchTitle = document.createElement('DIV');
     switchTitle.setAttribute('class', 'row justify-content-center');
@@ -499,36 +542,36 @@ let switchTitleMaker = (title) => {
 }
 
 let switchMaker = (id, classes, left, right) => {
-        let switchLabelVis = document.createElement('LABEL');
-        switchLabelVis.setAttribute('class', 'switch vis');
-        switchLabelVis.setAttribute('style', 'text-align: center');
-        let switchInputVis = document.createElement('INPUT');
-        switchInputVis.setAttribute('type', 'checkbox');
-        switchInputVis.setAttribute('class', classes);
-        if (id != null) switchInputVis.setAttribute('id', id);
-        
-        let switchSpanVis = document.createElement('SPAN');
-        switchSpanVis.setAttribute('class', 'slider round');
+    let switchLabelVis = document.createElement('LABEL');
+    switchLabelVis.setAttribute('class', 'switch vis');
+    switchLabelVis.setAttribute('style', 'text-align: center');
+    let switchInputVis = document.createElement('INPUT');
+    switchInputVis.setAttribute('type', 'checkbox');
+    switchInputVis.setAttribute('class', classes);
+    if (id != null) switchInputVis.setAttribute('id', id);
 
-        switchLabelVis.appendChild(switchInputVis);
-        switchLabelVis.appendChild(switchSpanVis);
+    let switchSpanVis = document.createElement('SPAN');
+    switchSpanVis.setAttribute('class', 'slider round');
 
-        let switchLeft = document.createElement('LABEL');
-        switchLeft.setAttribute('class', 'leftToggle');
-        switchLeft.innerHTML = left;
-        let switchRight = document.createElement('LABEL');
-        switchRight.setAttribute('class', 'rightToggle');
-        switchRight.innerHTML = right;
-        
-        
-        let switchRowVis = document.createElement('DIV');
-        switchRowVis.setAttribute('class', 'row justify-content-center');
+    switchLabelVis.appendChild(switchInputVis);
+    switchLabelVis.appendChild(switchSpanVis);
 
-        switchRowVis.appendChild(switchLeft);
-        switchRowVis.appendChild(switchLabelVis);
-        switchRowVis.appendChild(switchRight);
+    let switchLeft = document.createElement('LABEL');
+    switchLeft.setAttribute('class', 'leftToggle');
+    switchLeft.innerHTML = left;
+    let switchRight = document.createElement('LABEL');
+    switchRight.setAttribute('class', 'rightToggle');
+    switchRight.innerHTML = right;
 
-        return switchRowVis;
+
+    let switchRowVis = document.createElement('DIV');
+    switchRowVis.setAttribute('class', 'row justify-content-center');
+
+    switchRowVis.appendChild(switchLeft);
+    switchRowVis.appendChild(switchLabelVis);
+    switchRowVis.appendChild(switchRight);
+
+    return switchRowVis;
 }
 
 let buildTable = (idHeader, colNames, data) => {
@@ -567,3 +610,4 @@ let buildTable = (idHeader, colNames, data) => {
 
     return table;
 }
+

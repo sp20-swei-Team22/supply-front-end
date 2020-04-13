@@ -89,7 +89,7 @@ function getDispatch(vehicle) {
                     // console.log(dispatchArr);
                     let popupTable = document.getElementById('popupTable');
                     // console.log(popupTable);
-                    oldTBody = popupTable.querySelectorAll('tbody')[0];
+                    let oldTBody = popupTable.querySelectorAll('tbody')[0];
                     // console.log('Old ', oldTBody);
                     popupTable.removeChild(oldTBody);
                     let tbody = fillTBody(dispatchArr);

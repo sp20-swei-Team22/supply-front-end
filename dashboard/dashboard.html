@@ -34,8 +34,8 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
 
     <!-- Page Specific Scripts -->
-    <script src="/supply-front-end/js/onload.js"></script>
-    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
+    <!-- <script src="/supply-front-end/js/onload.js"></script> -->
+    <script src="/supply-front-end/js/onloadLocal.js"></script>
     <script src="/supply-front-end/js/pushadd.js" defer></script>    
     <script src="/supply-front-end/js/pushdel.js" defer></script>
     <script src="/supply-front-end/js/postfmaction.js"></script>
@@ -122,40 +122,23 @@
                         <div class="col">
                             <div class="row justify-content-center" style="margin-bottom: 5px;">Toggle Live Fleet Update</div>
                             <div class="row justify-content-center">
-                                <label class="leftToggle">Map</label>
+                                <label class="leftToggle">Off</label>
                                 <label class="switch vis">
                                     <input type="checkbox" class="updateSwitch">
                                     <span class="slider round"></span>
                                 </label>
-                                <label class="rightToggle">Table</label>
+                                <label class="rightToggle">On</label>
                             </div>
                         </div>
                     </div>
                     <div id="homeMapDiv" class="viewer mapDiv">
                         <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
                         <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
-                        <div id="map"></div>
-                        <style>
-                            	#map { 
-                                    display: block;
-                                    height: 60vh;
-                                    width: 100%; }
-
-                        </style>
-                        <script>
-                            mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
-                            var map = new mapboxgl.Map({
-                                container: 'map', // container id
-                                style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-                                center: [-97.7553, 30.2264], // starting position [lng, lat]
-                                zoom: 15 // starting zoom
-                            });
-                        </script>
+                        <div id="homeMap" class="mapContainer"></div>
                     </div>
                     <div id="homeTableDiv" class="viewer tableDiv">
                     </div>
-                </div>
-                
+                </div>                
                 <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
                     <form id="newFleetForm">
                         <div class="form-group input-group">
@@ -181,7 +164,9 @@
             </div>
         </div>
     </main>
+
     <script src="/supply-front-end/js/dispatchrecord.js"></script>
+    <!-- <script src="/supply-front-end/js/loadmap.js"></script> -->
 
     <footer class="page-footer font-small lighten-5 shadow-lg">
         <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
