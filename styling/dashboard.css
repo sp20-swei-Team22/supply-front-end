@@ -117,7 +117,7 @@ a.nav-link {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: rgb(167, 167, 167);
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -168,4 +168,45 @@ input:checked+.slider:before {
     padding: 1px 0px 0px 5px;
     text-align: left;
     font-size: 14px;
+}
+
+input[type=search] {
+    border-width: 0px;
+    background-color: inherit;
+    border-bottom-color: #cacaca;
+    border-bottom-width: 3px;
+    padding-left: 5px;
+}
+
+.mapDiv {
+    height: 60vh;
+}
+.mapContainer, .dataTables_wrapper {
+    background-color: whitesmoke !important;
+    border-style: ridge !important;
+    border-width: 4px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 15px;
+    /* height: 60vh; */
+}
+
+.mapContainer.mapboxgl-map{
+    height: 100%;
+    width: 100%;
+}
+
+canvas.mapboxgl-canvas {
+    height: auto !important;
+    /* width: 100% !important; */
+}
+
+table, thead, tbody, tr, th, td {
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-color: black !important;
+}
+
+tr.even {
+    background-color: #cacaca!important;
 }
