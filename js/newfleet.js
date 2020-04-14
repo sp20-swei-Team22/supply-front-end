@@ -17,7 +17,7 @@ $('#newFleetForm').submit(async e => {
     });
     console.log(fleet);
     
-    var url = 'https://supply.team22.softwareengineeringii.com/addFleet';
+    var url = 'https://supply.team22.softwareengineeringii.com/supply/fleets/add';
     await fetch(url, {
         method: 'POST',
         headers: {

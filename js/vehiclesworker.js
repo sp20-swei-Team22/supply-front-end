@@ -3,13 +3,13 @@ self.addEventListener('message', function (e) {
     var data = e.data;
     if (data.cmd == 'start') {
         var fid = data.fid;
-        var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
+        var url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
             params = {
                 'fid': fid
             }
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
         if (fid == 'home') {
-            url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/")
+            url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles")
         }
         // console.log(url);
         setInterval(function () {

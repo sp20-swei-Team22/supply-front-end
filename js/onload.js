@@ -5,7 +5,7 @@ let loadTables = () => {
     // console.log(identity)
     document.getElementById('accountName').text = identity;
 
-    var url = new URL("https://supply.team22.softwareengineeringii.com/vehicleRequest/"),
+    var url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
         params = {
             'fmid': identity
         }

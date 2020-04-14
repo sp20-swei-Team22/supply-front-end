@@ -2,7 +2,7 @@ function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
     // console.log(vehicleID)
 
-    var url = new URL("https://supply.team22.softwareengineeringii.com/getDispatch/"),
+    var url = new URL("https://supply.team22.softwareengineeringii.com/supply/dispatch"),
         params = {
             'vid': vehicleID
         }

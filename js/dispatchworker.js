@@ -3,7 +3,7 @@ self.addEventListener('message', function (e) {
     var data = e.data;
     if (data.cmd == 'start') {
         var vid = data.vid;
-        var url = new URL("https://supply.team22.softwareengineeringii.com/getDispatch/"),
+        var url = new URL("https://supply.team22.softwareengineeringii.com/supply/dispatch"),
             params = {
                 'vid': vid
             }

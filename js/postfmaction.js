@@ -24,8 +24,9 @@ $(document).on('submit', '.confirm', async e => {
                 break;
             }
         // console.log(vehicles);
-                
-        var url = `https://supply.team22.softwareengineeringii.com/${confirmType}Vehicle`;
+        confirmType = confirmType.substring(0,3);
+        console.log(confirmType)
+        var url = `https://supply.team22.softwareengineeringii.com/vehicles/${confirmType}`;
         await fetch(url, {
             method: 'POST',
             headers: {
