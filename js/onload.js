@@ -86,6 +86,7 @@ let loadTables = () => {
                     activeWorkers['home'] = worker
             
                 $(document).ready(function () {
+                    $('table.home').DataTable().clear().destroy();
                     $('table.home').DataTable({
                         columnDefs: [{
                             targets: 3,
@@ -133,7 +134,8 @@ $(document).on('click', '.nav-item.mytab', function(e) {
         // console.log('New ', tbody);
         vehicleTable.appendChild(tbody);
         $(document).ready(function () {
-            $('table.home').DataTable({
+        $('table.home').DataTable().clear().destroy();
+        $('table.home').DataTable({
                 columnDefs: [{
                     targets: 3,
                     orderable: false
