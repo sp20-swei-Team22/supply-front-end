@@ -41,6 +41,19 @@ $(document).on('submit', '.confirm', async e => {
                 for (option in select.options) {
                     select.options.remove(0);
                 }
+                // if (confirmType == 'remove') {
+                //     for (var option = 0; option < optionsCollection.length; option++) {
+                //         let optionValueList = optionsCollection[option].value.split(' ')
+                //         // console.log(optionValueList);
+                //         let vehicleid = optionValueList[0].substring(optionValueList[0].indexOf(': ') + 1, );
+                //         // console.log(fleetid);
+                //         // console.log(vehicleid);
+                //         let row = document.getElementById(`vid${vehicleid}`);
+                //         let tbody = row.parentElement;
+                //         // console.log(tbody);
+                //         tbody.removeChild(row);
+                //     }
+                // }
             } else {
                 alert('Something went wrong');
             }
@@ -81,11 +94,6 @@ function postRemoveBody(optionsCollection) {
         };
         // console.log(vehicleDict);
         vehicles.push(vehicleDict);
-        console.log(vehicleid);
-        let row = document.getElementById(`vid${vehicleid}`);
-        let tbody = row.parentElement;
-        console.log(tbody);
-        tbody.removeChild(row);
     }
     return vehicles;
 }
