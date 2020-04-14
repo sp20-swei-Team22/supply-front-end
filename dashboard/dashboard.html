@@ -34,16 +34,18 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
 
     <!-- Page Specific Scripts -->
-    <script src="/supply-front-end/js/onload.js"></script>
-    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
+    <!-- <script src="/supply-front-end/js/onload.js"></script> -->
+    <script src="/supply-front-end/js/onloadLocal.js"></script>
+
+    <script src="/supply-front-end/js/formatvehiclejson.js"></script>
+    <script src="/supply-front-end/js/filltbody.js"></script>
+
     <script src="/supply-front-end/js/pushadd.js" defer></script>    
     <script src="/supply-front-end/js/pushdel.js" defer></script>
     <script src="/supply-front-end/js/postfmaction.js"></script>
 
     <script src="/supply-front-end/js/newfleet.js" defer></script>
-
     <script src="/supply-front-end/js/togglefleetvis.js"></script>
-    <script src="/supply-front-end/js/togglelivefleetupdate.js" defer></script>
 
 
     <!-- Page Specific Styles -->
@@ -96,7 +98,7 @@
 
         <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
+                <li class="nav-item mytab">
                     <a class="nav-link active" id="homeTab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
                 </li>
 
@@ -106,79 +108,8 @@
             </ul>
 
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="homeTab">
-                    <div class="row">
-                        <div class="col">
-                            <div class="row justify-content-center" style="margin-bottom: 5px;">Viewing Method</div>
-                            <div class="row justify-content-center">
-                                <label class="leftToggle">Map</label>
-                                <label class="switch vis">
-                                    <input type="checkbox" class="visSwitch" id="home">
-                                    <span class="slider round"></span>
-                                </label>
-                                <label class="rightToggle">Table</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row justify-content-center" style="margin-bottom: 5px;">Toggle Live Fleet Update</div>
-                            <div class="row justify-content-center">
-                                <label class="leftToggle">Off</label>
-                                <label class="switch vis">
-                                    <input type="checkbox" class="updateSwitch">
-                                    <span class="slider round"></span>
-                                </label>
-                                <label class="rightToggle">On</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="homeMapDiv" class="viewer mapDiv">
-                        <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
-                        <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
-                        <div id="homeMap" class="mapContainer"></div>
-                    </div>
-                    <div id="homeTableDiv" class="viewer tableDiv">
-                    </div>
-                </div>                
-                <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
-                    <form id="newFleetForm">
-                        <div class="form-group input-group">
-                            <label for="region">Region</label>
-                            <div class="input-group">
-                                <input required type="text" id="region" placeholder="Ex: Austin">
-                            </div>
-                        </div>
-                        <div class="form-group input-group">
-                            <label for="serviceType">Region</label>
-                            <div class="input-group">
-                                <select id="serviceType">
-                                    <option value="1">Dry Cleaning</option>
-                                    <option value="2">RX</option>
-                                    <option value="3">Coffee</option>
-                                    <option value="4">Events</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn-block">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script src="/supply-front-end/js/dispatchrecord.js"></script>
-    <!-- <script src="/supply-front-end/js/loadmap.js"></script> -->
-
-    <footer class="page-footer font-small lighten-5 shadow-lg">
-        <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
-            <a class="dark-grey-text" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
-        </div>
-    </footer>
-</body>
-
-</html>
-
-
-                    <!-- <button data-toggle="collapse" class="coll collapsed" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="homeTab">
+                    <button data-toggle="collapse" class="coll collapsed" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                         Update Your Fleets
                     </button>
                     <div class="collapse" id="collapseExample">
@@ -238,14 +169,14 @@
                                         <div class="row">
                                             <form class="col removeVehicle">
                                                 <a>Double click the vehicle you want to remove</a>
-                                                <select class="vidsThatCanBeDeleted" multiple size="5" style="width: 100%;"></select>
+                                                <select id="vidsThatCanBeDeleted" multiple size="5" style="width: 100%;"></select>
                                             </form>
                                         </div>
                                         <div class="row">
                                             <div class="col">
                                                 <form class="confirm remove">
                                                     <button>Confirm Removal</button>
-                                                    <select class="selectsForUpdates" multiple size="5" style="width: 100%;"></select>
+                                                    <select class="selectsForUpdates" id="vidsToDelete" multiple size="5" style="width: 100%;"></select>
                                                 </form>
                                             </div>
                                         </div>
@@ -256,4 +187,71 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
+                    <div class="row justify-content-left" style="margin: 5px 0px 5px 10px">Viewing Method</div>
+                    <div class="row justify-content-left" style="margin-left: 10px;">
+                        <label class="leftToggle">Map</label>
+                        <label class="switch vis">
+                            <input type="checkbox" class="visSwitch" id="home">
+                            <span class="slider round"></span>
+                        </label>
+                        <label class="rightToggle">Table</label>
+                    </div>
+                    <div id="homeMapDiv" class="viewer mapDiv">
+                        <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+                        <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+                        <div id="homeMap" class="mapContainer"></div>
+                    </div>
+                    <div id="homeTableDiv" class="viewer tableDiv">
+                        <table id="homeTable" class="home" style="max-width: 100vw;">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle ID</th>
+                                    <th>Fleet ID</th>
+                                    <th>Status</th>
+                                    <th>Vehicle Type</th>
+                                    <th>Date Added</th>
+                                    <th>License Plate</th>
+                                    <th>Last Heartbeat</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>                
+                <div class="tab-pane fade" id="newFleet" role="tabpanel" aria-labelledby="newFleetTab">
+                    <form id="newFleetForm">
+                        <div class="form-group input-group">
+                            <label for="region">Region</label>
+                            <div class="input-group">
+                                <input required type="text" id="region" placeholder="Ex: Austin">
+                            </div>
+                        </div>
+                        <div class="form-group input-group">
+                            <label for="serviceType">Region</label>
+                            <div class="input-group">
+                                <select id="serviceType">
+                                    <option value="1">Dry Cleaning</option>
+                                    <option value="2">RX</option>
+                                    <option value="3">Coffee</option>
+                                    <option value="4">Events</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-block">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/supply-front-end/js/dispatchrecord.js"></script>
+    <!-- <script src="/supply-front-end/js/loadmap.js"></script> -->
+
+    <footer class="page-footer font-small lighten-5 shadow-lg">
+        <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
+            <a class="dark-grey-text" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+        </div>
+    </footer>
+</body>
+
+</html>
