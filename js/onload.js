@@ -86,12 +86,6 @@ let loadTables = () => {
                     activeWorkers['home'] = worker
             
                 $(document).ready(function () {
-                    $('table.index').DataTable({
-                        columnDefs: [{
-                            targets: 2,
-                            orderable: false
-                        }]
-                    });
                     $('table.home').DataTable({
                         columnDefs: [{
                             targets: 3,
