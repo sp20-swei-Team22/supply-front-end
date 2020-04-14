@@ -1,7 +1,3 @@
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
-
 function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
     // console.log(vehicleID)
@@ -92,7 +88,7 @@ function getDispatch(vehicle) {
                     let oldTBody = popupTable.querySelectorAll('tbody')[0];
                     // console.log('Old ', oldTBody);
                     popupTable.removeChild(oldTBody);
-                    let tbody = fillTBody(dispatchArr);
+                    let tbody = fillTBody(dispatchArr, 'd');
                     // console.log('New ', tbody);
                     popupTable.appendChild(tbody);
                 }, false);
@@ -109,21 +105,6 @@ function getDispatch(vehicle) {
     }).catch(function (error) {
         console.error(error)
     });
-}
-
-function fillTBody(dispatchArr) {
-    let tbody = document.createElement('TBODY');
-
-    dispatchArr.forEach(function (entry) {
-        var row = document.createElement('TR');
-        entry.forEach(function (colVal) {
-            var cell = document.createElement('TD');
-            cell.appendChild(document.createTextNode(colVal));
-            row.append(cell);
-        });
-        tbody.appendChild(row);
-    });
-    return tbody;
 }
 
 function formatDispatchJSON(parsedJSON) {
