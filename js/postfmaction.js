@@ -38,8 +38,8 @@ $(document).on('submit', '.confirm', async e => {
             // console.log(length);
             if (res.status == 200) {
                 alert(`Vehicle${vehicles.length > 0 ? 's' : ''} ${confirmType == 'add' ? 'added' : 'removed'}!`);
-                for (var i = length - 1; i >= 0; i--) {
-                    select.options[i] = null;
+                for (option in select.options) {
+                    select.options.remove(0);
                 }
             } else {
                 alert('Something went wrong');
