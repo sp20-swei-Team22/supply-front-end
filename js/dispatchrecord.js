@@ -91,6 +91,12 @@ function getDispatch(vehicle) {
                     let tbody = fillTBody(dispatchArr, 'd');
                     // console.log('New ', tbody);
                     popupTable.appendChild(tbody);
+                    $('table.index').DataTable({
+                        columnDefs: [{
+                            targets: 2,
+                            orderable: false
+                        }]
+                    });
                 }, false);
 
                 $('#dispatchRecordPopup').on('hidden.bs.modal', function (e) {

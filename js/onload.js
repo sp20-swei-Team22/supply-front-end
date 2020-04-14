@@ -138,7 +138,14 @@ $(document).on('click', '.nav-item.mytab', function(e) {
         let tbody = fillTBody(vehiclesData, 'o');
         // console.log('New ', tbody);
         vehicleTable.appendChild(tbody);
-
+        $(document).ready(function () {
+            $('table.home').DataTable({
+                columnDefs: [{
+                    targets: 3,
+                    orderable: false
+                }]
+            });
+        });
     }, false);
     activeWorkers[fid] = worker
     // console.log(activeWorkers);
