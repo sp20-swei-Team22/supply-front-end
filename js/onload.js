@@ -1,3 +1,4 @@
+var activeWorkers = {};
 let loadTables = () => {
     let isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
     let identity = localStorage.getItem('username');
