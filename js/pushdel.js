@@ -1,25 +1,32 @@
-$(document).on('dblclick', '.vidsThatCanBeDeleted', function() {
-    // console.log(this);
+$(document).on('dblclick', '#vidsThatCanBeDeleted', function () {
+    // console.log(this.id);
     // console.log(this.value);
-    let myConfirmSelect = $(this).parent().parent().parent().children()[1].children[0].children[0].children[1];
+    let splitter = this.value.split(' -- ')[0];
+    // console.log(splitter);
+    let vid = splitter.substring(splitter.indexOf(': ') + 2);
+    let myConfirmSelect = $('form.confirm.remove').children()[1];
     // console.log(myConfirmSelect);
     $(myConfirmSelect)
         .append($('<option></option>')
-            .attr('value', this.value)
-            .text(`Vehicle ID: ${this.value}`)
-            );
-    $(this).children(`option[value=${this.value}]`).remove();
+            .attr('value', vid)
+            .text(`${this.value}`)
+        );
+    jQuery(`#vidsThatCanBeDeleted option:contains('${this.value}')`).remove();
 });
 
-$(document).on('dblclick', '.selectsForUpdates', function() {
+$(document).on('dblclick', '#vidsToDelete', function () {
     // console.log(this);
     // console.log(this.value);
-    let myRemoveSelect = $(this).parent().parent().parent().parent().children()[0].children[0].children[1];
-    // console.log(myRemoveSelect);
-    $(myRemoveSelect)
-        .append($('<option></option>')
-            .attr('value', this.value)
-            .text(`Vehicle ID: ${this.value}`)
+    let val = $("#vidsToDelete option:selected").text();
+    // console.log(val);
+    if (val != '') {
+        let myRemoveSelect = $('#vidsThatCanBeDeleted');
+        // console.log(myRemoveSelect);
+        $(myRemoveSelect)
+            .append($('<option></option>')
+                .attr('value', val)
+                .text(`${val}`)
             );
-    $(this).children(`option[value=${this.value}]`).remove();
+        jQuery(`#vidsToDelete option:contains('${val}')`).remove();
+    }
 });
