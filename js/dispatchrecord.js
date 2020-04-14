@@ -46,7 +46,7 @@ function getDispatch(vehicle) {
                     th.innerHTML = name;
                     tr.appendChild(th);
                 });
-                let tbody = fillTBody(dispatchArr);
+                let tbody = fillTBody(dispatchArr, 'd');
 
                 popupTable.appendChild(tbody);
                 modalTable.appendChild(popupTable);

@@ -25,7 +25,7 @@ let loadTables = () => {
                 // console.log(arr);
             
                 let homeTable = document.getElementById('homeTable');
-                let tbody = fillTBody(arr);
+                let tbody = fillTBody(arr, 'o');
                 homeTable.appendChild(tbody);
             
                 let deleteSelect = document.getElementById('vidsThatCanBeDeleted');
@@ -78,7 +78,7 @@ let loadTables = () => {
                         let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
                         // console.log('Old ', oldTBody);
                         vehicleTable.removeChild(oldTBody);
-                        let tbody = fillTBody(vehiclesData);
+                        let tbody = fillTBody(vehiclesData, 'o');
                         // console.log('New ', tbody);
                         vehicleTable.appendChild(tbody);
             
@@ -135,7 +135,7 @@ $(document).on('click', '.nav-item.mytab', function(e) {
         let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
         // console.log('Old ', oldTBody);
         vehicleTable.removeChild(oldTBody);
-        let tbody = fillTBody(vehiclesData);
+        let tbody = fillTBody(vehiclesData, 'o');
         // console.log('New ', tbody);
         vehicleTable.appendChild(tbody);
 
