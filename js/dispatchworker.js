@@ -26,7 +26,7 @@ self.addEventListener('message', function (e) {
                 console.log(error)
                 self.postMessage('fetch failed')
             });
-        }, 500)
+        }, 5_000)
     } else if (data.cmd == 'stop') {
         self.close();
     }
