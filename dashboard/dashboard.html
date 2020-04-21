@@ -20,6 +20,9 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu" />
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
+    <!-- Site Wide Scripts -->
+    <script src="/common-services/js/redirect.js"></script>
+
     <!-- Site Wide Style -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">   
@@ -34,9 +37,8 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/enum.js"></script>
 
     <!-- Page Specific Scripts -->
-    <script src="/common-services/js/redirect.js"></script>
+    <script src="/common-services/js/checksession.js"></script>
     <script src="/supply-front-end/js/onload.js"></script>
-    <!-- <script src="/supply-front-end/js/onloadLocal.js"></script> -->
 
     <script src="/supply-front-end/js/formatvehiclejson.js"></script>
     <script src="/supply-front-end/js/filltbody.js"></script>
@@ -47,13 +49,6 @@
 
     <script src="/supply-front-end/js/newfleet.js" defer></script>
     <script src="/supply-front-end/js/togglefleetvis.js"></script>
-
-    <script>
-        if (localStorage.getItem('username') == null) {
-            window.location.assign('https://supply.team22.softwareengineeringii.com');
-        }
-    </script>
-
 
     <!-- Page Specific Styles -->
     <link rel="stylesheet" href="/supply-front-end/styling/table.css" media="screen">
@@ -252,7 +247,6 @@
     </main>
 
     <script src="/supply-front-end/js/dispatchrecord.js"></script>
-    <!-- <script src="/supply-front-end/js/loadmap.js"></script> -->
 
     <footer class="page-footer font-small lighten-5 shadow-lg">
         <div class="footer-copyright text-center text-black-50 py-3">© 2020 Copyright:
