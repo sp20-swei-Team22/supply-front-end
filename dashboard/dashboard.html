@@ -48,6 +48,12 @@
     <script src="/supply-front-end/js/newfleet.js" defer></script>
     <script src="/supply-front-end/js/togglefleetvis.js"></script>
 
+    <script>
+        if (localStorage.getItem('username') == null) {
+            window.location.assign('https://supply.team22.softwareengineeringii.com');
+        }
+    </script>
+
 
     <!-- Page Specific Styles -->
     <link rel="stylesheet" href="/supply-front-end/styling/table.css" media="screen">

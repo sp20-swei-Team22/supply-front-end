@@ -1,8 +1,5 @@
 var activeWorkers = {};
 let loadTables = () => {
-    if (localStorage.getItem('username') == null) {
-        window.location.assign('https://supply.team22.softwareengineeringii.com');
-    }
     let isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
     let identity = localStorage.getItem('username');
     // console.log(identity)
