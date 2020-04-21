@@ -1,109 +1,125 @@
 var activeWorkers = {};
 let loadTables = () => {
-    let isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
     let identity = localStorage.getItem('username');
     // console.log(identity)
     document.getElementById('accountName').text = identity;
-
-    var url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
+    var url = new URL("https://supply.team22.softwareengineeringii.com/supply/fleets"),
         params = {
-            'fmid': identity
+            'user': identity
         }
-
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     // console.log(url)
+    fetch(url).then(fleetRes => {
+        fleetRes.json().then(fleets => {
+            if (fleetRes.status == 200) {
+                url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
+                    params = {
+                        'user': identity
+                    }
+                Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+                // console.log(url)
 
-    fetch(url).then(res => {
-        res.json().then(json => {
-            if (res.status == 200) {
-                // console.log(json);
-                // alert('got the vehicles! if there are any ._.');
-                fleetIDs = json[0]['fleets'];
-                // console.log(fleetIDs);
-                // console.log(json)
-                let arr = formatVehicleJSON(json, 'o');
-                // console.log(arr);
-            
-                let homeTable = document.getElementById('homeTable');
-                let tbody = fillTBody(arr, 'o');
-                homeTable.appendChild(tbody);
-            
-                let deleteSelect = document.getElementById('vidsThatCanBeDeleted');
-                // console.log(deleteSelect);
-                deleteOptionFormat(deleteSelect, arr);
-                // console.log(deleteSelect);
-            
-                var myTab = document.getElementById('myTab');
-                fleetIDs.forEach(fleetNum => {
-                    let idHeader = `fleet${fleetNum}`;
-            
-                    /*
-                        First generate the tab
-                    */
-                    let tabLI = document.createElement('LI');
-                    tabLI.setAttribute('class', 'nav-item mytab');
-            
-                    let tabA = document.createElement('A');
-                    let tabId = `${idHeader}Tab`
-                    tabA.setAttribute('class', 'nav-link')
-                    tabA.setAttribute('id', tabId);
-                    tabA.setAttribute('data-toggle', 'tab');
-                    tabA.setAttribute('href', `#${idHeader}`);
-                    tabA.setAttribute('rold', 'tab');
-                    tabA.setAttribute('aria-controls', idHeader);
-                    tabA.setAttribute('aria-selected', 'false');
-                    tabA.innerHTML = `Fleet ${fleetNum}`;
-            
-                    tabLI.appendChild(tabA);
-                    myTab.insertBefore(tabLI, myTab.children[1]);
-            
-                })
-                mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
-                var map = new mapboxgl.Map({        
-                    container: 'homeMap', // container id
-                    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-                    center: [-97.7553, 30.2264], // starting position [lng, lat]
-                    zoom: 13 // starting zoom
-                });
-            
-                var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
-                    worker.postMessage({ 'cmd': 'start', 'fid': 'home' });
-                    worker.addEventListener('message', function (e) {
-                        // console.log(e.data);
-                        let vehiclesJSON = e.data;
-                        let vehiclesData = formatVehicleJSON(vehiclesJSON);
-                        // console.log(vehiclesData);
-                        let vehicleTable = document.getElementById('homeTable')
-                        // console.log(vehicleTable);
-                        let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
-                        // console.log('Old ', oldTBody);
-                        vehicleTable.removeChild(oldTBody);
-                        let tbody = fillTBody(vehiclesData, 'o');
-                        // console.log('New ', tbody);
-                        vehicleTable.appendChild(tbody);
-            
-                    }, false);
-                    activeWorkers['home'] = worker
-            
-                $(document).ready(function () {
-                    $('table.home').DataTable().clear().destroy();
-                    $('table.home').DataTable({
-                        columnDefs: [{
-                            targets: 3,
-                            orderable: false
-                        }]
-                    });
+                fetch(url).then(vehicleRes => {
+                    vehicleRes.json().then(json => {
+                        if (vehicleRes.status == 200) {
+                            // console.log(json);
+                            // alert('got the vehicles! if there are any ._.');
+                            fleetNums = []
+                            Object.keys(fleets).forEach(fleet => {
+                                fleetNums.push(fleets[fleet]['fleetid']);
+                            })
+                            // console.log(fleetNums);
+                            // console.log(json)
+                            let arr = formatVehicleJSON(json, 'o');
+                            // console.log(arr);
+
+                            let homeTable = document.getElementById('homeTable');
+                            let tbody = fillTBody(arr, 'o');
+                            homeTable.appendChild(tbody);
+
+                            let deleteSelect = document.getElementById('vidsThatCanBeDeleted');
+                            // console.log(deleteSelect);
+                            deleteOptionFormat(deleteSelect, arr);
+                            // console.log(deleteSelect);
+
+                            var myTab = document.getElementById('myTab');
+                            fleetNums.forEach(fleetNum => {
+                                let idHeader = `fleet${fleetNum}`;
+
+                                /*
+                                    First generate the tab
+                                */
+                                let tabLI = document.createElement('LI');
+                                tabLI.setAttribute('class', 'nav-item mytab');
+
+                                let tabA = document.createElement('A');
+                                let tabId = `${idHeader}Tab`
+                                tabA.setAttribute('class', 'nav-link')
+                                tabA.setAttribute('id', tabId);
+                                tabA.setAttribute('data-toggle', 'tab');
+                                tabA.setAttribute('href', `#${idHeader}`);
+                                tabA.setAttribute('rold', 'tab');
+                                tabA.setAttribute('aria-controls', idHeader);
+                                tabA.setAttribute('aria-selected', 'false');
+                                tabA.innerHTML = `Fleet ${fleetNum}`;
+
+                                tabLI.appendChild(tabA);
+                                myTab.insertBefore(tabLI, myTab.children[1]);
+
+                            })
+                            mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
+                            var map = new mapboxgl.Map({
+                                container: 'homeMap', // container id
+                                style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+                                center: [-97.7553, 30.2264], // starting position [lng, lat]
+                                zoom: 13 // starting zoom
+                            });
+
+                            var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
+                            worker.postMessage({ 'cmd': 'start', 'fid': 'home' });
+                            worker.addEventListener('message', function (e) {
+                                // console.log(e.data);
+                                let vehiclesJSON = e.data;
+                                let vehiclesData = formatVehicleJSON(vehiclesJSON);
+                                // console.log(vehiclesData);
+                                let vehicleTable = document.getElementById('homeTable')
+                                // console.log(vehicleTable);
+                                let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
+                                // console.log('Old ', oldTBody);
+                                vehicleTable.removeChild(oldTBody);
+                                let tbody = fillTBody(vehiclesData, 'o');
+                                // console.log('New ', tbody);
+                                vehicleTable.appendChild(tbody);
+
+                            }, false);
+                            activeWorkers['home'] = worker
+
+                            $(document).ready(function () {
+                                $('table.home').DataTable().clear().destroy();
+                                $('table.home').DataTable({
+                                    columnDefs: [{
+                                        targets: 3,
+                                        orderable: false
+                                    }]
+                                });
+                            });
+                        } else {
+                            alert('something went wrong');
+                        }
+                    })
+                }).catch(err => {
+                    console.log('Error: ', err);
                 });
             } else {
                 alert('something went wrong');
             }
         })
     }).catch(err => {
-        console.log('Error: ', err);
+        console.log(err)
     });
 }
 
-$(document).on('click', '.nav-item.mytab', function(e) {
+$(document).on('click', '.nav-item.mytab', function (e) {
     // console.log(e);
     let tabID = this.children[0].id;
     let fleet = tabID.substring(0, tabID.indexOf('T'));
@@ -115,7 +131,7 @@ $(document).on('click', '.nav-item.mytab', function(e) {
     // console.log(activeWorkers);
     // console.log(Object.keys(activeWorkers).length == 1);
     Object.keys(activeWorkers).forEach(tab => {
-        activeWorkers[tab].postMessage({'cmd': 'stop'})
+        activeWorkers[tab].postMessage({ 'cmd': 'stop' })
         delete activeWorkers[tab]
     })
     var worker = new Worker('/supply-front-end/js/vehiclesworker.js');
@@ -134,8 +150,8 @@ $(document).on('click', '.nav-item.mytab', function(e) {
         // console.log('New ', tbody);
         vehicleTable.appendChild(tbody);
         $(document).ready(function () {
-        $('table.home').DataTable().clear().destroy();
-        $('table.home').DataTable({
+            $('table.home').DataTable().clear().destroy();
+            $('table.home').DataTable({
                 columnDefs: [{
                     targets: 3,
                     orderable: false
@@ -152,7 +168,7 @@ function deleteOptionFormat(select, arr) {
         let option = document.createElement('OPTION');
         // option.setAttribute('value', vehicle[0]);
         let optionText = document.createTextNode(
-            `Vehicle ID: ${vehicle[0]} -- Fleet: ${vehicle[1]} -- Vehicle Type: ${vehicle[3]} -- License Plate: ${vehicle[5]} ` 
+            `Vehicle ID: ${vehicle[0]} -- Fleet: ${vehicle[1]} -- Vehicle Type: ${vehicle[3]} -- License Plate: ${vehicle[5]} `
         )
         option.appendChild(optionText);
         select.appendChild(option);
@@ -201,7 +217,7 @@ function adjustUpdateForm(fid) {
         }
         rebuildArr.push(wantedData);
     }
-    rebuildArr = rebuildArr.splice(0, rebuildArr.length-3);
+    rebuildArr = rebuildArr.splice(0, rebuildArr.length - 3);
     // console.log(rebuildArr);
     // console.log(fid);
     /* Filter the list to account for what tab we are in */
@@ -214,7 +230,7 @@ function adjustUpdateForm(fid) {
         // console.log(confirmDelSelect.options[option].innerHTML);
         let vid = text.split(' -- ')[0];
         // console.log(vid);
-        vid = vid.substring(vid.indexOf(': ') + 2,);
+        vid = vid.substring(vid.indexOf(': ') + 2);
         // console.log(vid);
         vidsInDelSelect.push(vid);
     }
