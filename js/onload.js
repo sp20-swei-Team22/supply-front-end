@@ -66,7 +66,7 @@ let loadTables = () => {
                     zoom: 13 // starting zoom
                 });
             
-                var worker = new Worker('/supply-front-end/js/vehiclesworker.js');
+                var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
                     worker.postMessage({ 'cmd': 'start', 'fid': 'home' });
                     worker.addEventListener('message', function (e) {
                         // console.log(e.data);

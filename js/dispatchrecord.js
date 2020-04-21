@@ -76,7 +76,7 @@ function getDispatch(vehicle) {
                     });
                 });
 
-                var worker = new Worker('/supply-front-end/js/dispatchworker.js');
+                var worker = new Worker('/supply-front-end/js/workers/dispatchworker.js');
                 worker.postMessage({ 'cmd': 'start', 'vid': vehicleID });
                 worker.addEventListener('message', function (e) {
                     // console.log(e.data);
