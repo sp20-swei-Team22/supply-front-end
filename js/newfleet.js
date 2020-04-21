@@ -1,4 +1,4 @@
-$('#newFleetForm').submit(async e => {
+$('#newFleetForm').submit(e => {
     e.preventDefault();
 
     // console.log(e);
@@ -11,14 +11,14 @@ $('#newFleetForm').submit(async e => {
     // console.log(form);
     console.log(fields);
     
-    fields.forEach((e, i) => {
+    fields.forEach(e => {
         // console.log(e.id);
         fleet[`${e.id}`] = e.value;
     });
     console.log(fleet);
     
     var url = 'https://supply.team22.softwareengineeringii.com/supply/fleets/add';
-    await fetch(url, {
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -28,6 +28,9 @@ $('#newFleetForm').submit(async e => {
     }).then(res => {
         if (res.status == 200) {
             alert('Fleet added!');
+            // fields.forEach(e => {
+            //     e.value = '';
+            // })
         } else {
             alert('Something went wrong');
         }
