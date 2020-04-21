@@ -1,6 +1,5 @@
 function formatVehicleJSON(json) {
     arr = []
-    json.shift()
     json.forEach(vehicleDict => {
         // console.log(vehicleDict);
         let dateAdded = vehicleDict['date_added']
