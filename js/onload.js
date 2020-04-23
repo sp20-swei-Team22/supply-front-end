@@ -1,5 +1,4 @@
 var activeWorkers = {};
-var vehicleMark = {};
 let loadTables = () => {
     let identity = localStorage.getItem('username');
     // console.log(identity)
@@ -78,22 +77,19 @@ let loadTables = () => {
 
                             console.log(json)
                             var carids = []
-                            var geojsons = [];
+                            var geojson = [];
                             json.forEach(car => {
-                                let vid = car['vehicleid']
-                                let geojson = {
+                                carids.push(car.vehicleid)
+                                geojson.push({
                                     type: 'Feature',
                                     geometry: {
                                         type: "Point",
                                         coordinates: [car.current_lon, car.current_lat],
                                         id: car.vehicleid.toString()
                                     }
-                                }
-                                carids.push(vid)
-                                geojsons.push(geojson);
-                                vehicleMark[vid] = geojson
+                                });
                             });
-                            console.log(geojsons);
+                            console.log(geojson);
                             //This needs a datastream url in order for the points to be dynamic
                             //Let me know if we want to do a pop up for the cars with their info
                             map.on('load', function () {
@@ -101,12 +97,12 @@ let loadTables = () => {
                                 // window.setInterval((){
                                 //   map.getSource(id).setData(dataStreamUrl);
                                 // }, 1500);
-                                console.log(geojsons);
-                                for (car in geojsons) {
-                                    var id = geojsons[car].geometry.id.toString()
+                                console.log(geojson);
+                                for (car in geojson) {
+                                    var id = geojson[car].geometry.id.toString()
                                     map.addSource(id, {
-                                        'type': 'geojsons',
-                                        'data': geojsons[car]
+                                        'type': 'geojson',
+                                        'data': geojson[car]
                                     });
                                     //console.log(id)
                                     map.addLayer({
