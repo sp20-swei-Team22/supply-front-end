@@ -75,6 +75,51 @@ let loadTables = () => {
                                 zoom: 13 // starting zoom
                             });
 
+                            console.log(json)
+                            var carids = []
+                            var geojson = [];
+                            json.forEach(car => {
+                                carids.push(car.vehicleid)
+                                geojson.push({
+                                    type: 'Feature',
+                                    geometry: {
+                                        type: "Point",
+                                        coordinates: [car.current_lon, car.current_lat],
+                                        id: car.vehicleid.toString()
+                                    }
+                                });
+                            });
+                            console.log(geojson);
+                            //This needs a datastream url in order for the points to be dynamic
+                            //Let me know if we want to do a pop up for the cars with their info
+                            map.on('load', function () {
+                                //Eventually this code should set the datastream for the window every 1.5 seconds??
+                                // window.setInterval((){
+                                //   map.getSource(id).setData(dataStreamUrl);
+                                // }, 1500);
+                                console.log(geojson);
+                                for (car in geojson) {
+                                    var id = geojson[car].geometry.id.toString()
+                                    map.addSource(id, {
+                                        'type': 'geojson',
+                                        'data': geojson[car]
+                                    });
+                                    //console.log(id)
+                                    map.addLayer({
+                                        'id': id,
+                                        'type': 'symbol',
+                                        'source': id,
+                                        'layout': {
+                                            // get the icon name from the source's "icon" property
+                                            // concatenate the name to get an icon from the style's sprite sheet
+                                            // get the title name from the source's "title" property
+                                            'icon-image': 'car-15',
+
+                                        }
+                                    });
+                                }
+                            });
+
                             var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
                             worker.postMessage({ 'cmd': 'start', 'fid': 'home' });
                             worker.addEventListener('message', function (e) {
