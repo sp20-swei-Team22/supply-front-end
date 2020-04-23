@@ -123,7 +123,6 @@ let loadTables = () => {
                                     });
                                 }
                             });
-
                             var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
                             worker.postMessage({ 'cmd': 'start', 'fid': 'home' });
                             worker.addEventListener('message', function (e) {
@@ -139,8 +138,8 @@ let loadTables = () => {
                                 let tbody = fillTBody(vehiclesData, 'o');
                                 // console.log('New ', tbody);
                                 vehicleTable.appendChild(tbody);
+                                console.log(vehicleMarks);
                                 vids = []
-                                geojsons = [];
                                 vehiclesJSON.forEach(vehicle => {
                                     let vid = vehicle['vehicleid'];
                                     if (vid in vehicleMarks) {
@@ -148,21 +147,24 @@ let loadTables = () => {
                                         geojson['geometry']['coordinates'] = [
                                             vehicle['current_lon'], vehicle['current_lat']
                                         ]
+                                        console.log('updated!');
                                     } else {
                                         let geojson = {
                                             'type': 'Feature',
                                             'geometry': {
                                                 'type': "Point",
-                                                'coordinates': [car.current_lon, car.current_lat],
-                                                'id': car.vehicleid.toString()
+                                                'coordinates': [vehicle.current_lon, vehicle.current_lat],
+                                                'id': vid.toString()
                                             }
                                         }
                                         vids.push(vid);
                                         geojsons.push(geojson);
                                         vehicleMarks[vid] = geojson;
+                                        console.log('added!');
                                     }
                                     vids.push(vid);
                                 })
+
 
                                 map.on('load', function () {
                                     //Eventually this code should set the datastream for the window every 1.5 seconds??
@@ -191,12 +193,14 @@ let loadTables = () => {
                                         });
                                     }
                                 });
-
-                                Objects.keys(vehicleMarks).forEach(vid => {
-                                    if (!vids.includes(vid)) {
+                                // console.log(vids);
+                                // console.log(vehicleMarks);
+                                Object.keys(vehicleMarks).forEach(vid => {
+                                    if (!vids.includes(parseInt(vid))) {
                                         delete vehicleMarks[vid];
                                     }
                                 });
+                                // console.log(vehicleMarks);
 
                             }, false);
                             activeWorkers['home'] = worker
