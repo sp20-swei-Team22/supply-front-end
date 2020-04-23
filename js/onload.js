@@ -140,64 +140,64 @@ let loadTables = () => {
                                 // console.log('New ', tbody);
                                 vehicleTable.appendChild(tbody);
 
-                                let vids = []
-                                let geojsons = []
-                                json.forEach(entry => {
-                                    let vid = entry['vehicleid'];
-                                    vids.push(vid)
-                                    if (vid in vehicleMarks) {
-                                        geojson = vehicleMarks[vid]
-                                        geojson['geometry']['coordinates'] = [
-                                            entry['current_lon'], entry['current_lat']
-                                        ];
-                                    } else {
-                                        let geojson = {
-                                            type: 'Feature',
-                                            geometry: {
-                                                type: "Point",
-                                                coordinates: [car.current_lon, car.current_lat],
-                                                id: car.vehicleid.toString()
-                                            }
-                                        }
-                                        vids.push(vid)
-                                        geojsons.push(geojson);
-                                        vehicleMarks[vid] = geojson
-                                    }
-                                });
-                                
-                                map.on('load', function () {
-                                    //Eventually this code should set the datastream for the window every 1.5 seconds??
-                                    // window.setInterval((){
-                                    //   map.getSource(id).setData(dataStreamUrl);
-                                    // }, 1500);
-                                    // console.log(geojsons);
-                                    for (car in geojsons) {
-                                        var id = geojsons[car].geometry.id.toString()
-                                        map.addSource(id, {
-                                            'type': 'geojsons',
-                                            'data': geojsons[car]
-                                        });
-                                        //console.log(id)
-                                        map.addLayer({
-                                            'id': id,
-                                            'type': 'symbol',
-                                            'source': id,
-                                            'layout': {
-                                                // get the icon name from the source's "icon" property
-                                                // concatenate the name to get an icon from the style's sprite sheet
-                                                // get the title name from the source's "title" property
-                                                'icon-image': 'car-15',
-    
-                                            }
-                                        });
-                                    }
-                                });
+                                // let vids = []
+                                // let geojsons = []
+                                // json.forEach(entry => {
+                                //     let vid = entry['vehicleid'];
+                                //     vids.push(vid)
+                                //     if (vid in vehicleMarks) {
+                                //         geojson = vehicleMarks[vid]
+                                //         geojson['geometry']['coordinates'] = [
+                                //             entry['current_lon'], entry['current_lat']
+                                //         ];
+                                //     } else {
+                                //         let geojson = {
+                                //             type: 'Feature',
+                                //             geometry: {
+                                //                 type: "Point",
+                                //                 coordinates: [car.current_lon, car.current_lat],
+                                //                 id: car.vehicleid.toString()
+                                //             }
+                                //         }
+                                //         vids.push(vid)
+                                //         geojsons.push(geojson);
+                                //         vehicleMarks[vid] = geojson
+                                //     }
+                                // });
 
-                                Object.keys(vehicleMarks).forEach(vid => {
-                                    if (!vids.includes(vid)) {
-                                        delete vehicleMarks[vid];
-                                    }
-                                });
+                                // map.on('load', function () {
+                                //     //Eventually this code should set the datastream for the window every 1.5 seconds??
+                                //     // window.setInterval((){
+                                //     //   map.getSource(id).setData(dataStreamUrl);
+                                //     // }, 1500);
+                                //     // console.log(geojsons);
+                                //     for (car in geojsons) {
+                                //         var id = geojsons[car].geometry.id.toString()
+                                //         map.addSource(id, {
+                                //             'type': 'geojsons',
+                                //             'data': geojsons[car]
+                                //         });
+                                //         //console.log(id)
+                                //         map.addLayer({
+                                //             'id': id,
+                                //             'type': 'symbol',
+                                //             'source': id,
+                                //             'layout': {
+                                //                 // get the icon name from the source's "icon" property
+                                //                 // concatenate the name to get an icon from the style's sprite sheet
+                                //                 // get the title name from the source's "title" property
+                                //                 'icon-image': 'car-15',
+    
+                                //             }
+                                //         });
+                                //     }
+                                // });
+
+                                // Object.keys(vehicleMarks).forEach(vid => {
+                                //     if (!vids.includes(vid)) {
+                                //         delete vehicleMarks[vid];
+                                //     }
+                                // });
                             }, false);
                             activeWorkers['home'] = worker
 
