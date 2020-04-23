@@ -1,4 +1,5 @@
 var activeWorkers = {};
+var vehicleMarks = {};
 let loadTables = () => {
     let identity = localStorage.getItem('username');
     // console.log(identity)
@@ -75,21 +76,24 @@ let loadTables = () => {
                                 zoom: 13 // starting zoom
                             });
 
-                            console.log(json)
-                            var carids = []
-                            var geojson = [];
+                            // console.log(json)
+                            var vids = []
+                            var geojsons = [];
                             json.forEach(car => {
-                                carids.push(car.vehicleid)
-                                geojson.push({
+                                let vid = car['vehicleid']
+                                let geojson = {
                                     type: 'Feature',
                                     geometry: {
                                         type: "Point",
                                         coordinates: [car.current_lon, car.current_lat],
                                         id: car.vehicleid.toString()
                                     }
-                                });
+                                }
+                                vids.push(vid)
+                                geojsons.push(geojson);
+                                vehicleMarks[vid] = geojson
                             });
-                            console.log(geojson);
+                            // console.log(geojsons);
                             //This needs a datastream url in order for the points to be dynamic
                             //Let me know if we want to do a pop up for the cars with their info
                             map.on('load', function () {
@@ -97,12 +101,12 @@ let loadTables = () => {
                                 // window.setInterval((){
                                 //   map.getSource(id).setData(dataStreamUrl);
                                 // }, 1500);
-                                console.log(geojson);
-                                for (car in geojson) {
-                                    var id = geojson[car].geometry.id.toString()
+                                // console.log(geojsons);
+                                for (car in geojsons) {
+                                    var id = geojsons[car].geometry.id.toString()
                                     map.addSource(id, {
-                                        'type': 'geojson',
-                                        'data': geojson[car]
+                                        'type': 'geojsons',
+                                        'data': geojsons[car]
                                     });
                                     //console.log(id)
                                     map.addLayer({
@@ -127,7 +131,7 @@ let loadTables = () => {
                                 let vehiclesJSON = e.data;
                                 let vehiclesData = formatVehicleJSON(vehiclesJSON);
                                 // console.log(vehiclesData);
-                                let vehicleTable = document.getElementById('homeTable')
+                                let vehicleTable = document.getElementById('homeTable');
                                 // console.log(vehicleTable);
                                 let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
                                 // console.log('Old ', oldTBody);
@@ -136,6 +140,64 @@ let loadTables = () => {
                                 // console.log('New ', tbody);
                                 vehicleTable.appendChild(tbody);
 
+                                let vids = []
+                                let geojsons = []
+                                json.forEach(entry => {
+                                    let vid = entry['vehicleid'];
+                                    vids.push(vid)
+                                    if (vid in vehicleMarks) {
+                                        geojson = vehicleMarks[vid]
+                                        geojson['geometry']['coordinates'] = [
+                                            entry['current_lon'], entry['current_lat']
+                                        ];
+                                    } else {
+                                        let geojson = {
+                                            type: 'Feature',
+                                            geometry: {
+                                                type: "Point",
+                                                coordinates: [car.current_lon, car.current_lat],
+                                                id: car.vehicleid.toString()
+                                            }
+                                        }
+                                        vids.push(vid)
+                                        geojsons.push(geojson);
+                                        vehicleMarks[vid] = geojson
+                                    }
+                                });
+                                
+                                map.on('load', function () {
+                                    //Eventually this code should set the datastream for the window every 1.5 seconds??
+                                    // window.setInterval((){
+                                    //   map.getSource(id).setData(dataStreamUrl);
+                                    // }, 1500);
+                                    // console.log(geojsons);
+                                    for (car in geojsons) {
+                                        var id = geojsons[car].geometry.id.toString()
+                                        map.addSource(id, {
+                                            'type': 'geojsons',
+                                            'data': geojsons[car]
+                                        });
+                                        //console.log(id)
+                                        map.addLayer({
+                                            'id': id,
+                                            'type': 'symbol',
+                                            'source': id,
+                                            'layout': {
+                                                // get the icon name from the source's "icon" property
+                                                // concatenate the name to get an icon from the style's sprite sheet
+                                                // get the title name from the source's "title" property
+                                                'icon-image': 'car-15',
+    
+                                            }
+                                        });
+                                    }
+                                });
+
+                                Object.keys(vehicleMarks).forEach(vid => {
+                                    if (!vids.includes(vid)) {
+                                        delete vehicleMarks[vid];
+                                    }
+                                });
                             }, false);
                             activeWorkers['home'] = worker
 
