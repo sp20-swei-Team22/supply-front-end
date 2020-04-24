@@ -3,7 +3,6 @@ var vehicleMarks = {};
 let loadTables = () => {
     let identity = localStorage.getItem('username');
     // console.log(identity)
-    document.getElementById('accountName').text = identity;
     var url = new URL("https://supply.team22.softwareengineeringii.com/supply/fleets"),
         params = {
             'user': identity
