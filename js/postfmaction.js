@@ -6,7 +6,7 @@ $(document).on('submit', '.confirm', async e => {
     // console.log(confirmSend);
     let confirmType = confirmSend.classList[1]
     // console.log(confirmType);
-    let select = confirmSend.children[1];
+    let select = confirmSend.children[0];
     let optionsCollection = select.children;
     length = select.options.length;
     // console.log(optionsCollection);
@@ -25,7 +25,7 @@ $(document).on('submit', '.confirm', async e => {
         }
         // console.log(vehicles);
         confirmType = confirmType.substring(0, 3);
-        console.log(confirmType)
+        // console.log(confirmType)
         var url = `https://supply.team22.softwareengineeringii.com/supply/vehicles/${confirmType}`;
         await fetch(url, {
             method: 'POST',
