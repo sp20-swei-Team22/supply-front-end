@@ -9,13 +9,13 @@ $('#newFleetForm').submit(e => {
     form = document.getElementById('newFleetForm');
     fields = form.querySelectorAll('input, select');
     // console.log(form);
-    console.log(fields);
+    // console.log(fields);
 
     fields.forEach(e => {
         // console.log(e.id);
         fleet[`${e.id}`] = e.value;
     });
-    console.log(fleet);
+    // console.log(fleet);
 
     var url = 'https://supply.team22.softwareengineeringii.com/supply/fleets/add';
     fetch(url, {
@@ -30,9 +30,7 @@ $('#newFleetForm').submit(e => {
             if (res.status == 200) {
                 newFID = json['newFID']
                 alert(`Fleet ${newFID} added!`);
-                // fields.forEach(e => {
-                //     e.value = '';
-                // })
+                fields[0].value = '';
                 var myTab = document.getElementById('myTab');
                 let idHeader = `fleet${newFID}`;
                 buildTab(idHeader);
