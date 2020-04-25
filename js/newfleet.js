@@ -33,6 +33,9 @@ $('#newFleetForm').submit(e => {
                 // fields.forEach(e => {
                 //     e.value = '';
                 // })
+                var myTab = document.getElementById('myTab');
+                let idHeader = `fleet${newFID}`;
+                buildTab(idHeader);
             } else {
                 alert('Something went wrong');
             }
