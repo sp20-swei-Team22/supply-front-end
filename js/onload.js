@@ -1,11 +1,11 @@
 var activeWorkers = {};
 var vehicleMarks = {};
+var user = localStorage.getItem('username');
 let loadTables = () => {
-    let identity = localStorage.getItem('username');
     // console.log(identity)
     var url = new URL("https://supply.team22.softwareengineeringii.com/supply/fleets"),
         params = {
-            'user': identity
+            'user': user
         }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     // console.log(url)
@@ -14,7 +14,7 @@ let loadTables = () => {
             if (fleetRes.status == 200) {
                 url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
                     params = {
-                        'user': identity
+                        'user': user
                     }
                 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
                 // console.log(url)
@@ -161,7 +161,7 @@ let loadTables = () => {
                             // animateMarker(0);
                             // });
                             var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
-                            worker.postMessage({ 'cmd': 'start', 'fid': 'home' });
+                            worker.postMessage({ 'cmd': 'start', 'fid': 'home', 'user': user });
                             worker.addEventListener('message', function (e) {
                                 // console.log(e.data);
                                 let vehiclesJSON = e.data;
@@ -291,7 +291,7 @@ $(document).on('click', '.nav-item.mytab', function (e) {
         delete activeWorkers[tab]
     })
     var worker = new Worker('/supply-front-end/js/vehiclesworker.js');
-    worker.postMessage({ 'cmd': 'start', 'fid': fid });
+    worker.postMessage({ 'cmd': 'start', 'fid': fid , 'user': user});
     worker.addEventListener('message', function (e) {
         // console.log(e.data);
         let vehiclesJSON = e.data;
