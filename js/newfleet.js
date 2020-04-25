@@ -26,14 +26,17 @@ $('#newFleetForm').submit(e => {
         mode: 'no-cors',
         body: JSON.stringify(fleet)
     }).then(res => {
-        if (res.status == 200) {
-            alert('Fleet added!');
-            // fields.forEach(e => {
-            //     e.value = '';
-            // })
-        } else {
-            alert('Something went wrong');
-        }
+        res.json().then(json => {
+            if (res.status == 200) {
+                newFID = json['newFID']
+                alert(`Fleet ${newFID} added!`);
+                // fields.forEach(e => {
+                //     e.value = '';
+                // })
+            } else {
+                alert('Something went wrong');
+            }
+        })
     }).catch(err => {
         console.log('Error: ', err);
     });
