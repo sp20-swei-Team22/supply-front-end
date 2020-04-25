@@ -103,43 +103,6 @@ let loadTables = () => {
                                 }
                             });
                             var worker = startWorker('home');
-                            // var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
-                            // worker.postMessage({ 'cmd': 'start', 'fid': 'home', 'user': user });
-                            // worker.addEventListener('message', function (e) {
-                            //     // console.log(e.data);
-                            //     let vehiclesJSON = e.data;
-                            //     let vehiclesData = formatVehicleJSON(vehiclesJSON);
-                            //     // console.log(vehiclesData);
-                            //     let vehicleTable = document.getElementById('homeTable')
-                            //     // console.log(vehicleTable);
-                            //     let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
-                            //     // console.log('Old ', oldTBody);
-                            //     vehicleTable.removeChild(oldTBody);
-                            //     let tbody = fillTBody(vehiclesData, 'o');
-                            //     // console.log('New ', tbody);
-                            //     vehicleTable.appendChild(tbody);
-                            //     // console.log(vehicleMarks);
-                            //     vehiclesJSON.forEach(vehicle => {
-                            //         let vid = vehicle['vehicleid'].toString();
-                            //         map.getSource(vid).setData({
-                            //             'type': 'Feature',
-                            //             'geometry': {
-                            //                 'type': "Point",
-                            //                 'coordinates': [vehicle.current_lon, vehicle.current_lat],
-                            //                 'id': vid
-                            //             }
-                            //         })
-                            //     })
-                            // }, false);
-                            // $(document).ready(function () {
-                            //     $('table.home').DataTable().clear().destroy();
-                            //     $('table.home').DataTable({
-                            //         columnDefs: [{
-                            //             targets: 3,
-                            //             orderable: false
-                            //         }]
-                            //     });
-                            // });
 
                             activeWorkers['home'] = worker
 
@@ -175,42 +138,6 @@ $(document).on('click', '.nav-item.mytab', function (e) {
         delete activeWorkers[tab]
     })
     var worker = startWorker(fid);
-    // var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
-    // worker.postMessage({ 'cmd': 'start', 'fid': fid , 'user': user});
-    // worker.addEventListener('message', function (e) {
-    //     // console.log(e.data);
-    //     let vehiclesJSON = e.data;
-    //     let vehiclesData = formatVehicleJSON(vehiclesJSON);
-    //     // console.log(vehiclesData);
-    //     let vehicleTable = document.getElementById('homeTable')
-    //     // console.log(vehicleTable);
-    //     let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
-    //     // console.log('Old ', oldTBody);
-    //     vehicleTable.removeChild(oldTBody);
-    //     let tbody = fillTBody(vehiclesData, 'o');
-    //     // console.log('New ', tbody);
-    //     vehicleTable.appendChild(tbody);
-    //     vehiclesJSON.forEach(vehicle => {
-    //         let vid = vehicle['vehicleid'].toString();
-    //         map.getSource(vid).setData({
-    //             'type': 'Feature',
-    //             'geometry': {
-    //                 'type': "Point",
-    //                 'coordinates': [vehicle.current_lon, vehicle.current_lat],
-    //                 'id': vid
-    //             }
-    //         })
-    //     })
-    //     $(document).ready(function () {
-    //         $('table.home').DataTable().clear().destroy();
-    //         $('table.home').DataTable({
-    //             columnDefs: [{
-    //                 targets: 3,
-    //                 orderable: false
-    //             }]
-    //         });
-    //     });
-    // }, false);
     activeWorkers[fid] = worker;
     // console.log(activeWorkers);
 })
