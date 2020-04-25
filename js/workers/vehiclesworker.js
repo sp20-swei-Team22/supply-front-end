@@ -1,6 +1,7 @@
 self.addEventListener('message', function (e) {
     // console.log(e)
     var data = e.data;
+    let user = localStorage.getItem('username');
     if (data.cmd == 'start') {
         var fid = data.fid;
         var url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
@@ -9,7 +10,10 @@ self.addEventListener('message', function (e) {
             }
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
         if (fid == 'home') {
-            url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles")
+            url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
+            params = { 
+                'user': user
+            }
         }
         // console.log(url);
         setInterval(function () {
