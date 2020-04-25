@@ -1,21 +1,23 @@
 self.addEventListener('message', function (e) {
     // console.log(e)
     var data = e.data;
-    let user = localStorage.getItem('username');
+    var user = data.user;
     if (data.cmd == 'start') {
         var fid = data.fid;
-        var url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
-            params = {
-                'fid': fid
-            }
-        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+        var url;
+        var params;
         if (fid == 'home') {
             url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
             params = {
                 'user': user
             }
-            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+        } else {
+            url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
+            params = {
+                'fid': fid
+            }
         }
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
         // console.log(url);
         setInterval(function () {
             // console.log(data.msg);
