@@ -385,38 +385,45 @@
                                 <div class="tab-content col">
                                     <div class="tab-pane fade show active" id="homeAdd" role="pillpanel" aria-labelledby="homeAddPill">
                                         <div class="row">
-                                            <form class="col addVehicle home" style="text-align: right;">
-                                                <button type="submit">Submit All</button>
-                                                <button onclick="alert('clicked'); return false;">Another Form</button>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-5" for="homefleetid">Fleet To Add To:</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" id="homefleetid" placeholder="Ex: 51">
+                                            <form class="col-sm-4 addVehicle home">
+                                                <div class="form-group input-group  row">
+                                                    <div class="col">
+                                                        <label for="homefleetid">Fleet To Add To:</label>
+                                                        <div>
+                                                            <input class="form-control" type="text" id="homefleetid" placeholder="Ex: 51">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-5" for="homemake">Make:</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" id="homemake" placeholder="Ex: Tesla">
+                                                <div class="form-group input-group row">
+                                                    <div class="col">
+                                                        <label for="homemake">Make:</label>
+                                                        <div>
+                                                            <input class="form-control" type="text"  id="homemake" placeholder="Ex: Tesla">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-5" for="homemodel">Model:</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" id="homemodel" placeholder="Ex: Model-X">
+                                                <div class="form-group input-group  row">
+                                                    <div class="col">
+                                                        <label for="homemodel">Model:</label>
+                                                        <div>
+                                                            <input class="form-control" type="text" id="homemodel" placeholder="Ex: Model-X">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-5" for="homelicenseplate">License Plate:</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" id="homelicenseplate" placeholder="Ex: FA8912">
+                                                <div class="form-group input-group  row">
+                                                    <div class="col">
+                                                        <label for="homelicenseplate">License Plate:</label>
+                                                        <div>
+                                                            <input class="form-control" type="text" id="homelicenseplate" placeholder="Ex: FA8912">
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <button type="submit">Confirm Current Inputs</button>
                                             </form>
-                                            <div class="col">
+                                            <div class="col-sm-8">
                                                 <form class="confirm add">
-                                                    <button type="submit">Confirm Registration</button>
-                                                    <select class="selectsForUpdates" id="vehiclesToAdd" multiple size="5" style="width: 100%;"></select>
+                                                    <select class="selectsForUpdates" id="vehiclesToAdd" multiple size="18" style="width: 100%;"></select>
+                                                    <button type="submit">Submit Registrations</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -431,14 +438,14 @@
                                         <div class="row">
                                             <div class="col">
                                                 <form class="confirm remove">
-                                                    <button>Confirm Removal</button>
+                                                    <button>Submit Removals</button>
                                                     <select class="selectsForUpdates" id="vidsToDelete" multiple size="5" style="width: 100%;"></select>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="homeUpdate" role="pillpanel" aria-labelledby="homeUpdatePill">
-                                        Update
+                                        Update: Feature to come
                                     </div>
                                 </div>
                             </div>

@@ -210,3 +210,12 @@ table, thead, tbody, tr, th, td {
 tr.even {
     background-color: #cacaca!important;
 }
+
+#homemake, #homefleetid, #homemodel, #homelicenseplate {
+    width: 100%;   
+}
+
+select {
+    border-radius: 5px;
+    background-color: rgb(240, 238, 235);
+}
