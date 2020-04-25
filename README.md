@@ -1,6 +1,6 @@
 # WeGo Services Supply Frontend #
-[![Generic badge](https://img.shields.io/badge/version-1.1.0-<COLOR>.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/build-unstable-red.svg)](https://shields.io/) 
+[![Generic badge](https://img.shields.io/badge/version-1.2.0-<COLOR>.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/build-stable-<COLOR>.svg)](https://shields.io/) 
 [![Generic badge](https://img.shields.io/badge/code_style-SWETeam22-teal.svg)](https://github.com/komoto415/COSC3339/blob/master/Trying%20Markdown/StyleAndDirectoryGuide.md)
 
 ## What to Expect ##
@@ -24,10 +24,9 @@ them with urgent actions that must be taken or potential issues that may arise.
 #### Below is a table of our functionality and intended future features ####
 |Functionality          |Status     
 |:---                   |:---    
-|Personalised welcome   |Functional
-|Drawers                |Functional 
-|Map integration        |Queued     
-|Live bulletin          |Queued     
-|Vehicle adding         |Broken     
-|Vehicle removal        |Broken     
-|Vehicle updating       |Broken     
+|Map integration        |Functional     
+|Live Update Map        |Functional     
+|Live Update Tables     |Functional
+|Vehicle adding         |Functional     
+|Vehicle removal        |Functional     
+|Vehicle updating       |Queued     
