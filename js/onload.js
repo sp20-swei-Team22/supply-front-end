@@ -1,5 +1,6 @@
 var activeWorkers = {};
 var vehicleMarks = {};
+var map;
 var user = localStorage.getItem('username');
 let loadTables = () => {
     // console.log(identity)
@@ -42,13 +43,12 @@ let loadTables = () => {
                             deleteOptionFormat(deleteSelect, arr);
                             // console.log(deleteSelect);
 
-                            var myTab = document.getElementById('myTab');
                             fleetNums.forEach(fleetNum => {
                                 let idHeader = `fleet${fleetNum}`;  
                                 buildTab(idHeader)
                             })
                             mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
-                            var map = new mapboxgl.Map({
+                            map = new mapboxgl.Map({
                                 container: 'homeMap', // container id
                                 style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
                                 center: [-97.7553, 30.2264], // starting position [lng, lat]
