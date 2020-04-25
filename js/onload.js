@@ -291,7 +291,7 @@ $(document).on('click', '.nav-item.mytab', function (e) {
         activeWorkers[tab].postMessage({ 'cmd': 'stop' })
         delete activeWorkers[tab]
     })
-    var worker = new Worker('/supply-front-end/js/vehiclesworker.js');
+    var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
     worker.postMessage({ 'cmd': 'start', 'fid': fid , 'user': user});
     worker.addEventListener('message', function (e) {
         // console.log(e.data);
