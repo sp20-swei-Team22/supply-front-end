@@ -44,29 +44,8 @@ let loadTables = () => {
 
                             var myTab = document.getElementById('myTab');
                             fleetNums.forEach(fleetNum => {
-                                let idHeader = `fleet${fleetNum}`;
-
-                                /*
-                                    First generate the tab
-                                */
-                               buildTab(idHeader)
-                                // let tabLI = document.createElement('LI');
-                                // tabLI.setAttribute('class', 'nav-item mytab');
-
-                                // let tabA = document.createElement('A');
-                                // let tabId = `${idHeader}Tab`
-                                // tabA.setAttribute('class', 'nav-link')
-                                // tabA.setAttribute('id', tabId);
-                                // tabA.setAttribute('data-toggle', 'tab');
-                                // tabA.setAttribute('href', `#${idHeader}`);
-                                // tabA.setAttribute('rold', 'tab');
-                                // tabA.setAttribute('aria-controls', idHeader);
-                                // tabA.setAttribute('aria-selected', 'false');
-                                // tabA.innerHTML = `Fleet ${fleetNum}`;
-
-                                // tabLI.appendChild(tabA);
-                                // myTab.insertBefore(tabLI, myTab.children[1]);
-
+                                let idHeader = `fleet${fleetNum}`;  
+                                buildTab(idHeader)
                             })
                             mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
                             var map = new mapboxgl.Map({
@@ -123,83 +102,47 @@ let loadTables = () => {
                                     });
                                 }
                             });
-                            // var radius = 20;
-
-                            // function pointOnCircle(angle) {
-                            // return {
-                            // 'type': 'Point',
-                            // 'coordinates': [Math.cos(angle) * radius, Math.sin(angle) * radius]
-                            // };
-                            // }
-
-                            // map.on('load', function() {
-                            // // Add a source and layer displaying a point which will be animated in a circle.
-                            // map.addSource('point', {
-                            // 'type': 'geojson',
-                            // 'data': pointOnCircle(0)
+                            var worker = startWorker('home');
+                            // var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
+                            // worker.postMessage({ 'cmd': 'start', 'fid': 'home', 'user': user });
+                            // worker.addEventListener('message', function (e) {
+                            //     // console.log(e.data);
+                            //     let vehiclesJSON = e.data;
+                            //     let vehiclesData = formatVehicleJSON(vehiclesJSON);
+                            //     // console.log(vehiclesData);
+                            //     let vehicleTable = document.getElementById('homeTable')
+                            //     // console.log(vehicleTable);
+                            //     let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
+                            //     // console.log('Old ', oldTBody);
+                            //     vehicleTable.removeChild(oldTBody);
+                            //     let tbody = fillTBody(vehiclesData, 'o');
+                            //     // console.log('New ', tbody);
+                            //     vehicleTable.appendChild(tbody);
+                            //     // console.log(vehicleMarks);
+                            //     vehiclesJSON.forEach(vehicle => {
+                            //         let vid = vehicle['vehicleid'].toString();
+                            //         map.getSource(vid).setData({
+                            //             'type': 'Feature',
+                            //             'geometry': {
+                            //                 'type': "Point",
+                            //                 'coordinates': [vehicle.current_lon, vehicle.current_lat],
+                            //                 'id': vid
+                            //             }
+                            //         })
+                            //     })
+                            // }, false);
+                            // $(document).ready(function () {
+                            //     $('table.home').DataTable().clear().destroy();
+                            //     $('table.home').DataTable({
+                            //         columnDefs: [{
+                            //             targets: 3,
+                            //             orderable: false
+                            //         }]
+                            //     });
                             // });
 
-                            // map.addLayer({
-                            // 'id': 'point',
-                            // 'source': 'point',
-                            // 'type': 'circle',
-                            // 'paint': {
-                            // 'circle-radius': 10,
-                            // 'circle-color': '#007cbf'
-                            // }
-                            // });
-
-                            // function animateMarker(timestamp) {
-                            // // Update the data to a new position based on the animation timestamp. The
-                            // // divisor in the expression `timestamp / 1000` controls the animation speed.
-                            // map.getSource('point').setData(pointOnCircle(timestamp / 1000));
-
-                            // // Request the next frame of the animation.
-                            // requestAnimationFrame(animateMarker);
-                            // }
-
-                            // // Start the animation.
-                            // animateMarker(0);
-                            // });
-                            var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
-                            worker.postMessage({ 'cmd': 'start', 'fid': 'home', 'user': user });
-                            worker.addEventListener('message', function (e) {
-                                // console.log(e.data);
-                                let vehiclesJSON = e.data;
-                                let vehiclesData = formatVehicleJSON(vehiclesJSON);
-                                // console.log(vehiclesData);
-                                let vehicleTable = document.getElementById('homeTable')
-                                // console.log(vehicleTable);
-                                let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
-                                // console.log('Old ', oldTBody);
-                                vehicleTable.removeChild(oldTBody);
-                                let tbody = fillTBody(vehiclesData, 'o');
-                                // console.log('New ', tbody);
-                                vehicleTable.appendChild(tbody);
-                                // console.log(vehicleMarks);
-                                vehiclesJSON.forEach(vehicle => {
-                                    let vid = vehicle['vehicleid'].toString();
-                                    map.getSource(vid).setData({
-                                        'type': 'Feature',
-                                        'geometry': {
-                                            'type': "Point",
-                                            'coordinates': [vehicle.current_lon, vehicle.current_lat],
-                                            'id': vid
-                                        }
-                                    })
-                                })
-                            }, false);
                             activeWorkers['home'] = worker
 
-                            $(document).ready(function () {
-                                $('table.home').DataTable().clear().destroy();
-                                $('table.home').DataTable({
-                                    columnDefs: [{
-                                        targets: 3,
-                                        orderable: false
-                                    }]
-                                });
-                            });
                         } else {
                             alert('something went wrong');
                         }
@@ -231,6 +174,48 @@ $(document).on('click', '.nav-item.mytab', function (e) {
         activeWorkers[tab].postMessage({ 'cmd': 'stop' })
         delete activeWorkers[tab]
     })
+    var worker = startWorker(fid);
+    // var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
+    // worker.postMessage({ 'cmd': 'start', 'fid': fid , 'user': user});
+    // worker.addEventListener('message', function (e) {
+    //     // console.log(e.data);
+    //     let vehiclesJSON = e.data;
+    //     let vehiclesData = formatVehicleJSON(vehiclesJSON);
+    //     // console.log(vehiclesData);
+    //     let vehicleTable = document.getElementById('homeTable')
+    //     // console.log(vehicleTable);
+    //     let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
+    //     // console.log('Old ', oldTBody);
+    //     vehicleTable.removeChild(oldTBody);
+    //     let tbody = fillTBody(vehiclesData, 'o');
+    //     // console.log('New ', tbody);
+    //     vehicleTable.appendChild(tbody);
+    //     vehiclesJSON.forEach(vehicle => {
+    //         let vid = vehicle['vehicleid'].toString();
+    //         map.getSource(vid).setData({
+    //             'type': 'Feature',
+    //             'geometry': {
+    //                 'type': "Point",
+    //                 'coordinates': [vehicle.current_lon, vehicle.current_lat],
+    //                 'id': vid
+    //             }
+    //         })
+    //     })
+    //     $(document).ready(function () {
+    //         $('table.home').DataTable().clear().destroy();
+    //         $('table.home').DataTable({
+    //             columnDefs: [{
+    //                 targets: 3,
+    //                 orderable: false
+    //             }]
+    //         });
+    //     });
+    // }, false);
+    activeWorkers[fid] = worker;
+    // console.log(activeWorkers);
+})
+
+function startWorker(fid) {
     var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
     worker.postMessage({ 'cmd': 'start', 'fid': fid , 'user': user});
     worker.addEventListener('message', function (e) {
@@ -252,7 +237,7 @@ $(document).on('click', '.nav-item.mytab', function (e) {
                 'type': 'Feature',
                 'geometry': {
                     'type': "Point",
-                    'coordinates': [vehicle.current_lon, vehicle.current_lat],
+                    'coordinates': [vehicle['current_lon'], vehicle['current_lat']],
                     'id': vid
                 }
             })
@@ -267,9 +252,8 @@ $(document).on('click', '.nav-item.mytab', function (e) {
             });
         });
     }, false);
-    activeWorkers[fid] = worker
-    // console.log(activeWorkers);
-})
+    return worker;
+}
 
 function deleteOptionFormat(select, arr) {
     arr.forEach(vehicle => {
