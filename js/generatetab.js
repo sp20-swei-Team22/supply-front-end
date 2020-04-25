@@ -1,5 +1,6 @@
-var myTab = document.getElementById('myTab');
 function buildTab(idHeader) {
+    var myTab = document.getElementById('myTab');
+    fleetNum = idHeader.substring(idHeader.indexOf('t') + 1,);
     let tabLI = document.createElement('LI');
     tabLI.setAttribute('class', 'nav-item mytab');
 
