@@ -25,7 +25,7 @@ function getDispatch(vehicle) {
                     serviceType drycleaning
                 */
                 dispatchArr = formatDispatchJSON(parsedJSON)
-                
+
                 // console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
 

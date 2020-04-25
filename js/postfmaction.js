@@ -18,13 +18,13 @@ $(document).on('submit', '.confirm', async e => {
             case 'add':
                 vehicles = postAddBody(optionsCollection);
                 break;
-                
+
             case 'remove':
                 vehicles = postRemoveBody(optionsCollection);
                 break;
-            }
+        }
         // console.log(vehicles);
-        confirmType = confirmType.substring(0,3);
+        confirmType = confirmType.substring(0, 3);
         console.log(confirmType)
         var url = `https://supply.team22.softwareengineeringii.com/supply/vehicles/${confirmType}`;
         await fetch(url, {
@@ -75,7 +75,7 @@ function postRemoveBody(optionsCollection) {
     for (var option = 0; option < optionsCollection.length; option++) {
         let optionValueList = optionsCollection[option].value.split(' ')
         // console.log(optionValueList);
-        let vehicleid = optionValueList[0].substring(optionValueList[0].indexOf(': ') + 1, );
+        let vehicleid = optionValueList[0].substring(optionValueList[0].indexOf(': ') + 1);
         // console.log(fleetid);
         vehicleDict = {
             'vehicleid': vehicleid

@@ -11,9 +11,9 @@ self.addEventListener('message', function (e) {
         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
         if (fid == 'home') {
             url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
-            params = { 
-                'user': user
-            }
+                params = {
+                    'user': user
+                }
         }
         // console.log(url);
         setInterval(function () {

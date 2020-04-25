@@ -7,39 +7,35 @@ $(document).on('submit', '.addVehicle', async e => {
     // console.log(grandparentID);
     desiredClass = addForm.className.split(' ')[1]
     // console.log(desiredClass);
-    let expectedInputs = grandparentID.includes('home') ? 4 : 3;
 
     let inputsOfForm = $(`.${id} input`);
     // console.log(inputsOfForm);
-    let mySelect = e.target.parentElement.children[1].children[0].children[1];
+    let mySelect = e.target.parentElement.children[1].children[0].children[0];
     // console.log(mySelect);
-    for (var input = 0; input < inputsOfForm.length; input += expectedInputs) {
+    for (var input = 0; input < inputsOfForm.length; input += 4) {
         let fieldArr = [];
         let field1 = inputsOfForm[input].value.trim();
-        if (expectedInputs == 4) {
-            let numbersOnly = /^[0-9]+$/;
-
-            if (!numbersOnly.test(field1)) {
-                // console.log(inputsOfForm[input]);
-                inputsOfForm[input].style.borderColor = 'red';
-                alert('not numbers!');
-            }
-        }
         let field2 = inputsOfForm[input + 1].value.trim();
         let field3 = inputsOfForm[input + 2].value.trim();
+        let field4 = inputsOfForm[input + 3].value.trim();
+
+        let numbersOnly = /^[0-9]+$/;
+        if (!numbersOnly.test(field1)) {
+            // console.log(inputsOfForm[input]);
+            inputsOfForm[input].style.borderColor = 'red';
+            alert('not numbers!');
+        }
+
         fieldArr.push(field1);
         fieldArr.push(field2);
         fieldArr.push(field3);
+        fieldArr.push(field4);
 
         let inputLens = [];
         inputLens.push(field1.length);
         inputLens.push(field2.length);
         inputLens.push(field3.length);
-        if (expectedInputs == 4) {
-            let field4 = inputsOfForm[input + 3].value.trim();
-            fieldArr.push(field4);
-            inputLens.push(field4.length);
-        }
+        inputLens.push(field4.length);
         // console.log(inputLens);
 
         if (inputLens.includes(0)) {
@@ -72,9 +68,7 @@ $(document).on('submit', '.addVehicle', async e => {
             inputsOfForm[input].value = '';
             inputsOfForm[input + 1].value = '';
             inputsOfForm[input + 2].value = '';
-            if (expectedInputs == 4) {
-                inputsOfForm[input + 3].value = '';
-            }
+            inputsOfForm[input + 3].value = '';
         }
     }
 })
