@@ -75,7 +75,7 @@ let loadTables = () => {
                                 zoom: 13 // starting zoom
                             });
 
-                            console.log(json)
+                            // console.log(json)
                             var vids = [];
                             var geojsons = [];
                             json.forEach(car => {
@@ -92,7 +92,7 @@ let loadTables = () => {
                                 geojsons.push(geojson);
                                 vehicleMarks[vid] = geojson;
                             });
-                            console.log(geojsons);
+                            // console.log(geojsons);
                             //This needs a datastream url in order for the points to be dynamic
                             //Let me know if we want to do a pop up for the cars with their info
                             map.on('load', function () {
@@ -100,7 +100,7 @@ let loadTables = () => {
                                 // window.setInterval((){
                                 //   map.getSource(id).setData(dataStreamUrl);
                                 // }, 1500);
-                                console.log(geojsons);
+                                // console.log(geojsons);
                                 for (car in geojsons) {
                                     var id = geojsons[car]['geometry']['id'].toString()
                                     map.addSource(id, {
@@ -175,7 +175,7 @@ let loadTables = () => {
                                 let tbody = fillTBody(vehiclesData, 'o');
                                 // console.log('New ', tbody);
                                 vehicleTable.appendChild(tbody);
-                                console.log(vehicleMarks);
+                                // console.log(vehicleMarks);
                                 vids = []
                                 vehiclesJSON.forEach(vehicle => {
                                     let vid = vehicle['vehicleid'].toString();
@@ -183,7 +183,7 @@ let loadTables = () => {
                                         'type': 'Feature',
                                         'geometry': {
                                             'type': "Point",
-                                            'coordinates': [car.current_lon, car.current_lat],
+                                            'coordinates': [vehicle.current_lon, vehicle.current_lat],
                                             'id': vid
                                         }
                                     })
