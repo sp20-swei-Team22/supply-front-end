@@ -135,9 +135,18 @@ $(document).on('click', '.nav-item.mytab', function (e) {
     let fleet = tabID.substring(0, tabID.indexOf('T'));
     // console.log(fleet);
     let fid = fleet.substring(fleet.indexOf('t') + 1);
-    url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
-    params = {
-        'fid': fid
+    var url;
+    var fid;
+    if (fid == 'home') {
+        url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
+        params = {
+            'user': user
+        }
+    } else {
+        url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
+        params = {
+            'fid': fid
+        }
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url).then(res => {
