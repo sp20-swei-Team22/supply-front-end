@@ -4,19 +4,19 @@ var map;
 var user = localStorage.getItem('username');
 let loadTables = () => {
     // console.log(identity)
-    var url = new URL("https://supply.team22.softwareengineeringii.com/supply/fleets"),
-        params = {
-            'user': user
-        }
+    var url = new URL("https://supply.team22.softwareengineeringii.com/supply/fleets");
+    var params = {
+        'user': user
+    }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     // console.log(url)
     fetch(url).then(fleetRes => {
         fleetRes.json().then(fleets => {
             if (fleetRes.status == 200) {
-                url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles"),
-                    params = {
-                        'user': user
-                    }
+                url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
+                params = {
+                    'user': user
+                }
                 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
                 // console.log(url)
 
@@ -135,6 +135,26 @@ $(document).on('click', '.nav-item.mytab', function (e) {
     let fleet = tabID.substring(0, tabID.indexOf('T'));
     // console.log(fleet);
     let fid = fleet.substring(fleet.indexOf('t') + 1);
+    url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
+    params = {
+        'fid': fid
+    }
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    fetch(url).then(res => {
+        res.json().then(vehiclesJSON => {
+        let vehiclesData = formatVehicleJSON(vehiclesJSON);
+        // console.log(vehiclesData);
+        let vehicleTable = document.getElementById('homeTable')
+        // console.log(vehicleTable);
+        let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
+        // console.log('Old ', oldTBody);
+        vehicleTable.removeChild(oldTBody);
+        let tbody = fillTBody(vehiclesData, 'o');
+        // console.log('New ', tbody);
+        vehicleTable.appendChild(tbody);
+        })
+    })
+    
     adjustUpdateForm(fid);
 
     // console.log(fid);
