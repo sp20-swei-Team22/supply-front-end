@@ -1,15 +1,11 @@
 $(document).on('submit', '.confirm', async e => {
     e.preventDefault();
-    // console.log(e);
 
     let confirmSend = e.target;
-    // console.log(confirmSend);
     let confirmType = confirmSend.classList[1]
-    // console.log(confirmType);
     let select = confirmSend.children[0];
     let optionsCollection = select.children;
     length = select.options.length;
-    // console.log(optionsCollection);
     if (length == 0) {
         alert('No vehicle data to send!');
     } else {
@@ -23,9 +19,7 @@ $(document).on('submit', '.confirm', async e => {
                 vehicles = postRemoveBody(optionsCollection);
                 break;
         }
-        // console.log(vehicles);
         confirmType = confirmType.substring(0, 3);
-        // console.log(confirmType)
         var url = `https://supply.team22.softwareengineeringii.com/supply/vehicles/${confirmType}`;
         await fetch(url, {
             method: 'POST',
@@ -35,8 +29,6 @@ $(document).on('submit', '.confirm', async e => {
             mode: 'no-cors',
             body: JSON.stringify(vehicles)
         }).then(res => {
-            // console.log(select);
-            // console.log(length);
             if (res.status == 200) {
                 alert(`Vehicle${vehicles.length > 0 ? 's' : ''} ${confirmType == 'add' ? 'added' : 'removed'}!`);
                 for (option in select.options) {
@@ -56,15 +48,13 @@ function postAddBody(optionsCollection) {
     let dateAdded = new Date(Date.now());
     for (var option = 0; option < optionsCollection.length; option++) {
         let optionValueList = optionsCollection[option].value.split(' ')
-        // console.log(optionValueList);
-        vehicleDict = {
+        let vehicleDict = {
             'fleetid': optionValueList[0],
             'make': optionValueList[1],
             'model': optionValueList[2],
             'licensePlate': optionValueList[3],
             'dateAdded': dateAdded.toISOString()
         };
-        // console.log(vehicleDict);
         vehicles.push(vehicleDict);
     }
     return vehicles;
@@ -74,13 +64,10 @@ function postRemoveBody(optionsCollection) {
     vehicles = []
     for (var option = 0; option < optionsCollection.length; option++) {
         let optionValueList = optionsCollection[option].value.split(' ')
-        // console.log(optionValueList);
         let vehicleid = optionValueList[0].substring(optionValueList[0].indexOf(': ') + 1);
-        // console.log(fleetid);
-        vehicleDict = {
+        let vehicleDict = {
             'vehicleid': vehicleid
         };
-        // console.log(vehicleDict);
         vehicles.push(vehicleDict);
     }
     return vehicles;

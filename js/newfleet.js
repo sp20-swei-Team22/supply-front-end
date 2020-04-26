@@ -8,14 +8,10 @@ $('#newFleetForm').submit(e => {
     var fleet = { 'username': username };
     form = document.getElementById('newFleetForm');
     fields = form.querySelectorAll('input, select');
-    // console.log(form);
-    // console.log(fields);
 
     fields.forEach(e => {
-        // console.log(e.id);
         fleet[`${e.id}`] = e.value;
     });
-    // console.log(fleet);
 
     var url = 'https://supply.team22.softwareengineeringii.com/supply/fleets/add';
     fetch(url, {

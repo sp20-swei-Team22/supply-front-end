@@ -3,13 +3,12 @@ var vehicleMarks = {};
 var map;
 var user = localStorage.getItem('username');
 let loadTables = () => {
-    // console.log(identity)
     var url = new URL("https://supply.team22.softwareengineeringii.com/supply/fleets");
     var params = {
         'user': user
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-    // console.log(url)
+
     fetch(url).then(fleetRes => {
         fleetRes.json().then(fleets => {
             if (fleetRes.status == 200) {
@@ -18,44 +17,37 @@ let loadTables = () => {
                     'user': user
                 }
                 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-                // console.log(url)
 
                 fetch(url).then(vehicleRes => {
                     vehicleRes.json().then(json => {
                         if (vehicleRes.status == 200) {
-                            // console.log(json);
-                            // alert('got the vehicles! if there are any ._.');
                             fleetNums = []
                             Object.keys(fleets).forEach(fleet => {
                                 fleetNums.push(fleets[fleet]['fleetid']);
                             })
-                            // console.log(fleetNums);
-                            // console.log(json)
+
                             let arr = formatVehicleJSON(json);
-                            // console.log(arr);
 
                             let homeTable = document.getElementById('homeTable');
                             let tbody = fillTBody(arr, 'o');
                             homeTable.appendChild(tbody);
 
                             let deleteSelect = document.getElementById('vidsThatCanBeDeleted');
-                            // console.log(deleteSelect);
                             deleteOptionFormat(deleteSelect, arr);
-                            // console.log(deleteSelect);
 
                             fleetNums.forEach(fleetNum => {
-                                let idHeader = `fleet${fleetNum}`;  
+                                let idHeader = `fleet${fleetNum}`;
                                 buildTab(idHeader)
                             })
                             mapboxgl.accessToken = 'pk.eyJ1Ijoia29tb3RvNDE1IiwiYSI6ImNrOHV1cGp3bDA1bG0zZ282bmZhdDZjeWYifQ.2w_4X8WR5lFXvsmp6TeHEg';
                             map = new mapboxgl.Map({
-                                container: 'homeMap', // container id
-                                style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-                                center: [-97.7553, 30.2264], // starting position [lng, lat]
-                                zoom: 13 // starting zoom
+                                container: 'homeMap', /* container id */
+                                style: 'mapbox://styles/mapbox/streets-v11', /* stylesheet location */
+                                center: [-97.7553, 30.2264], /* starting position [lng, lat] */
+                                zoom: 13 /* starting zoom */
                             });
 
-                            // console.log(json)
+                            /* Making geojsons for each vehicle  */
                             var vids = [];
                             var geojsons = [];
                             json.forEach(car => {
@@ -72,30 +64,23 @@ let loadTables = () => {
                                 geojsons.push(geojson);
                                 vehicleMarks[vid] = geojson;
                             });
-                            // console.log(geojsons);
-                            //This needs a datastream url in order for the points to be dynamic
-                            //Let me know if we want to do a pop up for the cars with their info
                             map.on('load', function () {
-                                //Eventually this code should set the datastream for the window every 1.5 seconds??
-                                // window.setInterval((){
-                                //   map.getSource(id).setData(dataStreamUrl);
-                                // }, 1500);
-                                // console.log(geojsons);
                                 for (car in geojsons) {
                                     var id = geojsons[car]['geometry']['id'].toString()
                                     map.addSource(id, {
                                         'type': 'geojson',
                                         'data': geojsons[car]
                                     });
-                                    //console.log(id)
                                     map.addLayer({
                                         'id': id,
                                         'type': 'symbol',
                                         'source': id,
                                         'layout': {
-                                            // get the icon name from the source's "icon" property
-                                            // concatenate the name to get an icon from the style's sprite sheet
-                                            // get the title name from the source's "title" property
+                                            /* 
+                                                get the icon name from the source's "icon" property
+                                                concatenate the name to get an icon from the style's sprite sheet
+                                                get the title name from the source's "title" property
+                                            */
                                             'icon-image': 'car-15',
 
                                         }
@@ -125,7 +110,7 @@ let loadTables = () => {
             }
         })
     }).catch(err => {
-        console.log(err)
+        console.log('Error: ', err);
     });
 }
 
@@ -152,28 +137,30 @@ $(document).on('click', '.nav-item.mytab', function (e) {
         res.json().then(vehiclesJSON => {
             rebuildTable(vehiclesJSON);
         })
-    })
-    setTimeout( () => adjustUpdateForm(fid), 500);
+    }).catch(err => {
+        console.log('Error: ', err);
+    });
 
-    // console.log(fid);
-    // console.log(activeWorkers);
-    // console.log(Object.keys(activeWorkers).length == 1);
+    /* Time out required when updating the update form to account for the lab in fetching and updating the table */
+    setTimeout(() => adjustUpdateForm(fid), 500);
+
+    /* Kill the current worker so that we can spin up a new one for the selected tab */
     Object.keys(activeWorkers).forEach(tab => {
         activeWorkers[tab].postMessage({ 'cmd': 'stop' })
         delete activeWorkers[tab]
     })
     var worker = startWorker(fid);
     activeWorkers[fid] = worker;
-    // console.log(activeWorkers);
 })
 
 function startWorker(fid) {
     var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
-    worker.postMessage({ 'cmd': 'start', 'fid': fid , 'user': user});
+    worker.postMessage({ 'cmd': 'start', 'fid': fid, 'user': user });
     worker.addEventListener('message', function (e) {
         let vehiclesJSON = e.data;
         rebuildTable(vehiclesJSON);
 
+        /* Update the geojsons with the new vehicle positions */
         vehiclesJSON.forEach(vehicle => {
             let vid = vehicle['vehicleid'].toString();
             map.getSource(vid).setData({
@@ -192,11 +179,16 @@ function startWorker(fid) {
 function rebuildTable(vehiclesJSON) {
     let vehiclesData = formatVehicleJSON(vehiclesJSON);
     let vehicleTable = document.getElementById('homeTable')
+
+    /* Getting the old tbody to remove it */
     let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
     vehicleTable.removeChild(oldTBody);
+
+    /* Creating a new tbody with our 'new' vehicle data*/
     let tbody = fillTBody(vehiclesData, 'o');
     vehicleTable.appendChild(tbody);
 
+    /* DataTable reinstantiation */
     $(document).ready(function () {
         $('table.home').DataTable().clear().destroy();
         $('table.home').DataTable({
@@ -211,7 +203,7 @@ function rebuildTable(vehiclesJSON) {
 function deleteOptionFormat(select, arr) {
     arr.forEach(vehicle => {
         let option = document.createElement('OPTION');
-        // option.setAttribute('value', vehicle[0]);
+        /* Formatting the options into a more compact slightly more readable format */
         let optionText = document.createTextNode(
             `Vehicle ID: ${vehicle[0]} -- Fleet: ${vehicle[1]} -- Vehicle Type: ${vehicle[3]} -- License Plate: ${vehicle[5]} `
         )
@@ -222,9 +214,9 @@ function deleteOptionFormat(select, arr) {
 
 function adjustUpdateForm(fid) {
     /* Toggling the Fleet ID input state when switching between tabs */
-    // console.log(fid);
     let fleetidinput = document.getElementById('homefleetid');
-    // console.log(fleetidinput);
+
+    /* Making the fleet input default to the selected tab, if it's not the home tab */
     fleetidinput.readOnly = false;
     fleetidinput.value = '';
     if (fid != 'home') {
@@ -234,7 +226,6 @@ function adjustUpdateForm(fid) {
 
     /* Adjusting the available deletable vehicles when switching between tabs */
     let canBeDeleted = document.getElementById('vidsThatCanBeDeleted');
-    // console.log(canBeDeleted);
     for (option in canBeDeleted.options) {
         canBeDeleted.options.remove(0);
     }
@@ -245,45 +236,37 @@ function adjustUpdateForm(fid) {
     for (row in table.rows) {
         if (row == 0) continue;
         let rowDOM = table.rows[row].cells;
-        // console.log(rowDOM);
         let wantedData = []
         for (cell in rowDOM) {
             /* Pruning condition for extra stuff DataTables does */
             if (cell < 7) {
                 let cellDOM = rowDOM[cell];
                 /* 
-                    Because out delete select is smaller, we only really care about certain pieces of data,
+                    Because our delete select is smaller, we only really care about certain pieces of data,
                     so we only push the values where we hit those particular columns. In this case, 'cell'
                     is indicative of the column number, which correlates to our column name. 
                 */
                 wantedData.push(cellDOM.innerHTML);
-                // console.log(cellDOM.innerHTML);
             }
         }
         rebuildArr.push(wantedData);
     }
     rebuildArr = rebuildArr.splice(0, rebuildArr.length - 3);
-    // console.log(rebuildArr);
-    // console.log(fid);
-    /* Filter the list to account for what tab we are in */
 
+    /* Filter the list to account for what tab we are in */
     let vidsInDelSelect = []
     let confirmDelSelect = document.getElementById('vidsToDelete');
-    // console.log(confirmDelSelect);
+
     for (var option = 0; option < confirmDelSelect.options.length; option++) {
         let text = confirmDelSelect.options[option].innerHTML;
-        // console.log(confirmDelSelect.options[option].innerHTML);
         let vid = text.split(' -- ')[0];
-        // console.log(vid);
         vid = vid.substring(vid.indexOf(': ') + 2);
-        // console.log(vid);
         vidsInDelSelect.push(vid);
     }
-    // console.log(vidsInDelSelect);
+
     rebuildArr = rebuildArr.filter(entry => !vidsInDelSelect.includes(entry[0]));
     if (fid != 'home') {
         rebuildArr = rebuildArr.filter(entry => entry[1] == fid)
     }
     deleteOptionFormat(canBeDeleted, rebuildArr);
-    // console.log(rebuildArr);
 }

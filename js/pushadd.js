@@ -3,15 +3,10 @@ $(document).on('submit', '.addVehicle', async e => {
 
     let addForm = e.target;
     let id = addForm.classList[2];
-    let grandparentID = addForm.parentElement.parentElement.id;
-    // console.log(grandparentID);
     desiredClass = addForm.className.split(' ')[1]
-    // console.log(desiredClass);
 
     let inputsOfForm = $(`.${id} input`);
-    // console.log(inputsOfForm);
     let mySelect = e.target.parentElement.children[1].children[0].children[0];
-    // console.log(mySelect);
     for (var input = 0; input < inputsOfForm.length; input += 4) {
         let fieldArr = [];
         let field1 = inputsOfForm[input].value.trim();
@@ -21,7 +16,6 @@ $(document).on('submit', '.addVehicle', async e => {
 
         let numbersOnly = /^[0-9]+$/;
         if (!numbersOnly.test(field1)) {
-            // console.log(inputsOfForm[input]);
             inputsOfForm[input].style.borderColor = 'red';
             alert('not numbers!');
         }
@@ -36,7 +30,6 @@ $(document).on('submit', '.addVehicle', async e => {
         inputLens.push(field2.length);
         inputLens.push(field3.length);
         inputLens.push(field4.length);
-        // console.log(inputLens);
 
         if (inputLens.includes(0)) {
             inputLens.forEach((inputLen, i) => {
@@ -50,15 +43,12 @@ $(document).on('submit', '.addVehicle', async e => {
             fieldArr.forEach(field => {
                 field = field.replace(' ', '');
             })
-            // console.log(fieldArr);
             let optionVal = fieldArr.join(' ');
-            // console.log(optionVal);
             if (id != 'home') {
                 fleetNum = id.substring(id.indexOf('t') + 1);
-                // console.log(fleetNum);
                 optionVal = `${fleetNum} ${optionVal}`;
             }
-            // console.log(optionVal);
+
             let option = document.createElement('OPTION');
             let optionTextNode = document.createTextNode(optionVal);
             option.appendChild(optionTextNode);

@@ -1,6 +1,5 @@
 function getDispatch(vehicle) {
     const vehicleID = vehicle.innerHTML;
-    // console.log(vehicleID)
 
     var url = new URL("https://supply.team22.softwareengineeringii.com/supply/dispatch"),
         params = {
@@ -8,25 +7,10 @@ function getDispatch(vehicle) {
         }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url).then(function (response) {
-        // console.log(response.status);
         response.json().then(function (parsedJSON) {
             if (response.status == 200) {
-                // console.log(parsedJSON);
-                // parsedJSON.forEach(e => console.log(e));
-                /*
-                    did 67
-                    vid 28
-                    custid 531
-                    orderid 84013
-                    startLocation {'humanReadable': "St. Edward's University", 'lat': 30.2264, 'lon': 97.7553}
-                    endLocation {'humanReadable': '1234 That Street Ave', 'lat': 31.31, 'lon': 27.31}
-                    start_time 2018-03-29T13:34:00
-                    status queued
-                    serviceType drycleaning
-                */
                 dispatchArr = formatDispatchJSON(parsedJSON)
 
-                // console.log(dispatchArr);
                 const colNames = ['Dispatch ID', 'Order ID', 'Customer ID', 'Destination', 'Service Type', 'Time Order Created', 'Status'];
 
                 document.getElementById('dispatchRecordPopupLabel').innerHTML = `Vehicle ID: ${vehicleID}`;
@@ -79,17 +63,12 @@ function getDispatch(vehicle) {
                 var worker = new Worker('/supply-front-end/js/workers/dispatchworker.js');
                 worker.postMessage({ 'cmd': 'start', 'vid': vehicleID });
                 worker.addEventListener('message', function (e) {
-                    // console.log(e.data);
                     let dispatchJSON = e.data;
                     let dispatchArr = formatDispatchJSON(dispatchJSON);
-                    // console.log(dispatchArr);
                     let popupTable = document.getElementById('popupTable');
-                    // console.log(popupTable);
                     let oldTBody = popupTable.querySelectorAll('tbody')[0];
-                    // console.log('Old ', oldTBody);
                     popupTable.removeChild(oldTBody);
                     let tbody = fillTBody(dispatchArr, 'd');
-                    // console.log('New ', tbody);
                     popupTable.appendChild(tbody);
 
                     $('table.popup').DataTable().clear().destroy();
@@ -124,10 +103,8 @@ function formatDispatchJSON(parsedJSON) {
     dispatchArr = []
     Object.keys(parsedJSON).forEach(function (dispatchNum) {
         dispatch = parsedJSON[dispatchNum];
-        // console.log(dispatch)
         let start = dispatch['start_time'];
         start = start.replace('T', ' ');
-        // console.log(start);
         dispatchArr.push(
             [dispatch['did'], dispatch['orderid'], dispatch['custid'],
             dispatch['endLocation']['humanReadable'],
