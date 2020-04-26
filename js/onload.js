@@ -105,7 +105,14 @@ let loadTables = () => {
                             var worker = startWorker('home');
 
                             activeWorkers['home'] = worker
-
+                            $(document).ready(function () {
+                                $('table.home').DataTable({
+                                    columnDefs: [{
+                                        targets: 3,
+                                        orderable: false
+                                    }]
+                                });
+                            });
                         } else {
                             alert('something went wrong');
                         }
