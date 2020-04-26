@@ -31,7 +31,7 @@ let loadTables = () => {
                             })
                             // console.log(fleetNums);
                             // console.log(json)
-                            let arr = formatVehicleJSON(json, 'o');
+                            let arr = formatVehicleJSON(json);
                             // console.log(arr);
 
                             let homeTable = document.getElementById('homeTable');
@@ -150,25 +150,7 @@ $(document).on('click', '.nav-item.mytab', function (e) {
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url).then(res => {
         res.json().then(vehiclesJSON => {
-        let vehiclesData = formatVehicleJSON(vehiclesJSON);
-        // console.log(vehiclesData);
-        let vehicleTable = document.getElementById('homeTable')
-        // console.log(vehicleTable);
-        let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
-        // console.log('Old ', oldTBody);
-        vehicleTable.removeChild(oldTBody);
-        let tbody = fillTBody(vehiclesData, 'o');
-        // console.log('New ', tbody);
-        vehicleTable.appendChild(tbody);
-        $(document).ready(function () {
-            $('table.home').DataTable().clear().destroy();
-            $('table.home').DataTable({
-                columnDefs: [{
-                    targets: 3,
-                    orderable: false
-                }]
-            });
-        });
+            rebuildTable(vehiclesJSON);
         })
     })
     adjustUpdateForm(fid);
@@ -189,18 +171,9 @@ function startWorker(fid) {
     var worker = new Worker('/supply-front-end/js/workers/vehiclesworker.js');
     worker.postMessage({ 'cmd': 'start', 'fid': fid , 'user': user});
     worker.addEventListener('message', function (e) {
-        // console.log(e.data);
         let vehiclesJSON = e.data;
-        let vehiclesData = formatVehicleJSON(vehiclesJSON);
-        // console.log(vehiclesData);
-        let vehicleTable = document.getElementById('homeTable')
-        // console.log(vehicleTable);
-        let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
-        // console.log('Old ', oldTBody);
-        vehicleTable.removeChild(oldTBody);
-        let tbody = fillTBody(vehiclesData, 'o');
-        // console.log('New ', tbody);
-        vehicleTable.appendChild(tbody);
+        rebuildTable(vehiclesJSON);
+
         vehiclesJSON.forEach(vehicle => {
             let vid = vehicle['vehicleid'].toString();
             map.getSource(vid).setData({
@@ -212,17 +185,27 @@ function startWorker(fid) {
                 }
             })
         })
-        $(document).ready(function () {
-            $('table.home').DataTable().clear().destroy();
-            $('table.home').DataTable({
-                columnDefs: [{
-                    targets: 3,
-                    orderable: false
-                }]
-            });
-        });
     }, false);
     return worker;
+}
+
+function rebuildTable(vehiclesJSON) {
+    let vehiclesData = formatVehicleJSON(vehiclesJSON);
+    let vehicleTable = document.getElementById('homeTable')
+    let oldTBody = vehicleTable.querySelectorAll('tbody')[0];
+    vehicleTable.removeChild(oldTBody);
+    let tbody = fillTBody(vehiclesData, 'o');
+    vehicleTable.appendChild(tbody);
+
+    $(document).ready(function () {
+        $('table.home').DataTable().clear().destroy();
+        $('table.home').DataTable({
+            columnDefs: [{
+                targets: 3,
+                orderable: false
+            }]
+        });
+    });
 }
 
 function deleteOptionFormat(select, arr) {
