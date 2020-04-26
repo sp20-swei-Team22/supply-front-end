@@ -136,7 +136,6 @@ $(document).on('click', '.nav-item.mytab', function (e) {
     // console.log(fleet);
     let fid = fleet.substring(fleet.indexOf('t') + 1);
     var url;
-    var fid;
     if (fid == 'home') {
         url = new URL("https://supply.team22.softwareengineeringii.com/supply/vehicles");
         params = {
@@ -161,9 +160,17 @@ $(document).on('click', '.nav-item.mytab', function (e) {
         let tbody = fillTBody(vehiclesData, 'o');
         // console.log('New ', tbody);
         vehicleTable.appendChild(tbody);
+        $(document).ready(function () {
+            $('table.home').DataTable().clear().destroy();
+            $('table.home').DataTable({
+                columnDefs: [{
+                    targets: 3,
+                    orderable: false
+                }]
+            });
+        });
         })
     })
-    
     adjustUpdateForm(fid);
 
     // console.log(fid);
