@@ -153,7 +153,7 @@ $(document).on('click', '.nav-item.mytab', function (e) {
             rebuildTable(vehiclesJSON);
         })
     })
-    adjustUpdateForm(fid);
+    setTimeout( () => adjustUpdateForm(fid), 500);
 
     // console.log(fid);
     // console.log(activeWorkers);
