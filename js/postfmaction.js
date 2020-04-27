@@ -3,7 +3,7 @@ $(document).on('submit', '.confirm', async e => {
 
     let confirmSend = e.target;
     let confirmType = confirmSend.classList[1]
-    let select = confirmSend.children[0];
+    let select = confirmType == 'add' ? confirmSend.children[0] : confirmSend.children[1];
     let optionsCollection = select.children;
     length = select.options.length;
     if (length == 0) {
