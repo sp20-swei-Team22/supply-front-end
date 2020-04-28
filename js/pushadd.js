@@ -3,13 +3,17 @@ $(document).on('submit', '.addVehicle', async e => {
 
     let addForm = e.target;
     let id = addForm.classList[2];
+    console.log(id);
     desiredClass = addForm.className.split(' ')[1]
 
     let inputsOfForm = $(`.${id} input`);
     let mySelect = e.target.parentElement.children[1].children[0].children[0];
     for (var input = 0; input < inputsOfForm.length; input += 4) {
+        inputsOfForm[input].style.borderColor = 'rgb(210, 206, 198)';
+
         let fieldArr = [];
         let field1 = inputsOfForm[input].value.trim();
+        console.log(inputsOfForm[input].readOnly);
         let field2 = inputsOfForm[input + 1].value.trim();
         let field3 = inputsOfForm[input + 2].value.trim();
         let field4 = inputsOfForm[input + 3].value.trim();
@@ -18,6 +22,7 @@ $(document).on('submit', '.addVehicle', async e => {
         if (!numbersOnly.test(field1)) {
             inputsOfForm[input].style.borderColor = 'red';
             alert('not numbers!');
+            return;
         }
 
         fieldArr.push(field1);
@@ -55,7 +60,7 @@ $(document).on('submit', '.addVehicle', async e => {
             option.value = optionVal;
             mySelect.appendChild(option);
 
-            inputsOfForm[input].value = '';
+            inputsOfForm[input].value = inputsOfForm[input].readOnly ? field1 : '';
             inputsOfForm[input + 1].value = '';
             inputsOfForm[input + 2].value = '';
             inputsOfForm[input + 3].value = '';
