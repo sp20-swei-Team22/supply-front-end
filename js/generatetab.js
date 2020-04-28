@@ -9,9 +9,9 @@ function buildTab(idHeader) {
     tabA.setAttribute('class', 'nav-link')
     tabA.setAttribute('id', tabId);
     tabA.setAttribute('data-toggle', 'tab');
-    tabA.setAttribute('href', `#${idHeader}`);
+    tabA.setAttribute('href', '#home');
     tabA.setAttribute('rold', 'tab');
-    tabA.setAttribute('aria-controls', idHeader);
+    tabA.setAttribute('aria-controls', 'home');
     tabA.setAttribute('aria-selected', 'false');
     tabA.innerHTML = `Fleet ${fleetNum}`;
 
